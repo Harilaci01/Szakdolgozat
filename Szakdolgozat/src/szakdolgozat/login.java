@@ -118,7 +118,8 @@ public class login extends javax.swing.JFrame {
                 
         }
         catch(Exception e){System.err.println(e);
-            
+            vissz.setForeground(Color.red);
+            vissz.setText("Nem sikerült csatlakozni a szerverhez!");
         }
     }//GEN-LAST:event_buttonActionPerformed
 
