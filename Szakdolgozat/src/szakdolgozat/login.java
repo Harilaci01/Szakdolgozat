@@ -14,18 +14,18 @@ public class login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cim = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         password = new javax.swing.JLabel();
         user = new javax.swing.JTextField();
         pw = new javax.swing.JPasswordField();
         button = new javax.swing.JButton();
-        vissz = new javax.swing.JLabel();
+        info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cim.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        cim.setText("Bejelentkezés");
+        title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        title.setText("Bejelentkezés");
 
         username.setText("Felhasználónév:");
 
@@ -55,7 +55,7 @@ public class login extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(123, 123, 123)
-                                    .addComponent(cim))
+                                    .addComponent(title))
                                 .addGroup(layout.createSequentialGroup()
                                     .addContainerGap()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,7 +67,7 @@ public class login extends javax.swing.JFrame {
                                         .addComponent(user))))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(vissz)))
+                                .addComponent(info)))
                         .addGap(0, 105, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -78,7 +78,7 @@ public class login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cim)
+                .addComponent(title)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(username)
@@ -90,7 +90,7 @@ public class login extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vissz))
+                    .addComponent(info))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
@@ -105,21 +105,21 @@ public class login extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM felhasznalo WHERE nev='"+n+"' AND jelszo='"+p+"'");
+            ResultSet rs=stmt.executeQuery("SELECT * FROM dolgozok WHERE felhasznalo='"+n+"' AND jelszo='"+p+"'");
             if(rs.next()){
                new home().setVisible(true);
                dispose();
             }
             else{
-                vissz.setForeground(Color.red);
-                vissz.setText("Rossz belépési adatok!");
+                info.setForeground(Color.red);
+                info.setText("Rossz belépési adatok!");
             }
             con.close();
                 
         }
         catch(Exception e){System.err.println(e);
-            vissz.setForeground(Color.red);
-            vissz.setText("Nem sikerült csatlakozni a szerverhez!");
+            info.setForeground(Color.red);
+            info.setText("Nem sikerült csatlakozni a szerverhez!");
         }
     }//GEN-LAST:event_buttonActionPerformed
 
@@ -165,11 +165,11 @@ public class login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button;
-    private javax.swing.JLabel cim;
+    private javax.swing.JLabel info;
     private javax.swing.JLabel password;
     private javax.swing.JPasswordField pw;
+    private javax.swing.JLabel title;
     private javax.swing.JTextField user;
     private javax.swing.JLabel username;
-    private javax.swing.JLabel vissz;
     // End of variables declaration//GEN-END:variables
 }
