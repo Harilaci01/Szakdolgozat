@@ -109,6 +109,8 @@ public class login extends javax.swing.JFrame {
             if(rs.next()){
                new home().setVisible(true);
                dispose();
+               Class.forName("com.mysql.cj.jdbc.Driver");
+               stmt.executeUpdate("INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo='"+n+"'))");
             }
             else{
                 info.setForeground(Color.red);
