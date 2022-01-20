@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Jan 20. 11:24
+-- Létrehozás ideje: 2022. Jan 20. 13:13
 -- Kiszolgáló verziója: 10.4.14-MariaDB
 -- PHP verzió: 7.4.10
 
@@ -32,6 +32,13 @@ CREATE TABLE `bejelentkezes` (
   `belepes_ido` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `f_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `bejelentkezes`
+--
+
+INSERT INTO `bejelentkezes` (`bel_id`, `belepes_ido`, `f_id`) VALUES
+(1, '2022-01-20 12:00:44', 1);
 
 -- --------------------------------------------------------
 
@@ -227,7 +234,7 @@ ALTER TABLE `szemely`
 -- AUTO_INCREMENT a táblához `bejelentkezes`
 --
 ALTER TABLE `bejelentkezes`
-  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `beosztas`
