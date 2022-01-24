@@ -1,9 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package szakdolgozat;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 /**
  *
@@ -29,22 +28,22 @@ public class patiens extends javax.swing.JFrame {
 
         Back = new javax.swing.JButton();
         patiens = new javax.swing.JLabel();
-        front = new javax.swing.JLabel();
-        surname = new javax.swing.JLabel();
-        firstname = new javax.swing.JLabel();
-        middlename = new javax.swing.JLabel();
-        birthdate = new javax.swing.JLabel();
-        postcode = new javax.swing.JLabel();
-        city = new javax.swing.JLabel();
-        other = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        frontl = new javax.swing.JLabel();
+        surnamel = new javax.swing.JLabel();
+        firstnamel = new javax.swing.JLabel();
+        middlenamel = new javax.swing.JLabel();
+        birthdatel = new javax.swing.JLabel();
+        postcodel = new javax.swing.JLabel();
+        cityl = new javax.swing.JLabel();
+        otherl = new javax.swing.JLabel();
+        front = new javax.swing.JTextField();
+        surname = new javax.swing.JTextField();
+        firstname = new javax.swing.JTextField();
+        middlename = new javax.swing.JTextField();
+        birthdate = new javax.swing.JTextField();
+        postcode = new javax.swing.JTextField();
+        city = new javax.swing.JTextField();
+        other = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         upload = new javax.swing.JButton();
@@ -63,25 +62,25 @@ public class patiens extends javax.swing.JFrame {
         patiens.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         patiens.setText("Betegek");
 
-        front.setText("Előtag:");
+        frontl.setText("Előtag:");
 
-        surname.setText("Vezetéknév:");
+        surnamel.setText("Vezetéknév:");
 
-        firstname.setText("Keresztnév:");
+        firstnamel.setText("Keresztnév:");
 
-        middlename.setText("Másodiknév:");
+        middlenamel.setText("Másodiknév:");
 
-        birthdate.setText("Születési dátum:");
+        birthdatel.setText("Születési dátum:");
 
-        postcode.setText("Irányítószám:");
+        postcodel.setText("Irányítószám:");
 
-        city.setText("Település:");
+        cityl.setText("Település:");
 
-        other.setText("Egyéb cím:");
+        otherl.setText("Egyéb cím:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        front.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                frontActionPerformed(evt);
             }
         });
 
@@ -138,33 +137,33 @@ public class patiens extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(patiens)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(front)
+                                            .addComponent(frontl)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(firstname)
+                                            .addComponent(firstnamel)
                                             .addGap(31, 31, 31)
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+                                            .addComponent(firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(middlename)
+                                            .addComponent(middlenamel)
                                             .addGap(29, 29, 29)
-                                            .addComponent(jTextField4))
+                                            .addComponent(middlename))
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(birthdate)
-                                                .addComponent(postcode)
-                                                .addComponent(city)
-                                                .addComponent(other))
+                                                .addComponent(birthdatel)
+                                                .addComponent(postcodel)
+                                                .addComponent(cityl)
+                                                .addComponent(otherl))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jTextField8)
-                                                .addComponent(jTextField7)
-                                                .addComponent(jTextField6)
-                                                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
+                                                .addComponent(other)
+                                                .addComponent(city)
+                                                .addComponent(postcode)
+                                                .addComponent(birthdate, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(surname)
+                                            .addComponent(surnamel)
                                             .addGap(29, 29, 29)
-                                            .addComponent(jTextField2)))
+                                            .addComponent(surname)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(86, 86, 86)
                                         .addComponent(delete)))
@@ -185,36 +184,36 @@ public class patiens extends javax.swing.JFrame {
                         .addComponent(patiens)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(front)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(frontl)
+                            .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(surname)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(surnamel)
+                            .addComponent(surname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(firstname)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(firstnamel)
+                            .addComponent(firstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(middlename)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(middlenamel)
+                            .addComponent(middlename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(birthdate)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(birthdatel)
+                            .addComponent(birthdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(postcode)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(postcodel)
+                            .addComponent(postcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(city)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cityl)
+                            .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(other)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(otherl)
+                            .addComponent(other, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(upload)
@@ -233,12 +232,26 @@ public class patiens extends javax.swing.JFrame {
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_BackActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void frontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_frontActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
-        // TODO add your handling code here:
+         String fr=front.getText();
+         String su=surname.getText();
+         String fi=firstname.getText();
+         String mi=middlename.getText();
+         String da=birthdate.getText();
+         String po=postcode.getText();
+         String ci=city.getText();
+         String ot=other.getText();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
     }//GEN-LAST:event_uploadActionPerformed
 
     /**
@@ -278,27 +291,27 @@ public class patiens extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
-    private javax.swing.JLabel birthdate;
-    private javax.swing.JLabel city;
+    private javax.swing.JTextField birthdate;
+    private javax.swing.JLabel birthdatel;
+    private javax.swing.JTextField city;
+    private javax.swing.JLabel cityl;
     private javax.swing.JButton delete;
-    private javax.swing.JLabel firstname;
-    private javax.swing.JLabel front;
+    private javax.swing.JTextField firstname;
+    private javax.swing.JLabel firstnamel;
+    private javax.swing.JTextField front;
+    private javax.swing.JLabel frontl;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JLabel middlename;
-    private javax.swing.JLabel other;
+    private javax.swing.JTextField middlename;
+    private javax.swing.JLabel middlenamel;
+    private javax.swing.JTextField other;
+    private javax.swing.JLabel otherl;
     private javax.swing.JLabel patiens;
-    private javax.swing.JLabel postcode;
+    private javax.swing.JTextField postcode;
+    private javax.swing.JLabel postcodel;
     private javax.swing.JButton search;
-    private javax.swing.JLabel surname;
+    private javax.swing.JTextField surname;
+    private javax.swing.JLabel surnamel;
     private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables
 }
