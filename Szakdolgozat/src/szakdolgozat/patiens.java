@@ -1,8 +1,12 @@
 package szakdolgozat;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +19,7 @@ public class patiens extends javax.swing.JFrame {
      */
     public patiens() {
         initComponents();
+        TablaFeltolt(table);
     }
 
     /**
@@ -45,10 +50,11 @@ public class patiens extends javax.swing.JFrame {
         city = new javax.swing.JTextField();
         other = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         upload = new javax.swing.JButton();
         search = new javax.swing.JButton();
         delete = new javax.swing.JButton();
+        info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,7 +90,7 @@ public class patiens extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -100,7 +106,7 @@ public class patiens extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
         upload.setText("Feltöltés");
         upload.addActionListener(new java.awt.event.ActionListener() {
@@ -112,6 +118,11 @@ public class patiens extends javax.swing.JFrame {
         search.setText("Keresés");
 
         delete.setText("Törlés");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,7 +132,9 @@ public class patiens extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(10, 10, 10)
+                        .addComponent(info)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Back)
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
@@ -179,7 +192,8 @@ public class patiens extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addComponent(Back))
+                        .addComponent(Back)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(patiens)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -220,8 +234,9 @@ public class patiens extends javax.swing.JFrame {
                             .addComponent(search))
                         .addGap(18, 18, 18)
                         .addComponent(delete)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(info)
+                        .addGap(28, 28, 28))))
         );
 
         pack();
@@ -249,11 +264,102 @@ public class patiens extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
+            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE vezeteknev='"+su+"' AND keresztnev='"+fi+"'");
+            if(result.next()){
+                info.setForeground(Color.red);
+                info.setText("A személy már szerepel a listában!"); 
+            }
+            else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0)
+                stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
+            
+            front.setText("");
+            surname.setText("");
+            firstname.setText("");
+            middlename.setText("");
+            birthdate.setText("");
+            postcode.setText("");
+            city.setText("");
+            other.setText("");
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+            result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
+            String[] rekord=new String[8];
+            while(result.next()){
+                rekord[0]=result.getString("elotag");
+                rekord[1]=result.getString("vezeteknev");
+                rekord[2]=result.getString("keresztnev");
+                rekord[3]=result.getString("masodik_keresztnev");
+                rekord[4]=result.getString("szuletesi_datum");
+                rekord[5]=result.getString("iranyitoszam");
+                rekord[6]=result.getString("telepules");
+                rekord[7]=result.getString("egyeb_cim");
+                model.addRow(rekord);
+            }
+            con.close();
         }
+        
+        
         catch(Exception e){System.err.println("Hiba: "+e);
         }
     }//GEN-LAST:event_uploadActionPerformed
 
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        try{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int sszam=table.getSelectedRow();
+            String torles[]=new String[8];
+            for (int i = 0; i < 8; i++) {
+                torles[i]=table.getValueAt(sszam,i).toString();
+            }
+            System.out.println("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            TablaTorol(table);
+            TablaFeltolt(table);
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_deleteActionPerformed
+    public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
+            String[] rekord=new String[8];
+            while(result.next()){
+                rekord[0]=result.getString("elotag");
+                rekord[1]=result.getString("vezeteknev");
+                rekord[2]=result.getString("keresztnev");
+                rekord[3]=result.getString("masodik_keresztnev");
+                rekord[4]=result.getString("szuletesi_datum");
+                rekord[5]=result.getString("iranyitoszam");
+                rekord[6]=result.getString("telepules");
+                rekord[7]=result.getString("egyeb_cim");
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
+    public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -300,8 +406,8 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JLabel firstnamel;
     private javax.swing.JTextField front;
     private javax.swing.JLabel frontl;
+    private javax.swing.JLabel info;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField middlename;
     private javax.swing.JLabel middlenamel;
     private javax.swing.JTextField other;
@@ -312,6 +418,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JButton search;
     private javax.swing.JTextField surname;
     private javax.swing.JLabel surnamel;
+    private javax.swing.JTable table;
     private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables
 }
