@@ -116,6 +116,11 @@ public class patiens extends javax.swing.JFrame {
         });
 
         search.setText("Keresés");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         delete.setText("Törlés");
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -308,7 +313,7 @@ public class patiens extends javax.swing.JFrame {
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         try{
-        Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) table.getModel();
@@ -325,6 +330,67 @@ public class patiens extends javax.swing.JFrame {
         catch(Exception e){System.err.println("Hiba: "+e);
         }
     }//GEN-LAST:event_deleteActionPerformed
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        String fr=front.getText();
+        String su=surname.getText();
+        String fi=firstname.getText();
+        String mi=middlename.getText();
+        String da=birthdate.getText();
+        String po=postcode.getText();
+        String ci=city.getText();
+        String ot=other.getText();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            String conditions="WHERE";
+            if(!fr.equals("")){
+                conditions+=" elotag='"+fr+"' OR";
+            }
+            if(!su.equals("")){
+                conditions+=" vezeteknev='"+su+"' OR";
+            }
+            if(!fi.equals("")){
+                conditions+=" keresztnev='"+fi+"' OR";
+            }
+            if(!mi.equals("")){
+                conditions+=" masodik_keresztnev='"+mi+"' OR";
+            }if(!da.equals("")){
+                conditions+=" szuletesi_datum='"+da+"' OR";
+            }if(!po.equals("")){
+                conditions+=" iranyitoszam='"+po+"' OR";
+            }if(!ci.equals("")){
+                conditions+=" telepules='"+ci+"' OR";
+            }if(!ot.equals("")){
+                conditions+=" egyeb_cim='"+ot+"' OR";
+            }
+            
+            
+            if(conditions.equals("Where"))conditions="";
+            else conditions=conditions.substring(0,conditions.length()-3);
+            
+            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id "+conditions);
+            String[] rekord=new String[8];
+            while(result.next()){
+                
+                rekord[0]=result.getString("elotag");
+                rekord[1]=result.getString("vezeteknev");
+                rekord[2]=result.getString("keresztnev");
+                rekord[3]=result.getString("masodik_keresztnev");
+                rekord[4]=result.getString("szuletesi_datum");
+                rekord[5]=result.getString("iranyitoszam");
+                rekord[6]=result.getString("telepules");
+                rekord[7]=result.getString("egyeb_cim");
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_searchActionPerformed
     public static void TablaFeltolt(JTable JTable){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
