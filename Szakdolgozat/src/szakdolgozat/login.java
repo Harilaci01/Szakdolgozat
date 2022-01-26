@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import java.io.*;
 import java.util.ArrayList;
 import java.awt.Color;
+import static szakdolgozat.Szakdolgozat.id;
 public class login extends javax.swing.JFrame {
 
     public login() {
@@ -99,23 +100,33 @@ public class login extends javax.swing.JFrame {
 
     private void buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionPerformed
         String n=user.getText();
-        String p=String.valueOf(pw.getPassword());
+        String p=String.valueOf(pw.getPassword());    
         
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM dolgozok WHERE felhasznalo='"+n+"' AND jelszo='"+p+"'");
-            if(rs.next()){
-               new home().setVisible(true);
-               dispose();
-               Class.forName("com.mysql.cj.jdbc.Driver");
-               stmt.executeUpdate("INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo='"+n+"'))");
+            ResultSet idRes=stmt.executeQuery("SELECT dolgozok.beosz_id FROM dolgozok WHERE felhasznalo='"+n+"'");
+            if(idRes.next())
+                id=idRes.getInt("beosz_id");
+            
+            if(n.equals("")&&p.equals("")){
+                info.setForeground(Color.red);
+                info.setText("Kérem adjon meg belépési adatot!");
             }
             else{
-                info.setForeground(Color.red);
-                info.setText("Rossz belépési adatok!");
-            }
+                ResultSet rs=stmt.executeQuery("SELECT * FROM dolgozok WHERE felhasznalo='"+n+"' AND jelszo='"+p+"'");
+                if(rs.next()){
+                   new home().setVisible(true);
+                   dispose();
+                   Class.forName("com.mysql.cj.jdbc.Driver");
+                   stmt.executeUpdate("INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo='"+n+"'))");
+                }
+                else{
+                    info.setForeground(Color.red);
+                    info.setText("Rossz belépési adatok!");
+                }
+            }            
             con.close();
                 
         }

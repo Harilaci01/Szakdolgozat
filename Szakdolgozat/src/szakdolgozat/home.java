@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package szakdolgozat;
+import static szakdolgozat.Szakdolgozat.id;
 
 /**
  *
@@ -16,6 +12,24 @@ public class home extends javax.swing.JFrame {
      */
     public home() {
         initComponents();
+        switch(id){
+            case 2:
+                workers.setVisible(false);
+                logins.setVisible(false);                
+                break;
+            case 3:
+                workers.setVisible(false);
+                logins.setVisible(false);
+                visitors.setVisible(false);
+                break;
+            case 5:
+                drugs.setVisible(false);
+                workers.setVisible(false);
+                logins.setVisible(false);
+                break;
+                
+        }
+        
     }
 
     /**

@@ -6,9 +6,7 @@ package szakdolgozat;
  */
 public class Szakdolgozat {
 
-    /**
-     * @param args the command line arguments
-     */
+    public static int id=0;
     public static void main(String[] args) {
         // TODO code application logic here
     }
