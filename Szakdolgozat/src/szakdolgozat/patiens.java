@@ -348,28 +348,28 @@ public class patiens extends javax.swing.JFrame {
             DefaultTableModel model=(DefaultTableModel) table.getModel();
             String conditions="WHERE";
             if(!fr.equals("")){
-                conditions+=" elotag='"+fr+"' OR";
+                conditions+=" elotag LIKE ('%"+fr+"%') OR";
             }
             if(!su.equals("")){
-                conditions+=" vezeteknev='"+su+"' OR";
+                conditions+=" vezeteknev LIKE ('%"+su+"%') OR";
             }
             if(!fi.equals("")){
-                conditions+=" keresztnev='"+fi+"' OR";
+                conditions+=" keresztnev LIKE('%"+fi+"%') OR";
             }
             if(!mi.equals("")){
-                conditions+=" masodik_keresztnev='"+mi+"' OR";
+                conditions+=" masodik_keresztnev LIKE ('%"+mi+"%') OR";
             }if(!da.equals("")){
-                conditions+=" szuletesi_datum='"+da+"' OR";
+                conditions+=" szuletesi_datum LIKE('%"+da+"%') OR";
             }if(!po.equals("")){
-                conditions+=" iranyitoszam='"+po+"' OR";
+                conditions+=" iranyitoszam LIKE ('%"+po+"%') OR";
             }if(!ci.equals("")){
-                conditions+=" telepules='"+ci+"' OR";
+                conditions+=" telepules LIKE ('%"+ci+"%') OR";
             }if(!ot.equals("")){
-                conditions+=" egyeb_cim='"+ot+"' OR";
+                conditions+=" egyeb_cim LIKE ('%"+ot+"%') OR";
             }
             
             
-            if(conditions.equals("Where"))conditions="";
+            if(conditions.equals("WHERE"))conditions="";
             else conditions=conditions.substring(0,conditions.length()-3);
             
             ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id "+conditions);
