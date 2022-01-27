@@ -5,6 +5,15 @@
  */
 package szakdolgozat;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import static szakdolgozat.patiens.TablaFeltolt;
+import static szakdolgozat.patiens.TablaTorol;
+
 /**
  *
  * @author Harsányi László
@@ -16,6 +25,8 @@ public class logins extends javax.swing.JFrame {
      */
     public logins() {
         initComponents();
+        TablaFeltolt(table);
+        
     }
 
     /**
@@ -28,6 +39,16 @@ public class logins extends javax.swing.JFrame {
     private void initComponents() {
 
         Back = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        id = new javax.swing.JTextField();
+        searchb = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        time = new javax.swing.JTextField();
+        user = new javax.swing.JTextField();
+        idl = new javax.swing.JLabel();
+        timel = new javax.swing.JLabel();
+        userl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -38,20 +59,114 @@ public class logins extends javax.swing.JFrame {
             }
         });
 
+        table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Belépés azonosító", "Időpont", "Bejelentkező"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idActionPerformed(evt);
+            }
+        });
+
+        searchb.setText("Keresés");
+        searchb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchbActionPerformed(evt);
+            }
+        });
+
+        delete.setText("Törlés");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
+        time.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeActionPerformed(evt);
+            }
+        });
+
+        idl.setText("Azonosító:");
+
+        timel.setText("Időpont:");
+
+        userl.setText("Bejelentkező:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
-                .addComponent(Back)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(id)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 53, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Back)
+                            .addComponent(searchb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(delete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(time)
+                    .addComponent(user, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idl)
+                            .addComponent(timel)
+                            .addComponent(userl))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
-                .addComponent(Back)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(idl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(timel)
+                        .addGap(9, 9, 9)
+                        .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(userl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchb)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(delete)
+                        .addGap(50, 50, 50)
+                        .addComponent(Back)))
                 .addContainerGap())
         );
 
@@ -63,9 +178,70 @@ public class logins extends javax.swing.JFrame {
         dispose();  
     }//GEN-LAST:event_BackActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void searchbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbActionPerformed
+        int i=0;
+        String kereses=id.getText().replaceAll("[^0-9]","");
+        if(!kereses.equals("")) i=Integer.parseInt(kereses);
+        String da=time.getText();
+        String us=user.getText();
+        String conditions="WHERE";
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();            
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            if(i>0){
+                us="";
+                da="";
+                conditions+=" bel_id='"+i+"' AND";
+            }
+            if(!us.equals("")){
+                conditions+=" felhasznalo LIKE ('%"+us+"%') AND";
+            }
+            if(!da.equals("")){
+                conditions+=" belepes_ido LIKE ('%"+da+"%') AND";
+            }
+            if(conditions.equals("WHERE"))conditions="";
+            else conditions=conditions.substring(0,conditions.length()-4);
+            ResultSet result=stmt.executeQuery("SELECT bejelentkezes.bel_id,bejelentkezes.belepes_ido,dolgozok.felhasznalo FROM bejelentkezes INNER JOIN dolgozok ON bejelentkezes.f_id=dolgozok.d_id "+conditions);
+            String[] rekord=new String[3];
+            while(result.next()){
+                rekord[0]=result.getString("bel_id");
+                rekord[1]=result.getString("belepes_ido");
+                rekord[2]=result.getString("felhasznalo");                
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+         catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_searchbActionPerformed
+
+    private void timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeActionPerformed
+
+    private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int sszam=table.getSelectedRow();
+            int torles=Integer.parseInt(table.getValueAt(sszam,0).toString());            
+            stmt.executeUpdate("DELETE FROM bejelentkezes WHERE bel_id="+torles);
+            TablaTorol(table);
+            TablaFeltolt(table);
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_deleteActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -97,8 +273,49 @@ public class logins extends javax.swing.JFrame {
             }
         });
     }
+    
+    public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet result=stmt.executeQuery("SELECT bejelentkezes.bel_id,bejelentkezes.belepes_ido,dolgozok.felhasznalo FROM bejelentkezes INNER JOIN dolgozok ON bejelentkezes.f_id=dolgozok.d_id ORDER BY bel_id");
+            String[] rekord=new String[3];
+            while(result.next()){
+                rekord[0]=result.getString("bel_id");
+                rekord[1]=result.getString("belepes_ido");
+                rekord[2]=result.getString("felhasznalo");                
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
+    public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton delete;
+    private javax.swing.JTextField id;
+    private javax.swing.JLabel idl;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton searchb;
+    private javax.swing.JTable table;
+    private javax.swing.JTextField time;
+    private javax.swing.JLabel timel;
+    private javax.swing.JTextField user;
+    private javax.swing.JLabel userl;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import static szakdolgozat.Szakdolgozat.id;
 
 /**
  *
@@ -20,6 +21,20 @@ public class patiens extends javax.swing.JFrame {
     public patiens() {
         initComponents();
         TablaFeltolt(table);
+        switch(id){
+            case 2:
+                delete.setVisible(false);                
+                break;
+            case 3:
+                upload.setVisible(false);
+                delete.setVisible(false);
+                break;
+            case 5:
+                upload.setVisible(false);
+                delete.setVisible(false);
+                break;
+                
+        }
     }
 
     /**
@@ -144,48 +159,45 @@ public class patiens extends javax.swing.JFrame {
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(search)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addComponent(upload)
-                                .addGap(45, 45, 45))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(30, 30, 30)
+                                .addComponent(search)
+                                .addGap(34, 34, 34)
+                                .addComponent(upload))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(patiens)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(frontl)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(firstnamel)
+                                    .addGap(31, 31, 31)
+                                    .addComponent(firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(middlenamel)
+                                    .addGap(29, 29, 29)
+                                    .addComponent(middlename))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(birthdatel)
+                                        .addComponent(postcodel)
+                                        .addComponent(cityl)
+                                        .addComponent(otherl))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(patiens)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(frontl)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(firstnamel)
-                                            .addGap(31, 31, 31)
-                                            .addComponent(firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(middlenamel)
-                                            .addGap(29, 29, 29)
-                                            .addComponent(middlename))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(birthdatel)
-                                                .addComponent(postcodel)
-                                                .addComponent(cityl)
-                                                .addComponent(otherl))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(other)
-                                                .addComponent(city)
-                                                .addComponent(postcode)
-                                                .addComponent(birthdate, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(surnamel)
-                                            .addGap(29, 29, 29)
-                                            .addComponent(surname)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(86, 86, 86)
-                                        .addComponent(delete)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(other)
+                                        .addComponent(city)
+                                        .addComponent(postcode)
+                                        .addComponent(birthdate, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(surnamel)
+                                    .addGap(29, 29, 29)
+                                    .addComponent(surname)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(delete)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -321,8 +333,7 @@ public class patiens extends javax.swing.JFrame {
             String torles[]=new String[8];
             for (int i = 0; i < 8; i++) {
                 torles[i]=table.getValueAt(sszam,i).toString();
-            }
-            System.out.println("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            }            
             stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
             TablaTorol(table);
             TablaFeltolt(table);
