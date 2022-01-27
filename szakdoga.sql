@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Jan 20. 13:13
+-- Létrehozás ideje: 2022. Jan 27. 09:59
 -- Kiszolgáló verziója: 10.4.14-MariaDB
 -- PHP verzió: 7.4.10
 
@@ -38,7 +38,12 @@ CREATE TABLE `bejelentkezes` (
 --
 
 INSERT INTO `bejelentkezes` (`bel_id`, `belepes_ido`, `f_id`) VALUES
-(1, '2022-01-20 12:00:44', 1);
+(1, '2022-01-20 12:00:44', 1),
+(2, '2022-01-24 07:44:50', 1),
+(3, '2022-01-26 08:41:02', 1),
+(4, '2022-01-26 10:23:17', 1),
+(5, '2022-01-26 10:23:28', 14),
+(6, '2022-01-26 10:24:55', 14);
 
 -- --------------------------------------------------------
 
@@ -56,7 +61,11 @@ CREATE TABLE `beosztas` (
 --
 
 INSERT INTO `beosztas` (`beosz_id`, `megnevezes`) VALUES
-(1, 'titkár/titkárnő');
+(1, 'adminisztrátor'),
+(2, 'orvos'),
+(3, 'ápoló'),
+(4, 'takarító'),
+(5, 'recepciós');
 
 -- --------------------------------------------------------
 
@@ -66,11 +75,19 @@ INSERT INTO `beosztas` (`beosz_id`, `megnevezes`) VALUES
 
 CREATE TABLE `betegek` (
   `b_id` int(11) NOT NULL,
-  `szuletesi _datum` date NOT NULL,
+  `szuletesi_datum` date NOT NULL,
   `iranyitoszam` int(4) NOT NULL,
   `telepules` text COLLATE utf8_hungarian_ci NOT NULL,
-  `egyeb cim` text COLLATE utf8_hungarian_ci NOT NULL
+  `egyeb_cim` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `betegek`
+--
+
+INSERT INTO `betegek` (`b_id`, `szuletesi_datum`, `iranyitoszam`, `telepules`, `egyeb_cim`) VALUES
+(14, '2004-01-30', 2840, 'Oroszlány', 'Táncsics udvar 20.'),
+(15, '2003-01-22', 2800, 'Tatabánya', 'Réti utca 69.');
 
 -- --------------------------------------------------------
 
@@ -101,7 +118,9 @@ CREATE TABLE `dolgozok` (
 --
 
 INSERT INTO `dolgozok` (`d_id`, `beosz_id`, `felhasznalo`, `jelszo`) VALUES
-(1, 1, 'user', 'user');
+(1, 1, 'user', 'user'),
+(14, 5, 'wife', 'wife'),
+(15, 4, '', '');
 
 -- --------------------------------------------------------
 
@@ -161,6 +180,16 @@ CREATE TABLE `szemely` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
+-- A tábla adatainak kiíratása `szemely`
+--
+
+INSERT INTO `szemely` (`szem_id`, `elotag`, `vezeteknev`, `keresztnev`, `masodik_keresztnev`) VALUES
+(1, 'Dr.', 'Harsányi', 'László', 'Ferenc'),
+(14, 'Miss', 'Tóth', 'Karina', ''),
+(15, 'Mr.', 'Sütő ', 'Dániel', ''),
+(17, '', 'test', 'test', 'test');
+
+--
 -- Indexek a kiírt táblákhoz
 --
 
@@ -194,7 +223,8 @@ ALTER TABLE `betegseg`
 --
 ALTER TABLE `dolgozok`
   ADD PRIMARY KEY (`d_id`),
-  ADD KEY `beosz_id` (`beosz_id`);
+  ADD KEY `beosz_id` (`beosz_id`),
+  ADD KEY `d_id` (`d_id`);
 
 --
 -- A tábla indexei `gyogyszerek`
@@ -234,31 +264,19 @@ ALTER TABLE `szemely`
 -- AUTO_INCREMENT a táblához `bejelentkezes`
 --
 ALTER TABLE `bejelentkezes`
-  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `beosztas`
 --
 ALTER TABLE `beosztas`
-  MODIFY `beosz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT a táblához `betegek`
---
-ALTER TABLE `betegek`
-  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `beosz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `betegseg`
 --
 ALTER TABLE `betegseg`
   MODIFY `bet_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `dolgozok`
---
-ALTER TABLE `dolgozok`
-  MODIFY `d_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `gyogyszerek`
@@ -282,7 +300,7 @@ ALTER TABLE `latogatas`
 -- AUTO_INCREMENT a táblához `szemely`
 --
 ALTER TABLE `szemely`
-  MODIFY `szem_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `szem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -298,14 +316,14 @@ ALTER TABLE `bejelentkezes`
 -- Megkötések a táblához `betegek`
 --
 ALTER TABLE `betegek`
-  ADD CONSTRAINT `betegek_ibfk_2` FOREIGN KEY (`b_id`) REFERENCES `latogatas` (`b_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `szemely` FOREIGN KEY (`b_id`) REFERENCES `szemely` (`szem_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `dolgozok`
 --
 ALTER TABLE `dolgozok`
-  ADD CONSTRAINT `dolgozok_ibfk_2` FOREIGN KEY (`beosz_id`) REFERENCES `beosztas` (`beosz_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dolgozok_ibfk_2` FOREIGN KEY (`beosz_id`) REFERENCES `beosztas` (`beosz_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dolgozok_ibfk_3` FOREIGN KEY (`d_id`) REFERENCES `szemely` (`szem_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `gyogyszerek`
@@ -325,13 +343,8 @@ ALTER TABLE `kezeles`
 -- Megkötések a táblához `latogatas`
 --
 ALTER TABLE `latogatas`
-  ADD CONSTRAINT `latogatas_ibfk_1` FOREIGN KEY (`l_id`) REFERENCES `szemely` (`szem_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Megkötések a táblához `szemely`
---
-ALTER TABLE `szemely`
-  ADD CONSTRAINT `szemly` FOREIGN KEY (`szem_id`) REFERENCES `dolgozok` (`d_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `latogatas_ibfk_1` FOREIGN KEY (`l_id`) REFERENCES `szemely` (`szem_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `latogatas_ibfk_2` FOREIGN KEY (`b_id`) REFERENCES `betegek` (`b_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
