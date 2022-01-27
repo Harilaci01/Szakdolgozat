@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Jan 27. 09:59
+-- Létrehozás ideje: 2022. Jan 27. 12:23
 -- Kiszolgáló verziója: 10.4.14-MariaDB
 -- PHP verzió: 7.4.10
 
@@ -43,7 +43,8 @@ INSERT INTO `bejelentkezes` (`bel_id`, `belepes_ido`, `f_id`) VALUES
 (3, '2022-01-26 08:41:02', 1),
 (4, '2022-01-26 10:23:17', 1),
 (5, '2022-01-26 10:23:28', 14),
-(6, '2022-01-26 10:24:55', 14);
+(6, '2022-01-26 10:24:55', 14),
+(7, '2022-01-27 09:17:49', 17);
 
 -- --------------------------------------------------------
 
@@ -120,7 +121,8 @@ CREATE TABLE `dolgozok` (
 INSERT INTO `dolgozok` (`d_id`, `beosz_id`, `felhasznalo`, `jelszo`) VALUES
 (1, 1, 'user', 'user'),
 (14, 5, 'wife', 'wife'),
-(15, 4, '', '');
+(15, 4, '', ''),
+(17, 2, 'test', 'test');
 
 -- --------------------------------------------------------
 
@@ -132,7 +134,8 @@ CREATE TABLE `gyogyszerek` (
   `gy_id` int(11) NOT NULL,
   `nev` text COLLATE utf8_hungarian_ci NOT NULL,
   `gyarto` text COLLATE utf8_hungarian_ci NOT NULL,
-  `tartalma` text COLLATE utf8_hungarian_ci NOT NULL
+  `tartalma` text COLLATE utf8_hungarian_ci NOT NULL,
+  `mennyiseg` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -264,7 +267,7 @@ ALTER TABLE `szemely`
 -- AUTO_INCREMENT a táblához `bejelentkezes`
 --
 ALTER TABLE `bejelentkezes`
-  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `beosztas`
