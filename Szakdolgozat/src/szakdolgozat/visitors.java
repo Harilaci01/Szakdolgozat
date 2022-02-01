@@ -5,6 +5,14 @@
  */
 package szakdolgozat;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Harsányi László
@@ -16,6 +24,7 @@ public class visitors extends javax.swing.JFrame {
      */
     public visitors() {
         initComponents();
+        TablaFeltolt(table);
     }
 
     /**
@@ -28,6 +37,14 @@ public class visitors extends javax.swing.JFrame {
     private void initComponents() {
 
         Back = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        visitor = new javax.swing.JTextField();
+        patient = new javax.swing.JTextField();
+        arrival = new javax.swing.JTextField();
+        exit = new javax.swing.JTextField();
+        search = new javax.swing.JButton();
+        upload = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -38,19 +55,91 @@ public class visitors extends javax.swing.JFrame {
             }
         });
 
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Látogató", "Beteg", "Belépés", "Távozás"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        visitor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visitorActionPerformed(evt);
+            }
+        });
+
+        search.setText("Keresés");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
+
+        upload.setText("Feltöltés");
+        upload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
-                .addComponent(Back)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Back))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                            .addComponent(arrival)
+                            .addComponent(patient)
+                            .addComponent(visitor))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(search))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(upload)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(search))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(patient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(upload))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
         );
@@ -62,6 +151,77 @@ public class visitors extends javax.swing.JFrame {
        new home().setVisible(true);
        dispose();  
     }//GEN-LAST:event_BackActionPerformed
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();            
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            
+         
+         
+            con.close();
+         }
+        catch(Exception e){System.err.println("Hiba: "+e);
+            
+        }
+    }//GEN-LAST:event_searchActionPerformed
+
+    private void visitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visitorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_visitorActionPerformed
+
+    private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
+         String fr=visitor.getText();
+         String su=patient.getText();
+         String fi=arrival.getText();
+         String mi=exit.getText();
+        
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE vezeteknev='"+su+"' AND keresztnev='"+fi+"'");
+            /*if(result.next()){
+                info.setForeground(Color.red);
+                info.setText("A személy már szerepel a listában!"); 
+            }
+            else*/
+            stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')");
+            visitor.setText("");
+            patient.setText("");
+            arrival.setText("");
+            exit.setText("");
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            model=(DefaultTableModel) table.getModel();
+            result=stmt.executeQuery("SELECT bejelentkezes, tavozas FROM latogatas ORDER BY lat_id");
+            ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.l_id ORDER BY lat_id");
+            ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.b_id ORDER BY lat_id");
+            String[] rekord=new String[4];
+            while(result.next()){
+                rs1.next();
+                rs2.next();
+                rekord[0]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
+                rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
+                rekord[2]=result.getString("bejelentkezes");  
+                rekord[3]=result.getString("tavozas");
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        
+        
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_uploadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -97,8 +257,53 @@ public class visitors extends javax.swing.JFrame {
             }
         });
     }
+    public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet result=stmt.executeQuery("SELECT bejelentkezes, tavozas FROM latogatas ORDER BY lat_id");
+            ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.l_id ORDER BY lat_id");
+            ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.b_id ORDER BY lat_id");
+            String[] rekord=new String[4];
+            while(result.next()){
+                rs1.next();
+                rs2.next();
+                rekord[0]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
+                rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
+                rekord[2]=result.getString("bejelentkezes");  
+                rekord[3]=result.getString("tavozas");
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
+        public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JTextField arrival;
+    private javax.swing.JTextField exit;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField patient;
+    private javax.swing.JButton search;
+    private javax.swing.JTable table;
+    private javax.swing.JButton upload;
+    private javax.swing.JTextField visitor;
     // End of variables declaration//GEN-END:variables
 }

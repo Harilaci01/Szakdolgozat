@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import static szakdolgozat.patiens.TablaFeltolt;
-import static szakdolgozat.patiens.TablaTorol;
 
 /**
  *

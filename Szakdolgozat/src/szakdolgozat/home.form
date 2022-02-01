@@ -129,7 +129,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="visitors">
       <Properties>
-        <Property name="text" type="java.lang.String" value="L&#xe1;togat&#xf3;k"/>
+        <Property name="text" type="java.lang.String" value="L&#xe1;togat&#xe1;s"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="visitorsActionPerformed"/>

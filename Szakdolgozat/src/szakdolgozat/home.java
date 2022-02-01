@@ -90,7 +90,7 @@ public class home extends javax.swing.JFrame {
             }
         });
 
-        visitors.setText("Látogatók");
+        visitors.setText("Látogatás");
         visitors.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 visitorsActionPerformed(evt);
