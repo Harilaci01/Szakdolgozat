@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.StringTokenizer;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,6 +46,7 @@ public class visitors extends javax.swing.JFrame {
         exit = new javax.swing.JTextField();
         search = new javax.swing.JButton();
         upload = new javax.swing.JButton();
+        info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,6 +95,8 @@ public class visitors extends javax.swing.JFrame {
             }
         });
 
+        info.setText("Kérem adja meg a megnevezést is!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,18 +110,21 @@ public class visitors extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                            .addComponent(arrival)
-                            .addComponent(patient)
-                            .addComponent(visitor))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(search))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addComponent(upload)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                                    .addComponent(arrival)
+                                    .addComponent(patient)
+                                    .addComponent(visitor))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(search))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(5, 5, 5)
+                                        .addComponent(upload))))
+                            .addComponent(info))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -138,7 +145,9 @@ public class visitors extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(upload))))
+                            .addComponent(upload))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(info)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
@@ -153,7 +162,32 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_BackActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-         try{
+        String vi=visitor.getText();
+         String pa=patient.getText();
+         String ar=arrival.getText();
+         String ex=exit.getText();
+         StringTokenizer st;
+         String fr,su,fi,mi,fr2,su2,fi2,mi2; 
+         String conditions="WHERE";
+         st = new StringTokenizer(vi," ");
+               fr = st.nextToken();
+               su = st.nextToken();
+               fi= st.nextToken();
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               }
+        st = new StringTokenizer(pa," ");
+               fr2 = st.nextToken();
+               su2 = st.nextToken();
+               fi2= st.nextToken();
+               if (st.hasMoreTokens()){          
+               mi2=st.nextToken();
+               }
+        int l_id,b_id;
+        if(conditions.equals("WHERE"))conditions="";
+            else conditions=conditions.substring(0,conditions.length()-4);
+         
+        try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();            
@@ -174,27 +208,55 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_visitorActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
-         String fr=visitor.getText();
-         String su=patient.getText();
-         String fi=arrival.getText();
-         String mi=exit.getText();
+         String vi=visitor.getText();
+         String pa=patient.getText();
+         String ar=arrival.getText();
+         String ex=exit.getText();
+         StringTokenizer st;
+         String fr,su,fi,mi,fr2,su2,fi2,mi2,condition1,condition2;
+         st = new StringTokenizer(vi," ");
+               fr = st.nextToken();
+               su = st.nextToken();
+               fi= st.nextToken();
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               condition1=" AND masodik_keresztnev='"+mi+"'";
+               }else condition1="";
+        st = new StringTokenizer(pa," ");
+               fr2 = st.nextToken();
+               su2 = st.nextToken();
+               fi2= st.nextToken();
+               if (st.hasMoreTokens()){          
+               mi2=st.nextToken();
+               condition2=" AND masodik_keresztnev='"+mi2+"'";
+               } else condition2="";
+        int l_id,b_id;
         
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE vezeteknev='"+su+"' AND keresztnev='"+fi+"'");
-            /*if(result.next()){
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            ResultSet result=stmt.executeQuery("SELECT * FROM latogatas WHERE bejelentkezes='"+ar+"' AND tavozas='"+ex+"'");
+            if(result.next()){
                 info.setForeground(Color.red);
-                info.setText("A személy már szerepel a listában!"); 
+                info.setText("A látogatás már szerepel a listában!"); 
             }
-            else*/
-            stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')");
+            else{
+                ResultSet rs=stmt2.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"'"+condition1);
+                ResultSet rs2=stmt3.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"'"+condition2);
+                rs.next();
+                rs2.next();
+            l_id=rs.getInt("szem_id");
+            b_id=rs2.getInt("szem_id");
+            stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"','"+ar+"','"+ex+"')");
             visitor.setText("");
             patient.setText("");
             arrival.setText("");
             exit.setText("");
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            }
+            /*DefaultTableModel model=(DefaultTableModel) table.getModel();
             int ssz=model.getRowCount();
             for (int i = 0; i < ssz; i++) {
                 model.removeRow(0);
@@ -214,7 +276,9 @@ public class visitors extends javax.swing.JFrame {
                 rekord[2]=result.getString("bejelentkezes");  
                 rekord[3]=result.getString("tavozas");
                 model.addRow(rekord);
-            }
+            }*/
+            TablaTorol(table);
+            TablaFeltolt(table);
             con.close();
         }
         
@@ -299,6 +363,7 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JButton Back;
     private javax.swing.JTextField arrival;
     private javax.swing.JTextField exit;
+    private javax.swing.JLabel info;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField patient;
     private javax.swing.JButton search;
