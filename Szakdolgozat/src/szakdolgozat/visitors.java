@@ -46,6 +46,15 @@ public class visitors extends javax.swing.JFrame {
         exit = new javax.swing.JTextField();
         search = new javax.swing.JButton();
         upload = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        front1 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        front2 = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -95,62 +104,109 @@ public class visitors extends javax.swing.JFrame {
             }
         });
 
-        info.setText("Kérem adja meg a megnevezést is!");
+        front1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = {"-", "Dr.", "Mr.", "Miss", "Mrs." };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(front1);
+
+        front2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = {"-", "Dr.", "Mr.", "Miss", "Mrs." };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(front2);
+
+        jLabel1.setText("Látogató neve:");
+
+        jLabel2.setText("Beteg neve:");
+
+        jLabel3.setText("Bejelentkezés:");
+
+        jLabel4.setText("Távozás:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Back))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                                    .addComponent(arrival)
-                                    .addComponent(patient)
-                                    .addComponent(visitor))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(search))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(318, 318, 318))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addComponent(upload))))
-                            .addComponent(info))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(59, 59, 59))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(exit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(arrival, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(patient, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(154, 154, 154))
+                                    .addComponent(upload)
+                                    .addComponent(jLabel5)
+                                    .addComponent(info)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Back)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(search))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(search))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(patient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(upload))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(info)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Back)
-                .addContainerGap())
+                        .addComponent(upload))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(info))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(43, 43, 43)
+                .addComponent(Back))
         );
 
         pack();
@@ -163,38 +219,81 @@ public class visitors extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String vi=visitor.getText();
-         String pa=patient.getText();
-         String ar=arrival.getText();
-         String ex=exit.getText();
-         StringTokenizer st;
-         String fr,su,fi,mi,fr2,su2,fi2,mi2; 
-         String conditions="WHERE";
-         st = new StringTokenizer(vi," ");
-               fr = st.nextToken();
+        String pa=patient.getText();
+        String ar=arrival.getText();
+        String ex=exit.getText();
+        StringTokenizer st;
+        String fr=front1.getSelectedValue();
+        String fr2=front2.getSelectedValue();
+        String su,fi,mi,su2,fi2,mi2; 
+        String condition1="WHERE";
+        String condition2="WHERE";
+        String condition3="WHERE";
+        if(fr.equals("-")){
+            fr="";
+        }
+        if(fr2.equals("-")){
+            fr2="";
+        }
+        st = new StringTokenizer(vi," ");
+        if(st.countTokens()>0){
                su = st.nextToken();
                fi= st.nextToken();
+               condition1+=" elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND";
                if (st.hasMoreTokens()){ 
                mi=st.nextToken();
+               condition1+=" masodik_keresztnev='"+mi+"' AND";
                }
+        }
         st = new StringTokenizer(pa," ");
-               fr2 = st.nextToken();
+        if(st.countTokens()>0){       
                su2 = st.nextToken();
                fi2= st.nextToken();
+               condition2+=" elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"' AND";
                if (st.hasMoreTokens()){          
                mi2=st.nextToken();
+               condition2+=" masodik_keresztnev='"+mi2+"' AND";
                }
+        }
+        
+        if(!ar.equals("")){
+            condition3+=" bejelentkezes LIKE ('%"+ar+"%') AND";
+        }
+        if(!ex.equals("")){
+            condition3+=" tavozas LIKE ('%"+ex+"%') AND";
+        }
         int l_id,b_id;
-        if(conditions.equals("WHERE"))conditions="";
-            else conditions=conditions.substring(0,conditions.length()-4);
-         
+        
+        if(condition1.equals("WHERE"))condition1="";
+            else condition1=condition1.substring(0,condition1.length()-4);
+        if(condition2.equals("WHERE"))condition2="";
+            else condition2=condition2.substring(0,condition2.length()-4);
+        if(condition3.equals("WHERE"))condition3="";
+            else condition3=condition3.substring(0,condition3.length()-4);
+        condition3=condition3.substring(5,condition3.length());
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();            
             TablaTorol(table);
             DefaultTableModel model=(DefaultTableModel) table.getModel();
-            
-         
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();            
+            //SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely condition2) and l_id in (Select szem_id from szemely condition1) and condition3
+            ResultSet result=stmt.executeQuery("SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely"+ condition2+") and l_id in (Select szem_id from szemely "+condition1+") and "+condition3);
+            String[] rekord=new String[4];
+            while(result.next()){
+                ResultSet rs=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("l_id"));            
+                ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("b_id"));
+                if (!rs.next()) System.err.println("false");
+                if (!rs2.next()) System.err.println("false");
+
+                rekord[0]=rs.getString("vezeteknev")+" "+rs.getString("keresztnev")+" "+rs.getString("masodik_keresztnev");
+                rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
+                rekord[2]=result.getString("bejelentkezes");  
+                rekord[3]=result.getString("tavozas");
+                model.addRow(rekord);
+            }
          
             con.close();
          }
@@ -213,7 +312,15 @@ public class visitors extends javax.swing.JFrame {
          String ar=arrival.getText();
          String ex=exit.getText();
          StringTokenizer st;
-         String fr,su,fi,mi,fr2,su2,fi2,mi2,condition1,condition2;
+         String fr=front1.getSelectedValue();
+        String fr2=front2.getSelectedValue();
+         if(fr.equals("-")){
+            fr="";
+        }
+        if(fr2.equals("-")){
+            fr2="";
+        }
+         String su,fi,mi,su2,fi2,mi2,condition1,condition2;
          st = new StringTokenizer(vi," ");
                fr = st.nextToken();
                su = st.nextToken();
@@ -363,8 +470,17 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JButton Back;
     private javax.swing.JTextField arrival;
     private javax.swing.JTextField exit;
+    private javax.swing.JList<String> front1;
+    private javax.swing.JList<String> front2;
     private javax.swing.JLabel info;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField patient;
     private javax.swing.JButton search;
     private javax.swing.JTable table;
