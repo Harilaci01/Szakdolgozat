@@ -225,10 +225,14 @@ public class visitors extends javax.swing.JFrame {
         StringTokenizer st;
         String fr=front1.getSelectedValue();
         String fr2=front2.getSelectedValue();
-        String su,fi,mi,su2,fi2,mi2; 
+        String su="%";
+        String fi="%";
+        String mi,mi2;
+        String su2="%";
+        String fi2="%"; 
         String condition1="WHERE";
         String condition2="WHERE";
-        String condition3="WHERE";
+        String condition3="AND";
         if(fr.equals("-")){
             fr="";
         }
@@ -237,22 +241,22 @@ public class visitors extends javax.swing.JFrame {
         }
         st = new StringTokenizer(vi," ");
         if(st.countTokens()>0){
-               su = st.nextToken();
-               fi= st.nextToken();
-               condition1+=" elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND";
+               if (st.hasMoreTokens())su = st.nextToken();
+               if (st.hasMoreTokens())fi= st.nextToken();
+               condition1+=" elotag LIKE ('%"+fr+"%') AND vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
                if (st.hasMoreTokens()){ 
                mi=st.nextToken();
-               condition1+=" masodik_keresztnev='"+mi+"' AND";
+               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
                }
         }
         st = new StringTokenizer(pa," ");
         if(st.countTokens()>0){       
-               su2 = st.nextToken();
-               fi2= st.nextToken();
-               condition2+=" elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"' AND";
+              if (st.hasMoreTokens()) su2 = st.nextToken();
+              if (st.hasMoreTokens()) fi2= st.nextToken();
+               condition2+=" elotag  LIKE ('%"+fr2+"%') AND vezeteknev LIKE ('%"+su2+"%') AND keresztnev LIKE ('%"+fi2+"%') AND";
                if (st.hasMoreTokens()){          
                mi2=st.nextToken();
-               condition2+=" masodik_keresztnev='"+mi2+"' AND";
+               condition2+=" masodik_keresztnev LIKE ('%"+mi2+"%') AND";
                }
         }
         
@@ -268,9 +272,9 @@ public class visitors extends javax.swing.JFrame {
             else condition1=condition1.substring(0,condition1.length()-4);
         if(condition2.equals("WHERE"))condition2="";
             else condition2=condition2.substring(0,condition2.length()-4);
-        if(condition3.equals("WHERE"))condition3="";
-            else condition3=condition3.substring(0,condition3.length()-4);
-        condition3=condition3.substring(5,condition3.length());
+        if(condition3.equals("AND"))condition3="";
+            else{ condition3=condition3.substring(0,condition3.length()-4);
+        condition3=condition3.substring(4,condition3.length());}
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -280,7 +284,7 @@ public class visitors extends javax.swing.JFrame {
             Statement stmt2=con.createStatement();
             Statement stmt3=con.createStatement();            
             //SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely condition2) and l_id in (Select szem_id from szemely condition1) and condition3
-            ResultSet result=stmt.executeQuery("SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely"+ condition2+") and l_id in (Select szem_id from szemely "+condition1+") and "+condition3);
+            ResultSet result=stmt.executeQuery("SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely "+condition2+") and l_id in (Select szem_id from szemely "+condition1+") "+condition3);
             String[] rekord=new String[4];
             while(result.next()){
                 ResultSet rs=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("l_id"));            
@@ -322,7 +326,6 @@ public class visitors extends javax.swing.JFrame {
         }
          String su,fi,mi,su2,fi2,mi2,condition1,condition2;
          st = new StringTokenizer(vi," ");
-               fr = st.nextToken();
                su = st.nextToken();
                fi= st.nextToken();
                if (st.hasMoreTokens()){ 
@@ -330,7 +333,6 @@ public class visitors extends javax.swing.JFrame {
                condition1=" AND masodik_keresztnev='"+mi+"'";
                }else condition1="";
         st = new StringTokenizer(pa," ");
-               fr2 = st.nextToken();
                su2 = st.nextToken();
                fi2= st.nextToken();
                if (st.hasMoreTokens()){          
