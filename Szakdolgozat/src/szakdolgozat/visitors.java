@@ -357,13 +357,14 @@ public class visitors extends javax.swing.JFrame {
                 ResultSet rs2=stmt3.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"'"+condition2);
                 rs.next();
                 rs2.next();
-            l_id=rs.getInt("szem_id");
-            b_id=rs2.getInt("szem_id");
-            stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"','"+ar+"','"+ex+"')");
-            visitor.setText("");
-            patient.setText("");
-            arrival.setText("");
-            exit.setText("");
+                l_id=rs.getInt("szem_id");
+                b_id=rs2.getInt("szem_id");
+                stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"','"+ar+"','"+ex+"')");
+                visitor.setText("");
+                patient.setText("");
+                arrival.setText("");
+                exit.setText("");
+                info.setText("A látogatás feltöltése sikeres!"); 
             }
             /*DefaultTableModel model=(DefaultTableModel) table.getModel();
             int ssz=model.getRowCount();
