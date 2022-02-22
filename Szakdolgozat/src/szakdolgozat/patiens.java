@@ -3,8 +3,11 @@ package szakdolgozat;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static szakdolgozat.Szakdolgozat.id;
@@ -35,6 +38,7 @@ public class patiens extends javax.swing.JFrame {
                 break;
                 
         }
+        ElotagBeszur(frontbox);
     }
 
     /**
@@ -56,7 +60,6 @@ public class patiens extends javax.swing.JFrame {
         postcodel = new javax.swing.JLabel();
         cityl = new javax.swing.JLabel();
         otherl = new javax.swing.JLabel();
-        front = new javax.swing.JTextField();
         surname = new javax.swing.JTextField();
         firstname = new javax.swing.JTextField();
         middlename = new javax.swing.JTextField();
@@ -70,6 +73,7 @@ public class patiens extends javax.swing.JFrame {
         search = new javax.swing.JButton();
         delete = new javax.swing.JButton();
         info = new javax.swing.JLabel();
+        frontbox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,12 +102,6 @@ public class patiens extends javax.swing.JFrame {
         cityl.setText("Település:");
 
         otherl.setText("Egyéb cím:");
-
-        front.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                frontActionPerformed(evt);
-            }
-        });
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,7 +167,8 @@ public class patiens extends javax.swing.JFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(frontl)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(1, 1, 1))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(firstnamel)
                                     .addGap(31, 31, 31)
@@ -216,7 +215,7 @@ public class patiens extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(frontl)
-                            .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(surnamel)
@@ -264,12 +263,8 @@ public class patiens extends javax.swing.JFrame {
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_BackActionPerformed
 
-    private void frontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_frontActionPerformed
-
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
-         String fr=front.getText();
+         String fr=frontbox.getSelectedItem().toString();
          String su=surname.getText();
          String fi=firstname.getText();
          String mi=middlename.getText();
@@ -289,7 +284,6 @@ public class patiens extends javax.swing.JFrame {
             else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0)
                 stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
             
-            front.setText("");
             surname.setText("");
             firstname.setText("");
             middlename.setText("");
@@ -343,7 +337,7 @@ public class patiens extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String fr=front.getText();
+        String fr=frontbox.getSelectedItem().toString();
         String su=surname.getText();
         String fi=firstname.getText();
         String mi=middlename.getText();
@@ -359,7 +353,7 @@ public class patiens extends javax.swing.JFrame {
             DefaultTableModel model=(DefaultTableModel) table.getModel();
             String conditions="WHERE";
             if(!fr.equals("")){
-                conditions+=" elotag LIKE ('%"+fr+"%') OR";
+                conditions+=" elotag LIKE ('"+fr+"') OR";
             }
             if(!su.equals("")){
                 conditions+=" vezeteknev LIKE ('%"+su+"%') OR";
@@ -437,6 +431,24 @@ public class patiens extends javax.swing.JFrame {
         catch(Exception e){System.err.println("Hiba: "+e);
         }
     }
+    public static void ElotagBeszur(JComboBox belist){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            String sqlparancs="SELECT elotag FROM szemely ORDER BY elotag";
+            PreparedStatement pst=con.prepareStatement(sqlparancs);
+            ResultSet rs=pst.executeQuery();
+            ArrayList<String> elotagok=new ArrayList<String>();
+            while(rs.next())elotagok.add(rs.getString("elotag"));
+            con.close();
+            for (int i = 0; i < elotagok.size(); i++) {
+                belist.addItem(elotagok.get(i));
+            }
+        }
+        catch(Exception e){
+            
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -481,7 +493,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JButton delete;
     private javax.swing.JTextField firstname;
     private javax.swing.JLabel firstnamel;
-    private javax.swing.JTextField front;
+    private javax.swing.JComboBox<String> frontbox;
     private javax.swing.JLabel frontl;
     private javax.swing.JLabel info;
     private javax.swing.JScrollPane jScrollPane1;

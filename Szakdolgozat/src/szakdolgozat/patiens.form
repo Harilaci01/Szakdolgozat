@@ -46,7 +46,8 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="frontl" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="front" min="-2" pref="27" max="-2" attributes="0"/>
+                                  <Component id="frontbox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="firstnamel" min="-2" max="-2" attributes="0"/>
@@ -108,7 +109,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="frontl" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="front" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="frontbox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -217,11 +218,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Egy&#xe9;b c&#xed;m:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="front">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frontActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="surname">
     </Component>
@@ -334,6 +330,16 @@
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="info">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="frontbox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

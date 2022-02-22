@@ -5,6 +5,13 @@
  */
 package szakdolgozat;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Harsányi László
@@ -16,6 +23,7 @@ public class drugs extends javax.swing.JFrame {
      */
     public drugs() {
         initComponents();
+        TablaFeltolt(table);
     }
 
     /**
@@ -31,8 +39,8 @@ public class drugs extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        table = new javax.swing.JTable();
+        id = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
         contain = new javax.swing.JTextField();
         company = new javax.swing.JTextField();
@@ -45,8 +53,7 @@ public class drugs extends javax.swing.JFrame {
         search = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         search1 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        number = new javax.swing.JList<>();
+        valuebox = new javax.swing.JComboBox<>();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -64,7 +71,7 @@ public class drugs extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -80,7 +87,7 @@ public class drugs extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
         value.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,17 +106,17 @@ public class drugs extends javax.swing.JFrame {
         jLabel5.setText("Mennyiség:");
 
         search.setText("Keresés");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Elfogyott");
 
         search1.setText("Feltölt");
 
-        number.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "1", "5", "10", "50", "100" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(number);
+        valuebox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "5", "10", "50", "100" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +140,7 @@ public class drugs extends javax.swing.JFrame {
                                         .addComponent(contain, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jTextField1)
+                                                .addComponent(id)
                                                 .addComponent(name)
                                                 .addComponent(company)
                                                 .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -145,13 +152,13 @@ public class drugs extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(search1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 175, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                                 .addComponent(Back))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54)
+                                .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -161,7 +168,7 @@ public class drugs extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(search))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,14 +184,14 @@ public class drugs extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(contain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton1)
-                        .addComponent(search1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(search1)
+                        .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
         );
@@ -201,9 +208,34 @@ public class drugs extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_valueActionPerformed
 
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+       
+    }//GEN-LAST:event_searchActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet result=stmt.executeQuery("SELECT * FROM gyogyszerek");
+            String[] rekord=new String[5];
+            while(result.next()){
+                rekord[0]=result.getString("gy_id");
+                rekord[1]=result.getString("nev");
+                rekord[2]=result.getString("gyarto");
+                rekord[3]=result.getString("tartalma");
+                rekord[4]=result.getString("mennyiseg");                
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -240,6 +272,7 @@ public class drugs extends javax.swing.JFrame {
     private javax.swing.JButton Back;
     private javax.swing.JTextField company;
     private javax.swing.JTextField contain;
+    private javax.swing.JTextField id;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -249,13 +282,11 @@ public class drugs extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField name;
-    private javax.swing.JList<String> number;
     private javax.swing.JButton search;
     private javax.swing.JButton search1;
+    private javax.swing.JTable table;
     private javax.swing.JTextField value;
+    private javax.swing.JComboBox<String> valuebox;
     // End of variables declaration//GEN-END:variables
 }
