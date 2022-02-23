@@ -74,6 +74,7 @@ public class patiens extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         info = new javax.swing.JLabel();
         frontbox = new javax.swing.JComboBox<>();
+        reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,6 +143,13 @@ public class patiens extends javax.swing.JFrame {
             }
         });
 
+        reset.setText("Újra töltés");
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,11 +165,6 @@ public class patiens extends javax.swing.JFrame {
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(search)
-                                .addGap(34, 34, 34)
-                                .addComponent(upload))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(patiens)
                                 .addGroup(layout.createSequentialGroup()
@@ -194,9 +197,15 @@ public class patiens extends javax.swing.JFrame {
                                     .addGap(29, 29, 29)
                                     .addComponent(surname)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(86, 86, 86)
-                                .addComponent(delete)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(upload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(reset))))
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -248,8 +257,10 @@ public class patiens extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(upload)
                             .addComponent(search))
-                        .addGap(18, 18, 18)
-                        .addComponent(delete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(delete)
+                            .addComponent(reset))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(info)
                         .addGap(28, 28, 28))))
@@ -403,6 +414,18 @@ public class patiens extends javax.swing.JFrame {
         catch(Exception e){System.err.println("Hiba: "+e);
         }
     }//GEN-LAST:event_searchActionPerformed
+
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        TablaTorol(table);
+        TablaFeltolt(table);
+        surname.setText("");
+        firstname.setText("");
+        middlename.setText("");
+        birthdate.setText("");
+        postcode.setText("");
+        city.setText("");
+        other.setText("");
+    }//GEN-LAST:event_resetActionPerformed
     public static void TablaFeltolt(JTable JTable){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -511,6 +534,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JLabel patiens;
     private javax.swing.JTextField postcode;
     private javax.swing.JLabel postcodel;
+    private javax.swing.JButton reset;
     private javax.swing.JButton search;
     private javax.swing.JTextField surname;
     private javax.swing.JLabel surnamel;
