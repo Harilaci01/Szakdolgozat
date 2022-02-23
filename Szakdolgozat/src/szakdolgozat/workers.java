@@ -5,12 +5,18 @@
  */
 package szakdolgozat;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import static szakdolgozat.visitors.TablaTorol;
 
 /**
  *
@@ -24,6 +30,8 @@ public class workers extends javax.swing.JFrame {
     public workers() {
         initComponents();
         ElotagBeszur(front);
+        TablaFeltolt(table);
+        password.setVisible(false);
     }
 
     /**
@@ -37,19 +45,23 @@ public class workers extends javax.swing.JFrame {
 
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        table = new javax.swing.JTable();
+        name = new javax.swing.JTextField();
+        job = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        search = new javax.swing.JButton();
+        fire = new javax.swing.JButton();
+        hire = new javax.swing.JButton();
         front = new javax.swing.JComboBox<>();
+        reset = new javax.swing.JButton();
+        info = new javax.swing.JLabel();
+        password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Dolgozók");
 
         Back.setText("Vissza");
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +70,7 @@ public class workers extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -66,11 +78,11 @@ public class workers extends javax.swing.JFrame {
                 "Név", "Beosztás", "Felhasználó"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                nameActionPerformed(evt);
             }
         });
 
@@ -80,20 +92,32 @@ public class workers extends javax.swing.JFrame {
 
         jLabel3.setText("Felhasználó:");
 
-        jButton1.setText("Keresés");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        search.setText("Keresés");
+        search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                searchActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Elbocsát");
+        fire.setText("Elbocsát");
 
-        jButton3.setText("Felvesz");
+        hire.setText("Felvesz");
+        hire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hireActionPerformed(evt);
+            }
+        });
 
         front.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frontActionPerformed(evt);
+            }
+        });
+
+        reset.setText("Összes dolgozó");
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
             }
         });
 
@@ -109,9 +133,9 @@ public class workers extends javax.swing.JFrame {
                         .addComponent(Back))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,17 +148,23 @@ public class workers extends javax.swing.JFrame {
                                         .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField1))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(job, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                                    .addComponent(username)
+                                    .addComponent(name)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                                .addComponent(jButton2)
-                                .addGap(65, 65, 65)
-                                .addComponent(jButton3)
-                                .addGap(19, 19, 19)))))
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(info)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(search)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(reset)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(fire))
+                                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addComponent(hire)
+                        .addGap(19, 19, 19)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -145,22 +175,27 @@ public class workers extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
                             .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(job, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))))
+                            .addComponent(hire)
+                            .addComponent(search)
+                            .addComponent(fire)
+                            .addComponent(reset))
+                        .addGap(28, 28, 28)
+                        .addComponent(info)
+                        .addGap(12, 12, 12)
+                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
@@ -174,27 +209,183 @@ public class workers extends javax.swing.JFrame {
         dispose();          // TODO add your handling code here:
     }//GEN-LAST:event_BackActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_nameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        String na=name.getText();
+        String jo=job.getText();
+        String us=username.getText();
+        StringTokenizer st;
+        String fr=front.getSelectedItem().toString();
+        String su="%";
+        String fi="%";
+        String mi;        
+        String condition1="WHERE elotag LIKE ('"+fr+"') AND";
+        st = new StringTokenizer(na," ");
+        if(st.countTokens()>0){
+               if (st.hasMoreTokens())su = st.nextToken();
+               if (st.hasMoreTokens())fi= st.nextToken();
+               condition1+=" vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
+               }
+        }       
+        
+        if(!jo.equals("")){
+            condition1+=" beosztas.megnevezes LIKE ('%"+jo+"%') AND";
+        }
+        if(!us.equals("")){
+            condition1+=" felhasznalo LIKE ('%"+us+"%') AND";
+        }
+        
+        if(condition1.equals("WHERE"))condition1="";
+            else condition1=condition1.substring(0,condition1.length()-4);
+        /*if(condition2.equals("AND"))condition2="";
+            else condition2=condition2.substring(0,condition2.length()-4);
+        if(condition3.equals("AND"))condition3="";
+            else{ condition3=condition3.substring(0,condition3.length()-4);
+        condition3=condition3.substring(4,condition3.length());}*/
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();            
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();            
+            //SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely condition2) and l_id in (Select szem_id from szemely condition1) and condition3
+            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, dolgozok.felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON beosztas.beosz_id=dolgozok.beosz_id INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id "+condition1);
+            String[] rekord=new String[3];
+            while(result.next()){
+                rekord[0]=result.getString("elotag")+" "+result.getString("vezeteknev")+" "+result.getString("keresztnev")+" "+result.getString("masodik_keresztnev");
+                rekord[1]=result.getString("beosztas.megnevezes");  
+                rekord[2]=result.getString("felhasznalo");
+                model.addRow(rekord);
+            }
+         
+            con.close();
+         }
+        catch(Exception e){System.err.println("Hiba: "+e);
+            
+        }   
+    }//GEN-LAST:event_searchActionPerformed
 
     private void frontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_frontActionPerformed
 
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        TablaTorol(table);
+        TablaFeltolt(table);
+    }//GEN-LAST:event_resetActionPerformed
+
+    private void hireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hireActionPerformed
+        String na=name.getText();
+        String jo=job.getText();
+        String us=username.getText();
+        password.setVisible(true);
+        String pw=String.valueOf(password.getPassword());
+        StringTokenizer st;
+        String fr=front.getSelectedItem().toString();
+        String su="%";
+        String fi="%";
+        String mi="";        
+        String condition1="WHERE elotag LIKE ('"+fr+"') AND"; 
+        st = new StringTokenizer(na," ");
+        if(st.countTokens()>0){
+               if (st.hasMoreTokens())su = st.nextToken();
+               if (st.hasMoreTokens())fi= st.nextToken();
+               condition1+=" vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
+               }
+        }       
+        
+        if(!jo.equals("")){
+            condition1+=" beosztas.megnevezes LIKE ('%"+jo+"%') AND";
+        }
+        if(!us.equals("")){
+            condition1+=" felhasznalo LIKE ('%"+us+"%') AND";
+        }
+        
+        if(condition1.equals("WHERE"))condition1="";
+            else condition1=condition1.substring(0,condition1.length()-4);
+        if(!pw.equals("")){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+           ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+            if(result.next()){                
+                result=stmt.executeQuery("SELECT d_id FROM dolgozok INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+                if(!result.next()){
+                stmt.executeUpdate("INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ('%"+jo+"%')),'"+us+"','"+pw+"')");
+                }else {
+                    info.setForeground(Color.red);
+                    info.setText("A személy már szerepel a listában!"); 
+                }
+            }
+            
+            else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0)
+                stmt.executeUpdate("INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ('%"+jo+"%')),'"+us+"','"+pw+"')");
+            
+        
+            
+       }
+       catch(Exception e){System.err.println("Hiba: "+e);
+        }
+        }
+       
+    }//GEN-LAST:event_hireActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
+    public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id ORDER BY d_id");
+            ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id ORDER BY d_id");
+            String[] rekord=new String[3];
+            while(rs1.next()){
+                rs2.next();
+                rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
+                rekord[1]=rs2.getString("megnevezes");
+                rekord[2]=rs2.getString("felhasznalo");
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
+    public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }
     public static void ElotagBeszur(JComboBox belist){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            String sqlparancs="SELECT elotag FROM szemely ORDER BY elotag";
+            String sqlparancs="SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
             PreparedStatement pst=con.prepareStatement(sqlparancs);
             ResultSet rs=pst.executeQuery();
             ArrayList<String> elotagok=new ArrayList<String>();
@@ -242,17 +433,20 @@ public class workers extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton fire;
     private javax.swing.JComboBox<String> front;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton hire;
+    private javax.swing.JLabel info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField job;
+    private javax.swing.JTextField name;
+    private javax.swing.JPasswordField password;
+    private javax.swing.JButton reset;
+    private javax.swing.JButton search;
+    private javax.swing.JTable table;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

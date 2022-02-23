@@ -272,15 +272,22 @@ public class patiens extends javax.swing.JFrame {
          String po=postcode.getText();
          String ci=city.getText();
          String ot=other.getText();
+         info.setText("");
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE vezeteknev='"+su+"' AND keresztnev='"+fi+"'");
-            if(result.next()){
-                info.setForeground(Color.red);
-                info.setText("A személy már szerepel a listában!"); 
+            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+            if(result.next()){                
+                result=stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+                if(!result.next()){
+                stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
+                }else {
+                    info.setForeground(Color.red);
+                    info.setText("A személy már szerepel a listában!"); 
+                }
             }
+            
             else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0)
                 stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
             
@@ -353,29 +360,29 @@ public class patiens extends javax.swing.JFrame {
             DefaultTableModel model=(DefaultTableModel) table.getModel();
             String conditions="WHERE";
             if(!fr.equals("")){
-                conditions+=" elotag LIKE ('"+fr+"') OR";
+                conditions+="  elotag LIKE ('"+fr+"') AND";
             }
             if(!su.equals("")){
-                conditions+=" vezeteknev LIKE ('%"+su+"%') OR";
+                conditions+=" vezeteknev LIKE ('%"+su+"%') AND";
             }
             if(!fi.equals("")){
-                conditions+=" keresztnev LIKE('%"+fi+"%') OR";
+                conditions+=" keresztnev LIKE('%"+fi+"%') AND";
             }
             if(!mi.equals("")){
-                conditions+=" masodik_keresztnev LIKE ('%"+mi+"%') OR";
+                conditions+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
             }if(!da.equals("")){
-                conditions+=" szuletesi_datum LIKE('%"+da+"%') OR";
+                conditions+=" szuletesi_datum LIKE('%"+da+"%') AND";
             }if(!po.equals("")){
-                conditions+=" iranyitoszam LIKE ('%"+po+"%') OR";
+                conditions+=" iranyitoszam LIKE ('%"+po+"%') AND";
             }if(!ci.equals("")){
-                conditions+=" telepules LIKE ('%"+ci+"%') OR";
+                conditions+=" telepules LIKE ('%"+ci+"%') AND";
             }if(!ot.equals("")){
-                conditions+=" egyeb_cim LIKE ('%"+ot+"%') OR";
+                conditions+=" egyeb_cim LIKE ('%"+ot+"%') AND";
             }
             
             
             if(conditions.equals("WHERE"))conditions="";
-            else conditions=conditions.substring(0,conditions.length()-3);
+            else conditions=conditions.substring(0,conditions.length()-4);
             
             ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id "+conditions);
             String[] rekord=new String[8];
@@ -435,7 +442,7 @@ public class patiens extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            String sqlparancs="SELECT elotag FROM szemely ORDER BY elotag";
+            String sqlparancs="SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
             PreparedStatement pst=con.prepareStatement(sqlparancs);
             ResultSet rs=pst.executeQuery();
             ArrayList<String> elotagok=new ArrayList<String>();

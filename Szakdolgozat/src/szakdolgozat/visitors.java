@@ -231,12 +231,6 @@ public class visitors extends javax.swing.JFrame {
         String condition1="WHERE";
         String condition2="WHERE";
         String condition3="AND";
-        if(fr.equals("-")){
-            fr="";
-        }
-        if(fr2.equals("-")){
-            fr2="";
-        }
         st = new StringTokenizer(vi," ");
         if(st.countTokens()>0){
                if (st.hasMoreTokens())su = st.nextToken();
@@ -287,9 +281,6 @@ public class visitors extends javax.swing.JFrame {
             while(result.next()){
                 ResultSet rs=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("l_id"));            
                 ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("b_id"));
-                if (!rs.next()) System.err.println("false");
-                if (!rs2.next()) System.err.println("false");
-
                 rekord[0]=rs.getString("vezeteknev")+" "+rs.getString("keresztnev")+" "+rs.getString("masodik_keresztnev");
                 rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
                 rekord[2]=result.getString("bejelentkezes");  
@@ -474,7 +465,7 @@ public class visitors extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            String sqlparancs="SELECT elotag FROM szemely ORDER BY elotag";
+            String sqlparancs="SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
             PreparedStatement pst=con.prepareStatement(sqlparancs);
             ResultSet rs=pst.executeQuery();
             ArrayList<String> elotagok=new ArrayList<String>();
