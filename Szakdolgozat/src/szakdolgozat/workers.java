@@ -351,7 +351,7 @@ public class workers extends javax.swing.JFrame {
             int sszam=table.getSelectedRow();
             String sszamS=table.getValueAt(sszam, 1).toString();
             String torles[]=new String[4];
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 4; i++) {
                 st = new StringTokenizer(sszamS," ");
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
@@ -376,7 +376,7 @@ public class workers extends javax.swing.JFrame {
             String sszamS=table.getValueAt(sszam, 1).toString();
             String torles[]=new String[4];
             int d_id;
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 4; i++) {
                 st = new StringTokenizer(sszamS," ");
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
