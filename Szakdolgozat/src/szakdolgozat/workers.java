@@ -456,6 +456,8 @@ public class workers extends javax.swing.JFrame {
             }
             password.setVisible(false);     
             confirm.setVisible(false);
+            TablaTorol(table);
+            TablaFeltolt(table);
         
             
        }
