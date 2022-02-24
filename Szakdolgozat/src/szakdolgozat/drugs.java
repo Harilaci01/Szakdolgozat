@@ -5,6 +5,7 @@
  */
 package szakdolgozat;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -42,7 +43,6 @@ public class drugs extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         id = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
-        contain = new javax.swing.JTextField();
         company = new javax.swing.JTextField();
         value = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -51,10 +51,12 @@ public class drugs extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         search = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        search1 = new javax.swing.JButton();
+        noStock = new javax.swing.JButton();
+        getStock = new javax.swing.JButton();
         valuebox = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        contain = new javax.swing.JTextArea();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -114,14 +116,28 @@ public class drugs extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Elfogyott");
+        noStock.setText("Elfogyott");
+        noStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noStockActionPerformed(evt);
+            }
+        });
 
-        search1.setText("Feltölt");
+        getStock.setText("Feltölt");
+        getStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getStockActionPerformed(evt);
+            }
+        });
 
         valuebox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "5", "10", "50", "100" }));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Gyógyszerek");
+
+        contain.setColumns(20);
+        contain.setRows(5);
+        jScrollPane3.setViewportView(contain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,45 +147,46 @@ public class drugs extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                         .addGap(100, 100, 100))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel3))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(contain, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(id)
-                                                .addComponent(name)
-                                                .addComponent(company)
-                                                .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(145, 145, 145)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jButton1))))))
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(search1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                                .addComponent(Back))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(title)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(id)
+                                    .addComponent(name)
+                                    .addComponent(company, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(145, 145, 145)
+                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(145, 145, 145)
+                                .addComponent(noStock)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(getStock, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Back)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -178,7 +195,7 @@ public class drugs extends javax.swing.JFrame {
                 .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
@@ -194,16 +211,16 @@ public class drugs extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(contain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)
-                        .addComponent(search1)
+                        .addComponent(noStock)
+                        .addComponent(getStock)
                         .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
         );
@@ -221,8 +238,99 @@ public class drugs extends javax.swing.JFrame {
     }//GEN-LAST:event_valueActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-       
+        String az=id.getText();
+        String na=name.getText();
+        String co=company.getText();
+        String ta=contain.getText();
+        String me=value.getText();       
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            String conditions="WHERE";
+            if(!az.equals("")){
+                conditions+=" gy_id='"+az+"' AND";
+            }
+            if(!na.equals("")){
+                conditions+=" nev LIKE ('%"+na+"%') AND";
+            }
+            if(!co.equals("")){
+                conditions+=" gyarto LIKE('%"+co+"%') AND";
+            }
+            if(!ta.equals("")){
+                conditions+=" tartalma LIKE ('%"+ta+"%') AND";
+            }if(!me.equals("")){
+                conditions+=" mennyiseg='"+me+"' AND";
+            }       
+            if(conditions.equals("WHERE"))conditions="";
+            else conditions=conditions.substring(0,conditions.length()-4);
+            
+            ResultSet result=stmt.executeQuery("SELECT * FROM gyogyszerek "+conditions);
+            
+            String[] rekord=new String[5];
+            while(result.next()){
+                
+                rekord[0]=result.getString("gy_id");
+                rekord[1]=result.getString("nev");
+                rekord[2]=result.getString("gyarto");
+                rekord[3]=result.getString("tartalma");
+                rekord[4]=result.getString("mennyiseg");                
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }        
     }//GEN-LAST:event_searchActionPerformed
+
+    private void noStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noStockActionPerformed
+        int sszam=table.getSelectedRow();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            String kiv=table.getValueAt(sszam, 0).toString();
+            stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=0 WHERE gy_id='"+kiv+"'");
+            TablaTorol(table);
+            TablaFeltolt(table);
+        }
+        catch(Exception e){System.out.println("Hiba:"+e);
+            
+        }
+    }//GEN-LAST:event_noStockActionPerformed
+
+    private void getStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getStockActionPerformed
+        int sszam=table.getSelectedRow();
+        int va=Integer.parseInt(valuebox.getSelectedItem().toString());
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
+            switch(va){
+                case 1:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+1 WHERE gy_id='"+kiv+"'");
+                break;
+                case 5:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+5 WHERE gy_id='"+kiv+"'");
+                break;
+                case 10:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+10 WHERE gy_id='"+kiv+"'");
+                break;
+                case 50:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+50 WHERE gy_id='"+kiv+"'");
+                break;
+                case 100:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+100 WHERE gy_id='"+kiv+"'");
+                break;
+            }
+            TablaTorol(table);
+            TablaFeltolt(table);
+            
+        }
+        catch(Exception e){System.out.println("Hiba:"+e);
+            
+        }
+    }//GEN-LAST:event_getStockActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,10 +348,59 @@ public class drugs extends javax.swing.JFrame {
                 rekord[1]=result.getString("nev");
                 rekord[2]=result.getString("gyarto");
                 rekord[3]=result.getString("tartalma");
-                rekord[4]=result.getString("mennyiseg");                
-                model.addRow(rekord);
+                rekord[4]=result.getString("mennyiseg"); 
+                if(rekord[4].equals("0")){
+                    rekord[4]="ELFOGYOTT";                    
+                    model.addRow(rekord);
+                   /* model.getRowCount();
+                    JTable.setBackground(Color.RED);*/                }
+                else {model.addRow(rekord);
+                    //JTable.setBackground(Color.gray);
+                }
             }
             con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+        //https://www.tutorialspoint.com/how-to-set-the-color-to-alternate-rows-of-jtable-in-java
+        /*import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
+public class AlternateRowColorTableTest extends JFrame {
+   public AlternateRowColorTableTest() {
+      setTitle("AlternateRowColorTable Test");
+      JTable table = new JTable(new Object[][] {{"115", "Ramesh"}, {"120", "Adithya"}, {"125", "Jai"}, {"130", "Chaitanya"}, {"135", "Raja"}}, new String[] {"Employee Id", "Employee Name"}) {
+         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Component comp = super.prepareRenderer(renderer, row, column);
+            Color alternateColor = new Color(200, 201, 210);
+            Color whiteColor = Color.WHITE;
+            if(!comp.getBackground().equals(getSelectionBackground())) {
+               Color c = (row % 2 == 0 ? alternateColor : whiteColor);
+               comp.setBackground(bg);
+               c = null;
+            }
+            return returnComp;
+         }
+      };
+      add(new JScrollPane(table));
+      setSize(400, 300);
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setLocationRelativeTo(null);
+      setVisible(true);
+   }
+   public static void main(String[] args) {
+      new AlternateRowColorTableTest();
+   }
+}*/
+    }
+    public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         }
@@ -283,9 +440,9 @@ public class drugs extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
     private javax.swing.JTextField company;
-    private javax.swing.JTextField contain;
+    private javax.swing.JTextArea contain;
+    private javax.swing.JButton getStock;
     private javax.swing.JTextField id;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -294,9 +451,10 @@ public class drugs extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField name;
+    private javax.swing.JButton noStock;
     private javax.swing.JButton search;
-    private javax.swing.JButton search1;
     private javax.swing.JTable table;
     private javax.swing.JLabel title;
     private javax.swing.JTextField value;
