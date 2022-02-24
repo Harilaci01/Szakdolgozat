@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import static szakdolgozat.visitors.ElotagBeszur;
-
 /**
  *
  * @author Harsányi László
@@ -28,7 +26,6 @@ public class cures extends javax.swing.JFrame {
     public cures() {
         initComponents();
         ElotagBeszur(frontbox);
-        ElotagBeszur(frontbox2);
         TablaFeltolt(table);
     }
 
@@ -60,7 +57,6 @@ public class cures extends javax.swing.JFrame {
         upload = new javax.swing.JButton();
         delete = new javax.swing.JButton();
         frontbox = new javax.swing.JComboBox<>();
-        frontbox2 = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -153,10 +149,8 @@ public class cures extends javax.swing.JFrame {
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel3))
-                                .addGap(48, 48, 48)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(frontbox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(frontbox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(60, 60, 60)
+                                .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(patient, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,7 +164,7 @@ public class cures extends javax.swing.JFrame {
                                     .addComponent(search)
                                     .addComponent(upload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 276, Short.MAX_VALUE))))
+                                .addGap(0, 264, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
@@ -221,8 +215,7 @@ public class cures extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(doctor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(delete)
-                            .addComponent(frontbox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(delete))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
@@ -242,17 +235,17 @@ public class cures extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String fr=frontbox.getSelectedItem().toString();
-        String fr2=frontbox2.getSelectedItem().toString();
+        String fr2="Dr.";
     }//GEN-LAST:event_searchActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         String fr=frontbox.getSelectedItem().toString();
-        String fr2=frontbox2.getSelectedItem().toString();
+        String fr2="Dr.";
     }//GEN-LAST:event_uploadActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         String fr=frontbox.getSelectedItem().toString();
-        String fr2=frontbox2.getSelectedItem().toString();
+        String fr2="Dr.";
     }//GEN-LAST:event_deleteActionPerformed
 
     /**
@@ -344,7 +337,6 @@ public class cures extends javax.swing.JFrame {
     private javax.swing.JTextField drug;
     private javax.swing.JTextField finish;
     private javax.swing.JComboBox<String> frontbox;
-    private javax.swing.JComboBox<String> frontbox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
