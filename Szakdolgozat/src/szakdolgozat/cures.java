@@ -9,8 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import static szakdolgozat.visitors.ElotagBeszur;
 
 /**
@@ -26,6 +29,7 @@ public class cures extends javax.swing.JFrame {
         initComponents();
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);
+        TablaFeltolt(table);
     }
 
     /**
@@ -258,7 +262,7 @@ public class cures extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            String sqlparancs="SELECT elotag FROM szemely ORDER BY elotag";
+            String sqlparancs="SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
             PreparedStatement pst=con.prepareStatement(sqlparancs);
             ResultSet rs=pst.executeQuery();
             ArrayList<String> elotagok=new ArrayList<String>();
@@ -272,6 +276,35 @@ public class cures extends javax.swing.JFrame {
             
         }
     }
+      public static void TablaFeltolt(JTable JTable){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            ResultSet result=stmt.executeQuery("SELECT kez_id, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id");
+            ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.kezelo_orvos ORDER BY kez_id");
+            ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.b_id ORDER BY kez_id");
+            String[] rekord=new String[7];
+            while(result.next()){
+                rs1.next();
+                rs2.next();
+                rekord[0]=result.getString("kez_id");
+                rekord[1]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
+                rekord[2]=result.getString("betegseg.megnevezes");
+                rekord[3]=result.getString("gyogyszerek.nev");
+                rekord[4]=result.getString("befekves"); 
+                rekord[5]=result.getString("gyogyulas");
+                rekord[6]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");                
+                model.addRow(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+      }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
