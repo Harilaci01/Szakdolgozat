@@ -51,6 +51,7 @@ public class home extends javax.swing.JFrame {
         logins = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Fő oldal");
 
         logout.setText("Kijelentkezés");
         logout.addActionListener(new java.awt.event.ActionListener() {

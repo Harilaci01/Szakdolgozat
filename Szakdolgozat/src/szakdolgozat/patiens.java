@@ -77,6 +77,7 @@ public class patiens extends javax.swing.JFrame {
         reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Betegek");
 
         Back.setText("Vissza");
         Back.addActionListener(new java.awt.event.ActionListener() {

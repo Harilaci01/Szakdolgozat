@@ -59,6 +59,7 @@ public class visitors extends javax.swing.JFrame {
         info = new javax.swing.JLabel();
         frontbox = new javax.swing.JComboBox<>();
         frontbox2 = new javax.swing.JComboBox<>();
+        title = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,6 +122,9 @@ public class visitors extends javax.swing.JFrame {
             }
         });
 
+        title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        title.setText("Látogatás");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,11 +171,16 @@ public class visitors extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Back)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(title)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -203,8 +212,9 @@ public class visitors extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(43, 43, 43)
-                .addComponent(Back))
+                .addGap(32, 32, 32)
+                .addComponent(Back)
+                .addContainerGap())
         );
 
         pack();
@@ -496,6 +506,7 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JTextField patient;
     private javax.swing.JButton search;
     private javax.swing.JTable table;
+    private javax.swing.JLabel title;
     private javax.swing.JButton upload;
     private javax.swing.JTextField visitor;
     // End of variables declaration//GEN-END:variables

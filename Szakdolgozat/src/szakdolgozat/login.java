@@ -24,6 +24,7 @@ public class login extends javax.swing.JFrame {
         info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bejelentkezés");
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Bejelentkezés");
