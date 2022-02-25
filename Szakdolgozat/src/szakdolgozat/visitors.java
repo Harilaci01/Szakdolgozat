@@ -267,9 +267,7 @@ public class visitors extends javax.swing.JFrame {
         }
         if(!ex.equals("")){
             condition3+=" tavozas LIKE ('%"+ex+"%') AND";
-        }
-        int l_id,b_id;
-        
+        }        
         if(condition1.equals("WHERE"))condition1="";
             else condition1=condition1.substring(0,condition1.length()-4);
         if(condition2.equals("WHERE"))condition2="";
@@ -365,27 +363,7 @@ public class visitors extends javax.swing.JFrame {
                 exit.setText("");
                 info.setText("A látogatás feltöltése sikeres!"); 
             }
-            /*DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int ssz=model.getRowCount();
-            for (int i = 0; i < ssz; i++) {
-                model.removeRow(0);
-            }
-            Statement stmt2=con.createStatement();
-            Statement stmt3=con.createStatement();
-            model=(DefaultTableModel) table.getModel();
-            result=stmt.executeQuery("SELECT bejelentkezes, tavozas FROM latogatas ORDER BY lat_id");
-            ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.l_id ORDER BY lat_id");
-            ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN latogatas ON szemely.szem_id=latogatas.b_id ORDER BY lat_id");
-            String[] rekord=new String[4];
-            while(result.next()){
-                rs1.next();
-                rs2.next();
-                rekord[0]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
-                rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
-                rekord[2]=result.getString("bejelentkezes");  
-                rekord[3]=result.getString("tavozas");
-                model.addRow(rekord);
-            }*/
+            
             TablaTorol(table);
             TablaFeltolt(table);
             con.close();
@@ -470,7 +448,7 @@ public class visitors extends javax.swing.JFrame {
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         }
-    }
+        }
         public static void ElotagBeszur(JComboBox belist){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");

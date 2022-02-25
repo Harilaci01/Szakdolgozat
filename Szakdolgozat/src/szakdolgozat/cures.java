@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -236,6 +237,93 @@ public class cures extends javax.swing.JFrame {
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String fr=frontbox.getSelectedItem().toString();
         String fr2="Dr.";
+        String pa=patient.getText();
+        String be=sickness.getText();
+        String gy=drug.getText();
+        String strt=start.getText();
+        String end=finish.getText();
+        String dr=doctor.getText();
+        StringTokenizer st;
+        String su="%";
+        String fi="%";
+        String mi,mi2;
+        String su2="%";
+        String fi2="%"; 
+        String condition1="WHERE elotag LIKE ('"+fr+"') AND";
+        String condition2="WHERE elotag LIKE ('"+fr2+"') AND";
+        String condition3="AND";
+        st = new StringTokenizer(pa," ");
+        if(st.countTokens()>0){
+               if (st.hasMoreTokens())su = st.nextToken();
+               if (st.hasMoreTokens())fi= st.nextToken();
+               condition1+=" vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
+               }
+        }
+        st = new StringTokenizer(dr," ");
+        if(st.countTokens()>0){       
+              if (st.hasMoreTokens()) su2 = st.nextToken();
+              if (st.hasMoreTokens()) fi2= st.nextToken();
+               condition2+=" vezeteknev LIKE ('%"+su2+"%') AND keresztnev LIKE ('%"+fi2+"%') AND";
+               if (st.hasMoreTokens()){          
+               mi2=st.nextToken();
+               condition2+=" masodik_keresztnev LIKE ('%"+mi2+"%') AND";
+               }
+        }
+        
+        if(!be.equals("")){
+            condition3+=" betegseg.megnevezes LIKE ('%"+be+"%') AND";
+        }
+        if(!gy.equals("")){
+            condition3+=" gyogyszerek.nev LIKE ('%"+gy+"%') AND";
+        }
+        if(!strt.equals("")){
+            condition3+=" befekves LIKE ('%"+strt+"%') AND";
+        }
+        if(!end.equals("")){
+            condition3+=" gyogyulas LIKE ('%"+end+"%') AND";
+        }
+        
+        if(condition1.equals("WHERE"))condition1="";
+            else condition1=condition1.substring(0,condition1.length()-4);
+        if(condition2.equals("WHERE"))condition2="";
+            else condition2=condition2.substring(0,condition2.length()-4);
+        if(condition3.equals("AND"))condition3="";
+            else{ condition3=condition3.substring(0,condition3.length()-4);
+        condition3=condition3.substring(4,condition3.length());}
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();            
+            TablaTorol(table);
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            ResultSet result=stmt.executeQuery("SELECT kez_id, b_id, kezelo_orvos, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id WHERE b_id in (Select szem_id from szemely "+condition1+") and kezelo_orvos in (Select szem_id from szemely "+condition2+") "+condition3);
+            System.err.println("SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely "+condition1+") and l_id in (Select szem_id from szemely "+condition2+") "+condition3);
+            String[] rekord=new String[7];
+            while(result.next()){
+                /*ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.kezelo_orvos WHERE ");
+                ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.b_id WHERE b_id='"++"'");*/
+                ResultSet rs1=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("b_id"));            
+                ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("kezelo_orvos"));             
+                rekord[0]=result.getString("kez_id");
+                rekord[1]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
+                rekord[2]=result.getString("betegseg.megnevezes");
+                rekord[3]=result.getString("gyogyszerek.nev");
+                rekord[4]=result.getString("befekves"); 
+                rekord[5]=result.getString("gyogyulas");
+                rekord[6]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");                
+                model.addRow(rekord);
+            }
+         
+            con.close();
+         }
+        catch(Exception e){System.err.println("Hiba: "+e);
+            
+        }                                     
     }//GEN-LAST:event_searchActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
@@ -298,6 +386,17 @@ public class cures extends javax.swing.JFrame {
         catch(Exception e){System.err.println("Hiba: "+e);
         }
       }
+       public static void TablaTorol(JTable JTable){
+        try{
+            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
+            int ssz=model.getRowCount();
+            for (int i = 0; i < ssz; i++) {
+                model.removeRow(0);
+            }
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+        }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
