@@ -60,6 +60,7 @@ public class visitors extends javax.swing.JFrame {
         frontbox = new javax.swing.JComboBox<>();
         frontbox2 = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
+        all = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +126,13 @@ public class visitors extends javax.swing.JFrame {
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Látogatás");
 
+        all.setText("Összes látogató");
+        all.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,7 +174,9 @@ public class visitors extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addComponent(upload, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
                                             .addComponent(search, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(128, 128, 128))))))
+                                        .addGap(36, 36, 36)
+                                        .addComponent(all)
+                                        .addGap(19, 19, 19))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Back)))
@@ -188,7 +198,8 @@ public class visitors extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(search))
+                                .addComponent(search)
+                                .addComponent(all))
                             .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -206,15 +217,15 @@ public class visitors extends javax.swing.JFrame {
                     .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(info))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(32, 32, 32)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
+                .addGap(43, 43, 43)
                 .addComponent(Back)
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -238,8 +249,8 @@ public class visitors extends javax.swing.JFrame {
         String mi,mi2;
         String su2="%";
         String fi2="%"; 
-        String condition1="WHERE";
-        String condition2="WHERE";
+        String condition1="WHERE elotag  LIKE ('"+fr+"') AND";
+        String condition2="WHERE elotag  LIKE ('"+fr2+"') AND";
         String condition3="AND";
         st = new StringTokenizer(vi," ");
         if(st.countTokens()>0){
@@ -255,7 +266,7 @@ public class visitors extends javax.swing.JFrame {
         if(st.countTokens()>0){       
               if (st.hasMoreTokens()) su2 = st.nextToken();
               if (st.hasMoreTokens()) fi2= st.nextToken();
-               condition2+=" elotag  LIKE ('"+fr2+"') AND vezeteknev LIKE ('%"+su2+"%') AND keresztnev LIKE ('%"+fi2+"%') AND";
+               condition2+=" vezeteknev LIKE ('%"+su2+"%') AND keresztnev LIKE ('%"+fi2+"%') AND";
                if (st.hasMoreTokens()){          
                mi2=st.nextToken();
                condition2+=" masodik_keresztnev LIKE ('%"+mi2+"%') AND";
@@ -289,6 +300,8 @@ public class visitors extends javax.swing.JFrame {
             while(result.next()){
                 ResultSet rs=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("l_id"));            
                 ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("b_id"));
+                rs.next();
+                rs2.next();
                 rekord[0]=rs.getString("vezeteknev")+" "+rs.getString("keresztnev")+" "+rs.getString("masodik_keresztnev");
                 rekord[1]=rs2.getString("vezeteknev")+" "+rs2.getString("keresztnev")+" "+rs2.getString("masodik_keresztnev");
                 rekord[2]=result.getString("bejelentkezes");  
@@ -377,6 +390,11 @@ public class visitors extends javax.swing.JFrame {
     private void frontbox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontbox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_frontbox2ActionPerformed
+
+    private void allActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allActionPerformed
+        TablaTorol(table);
+        TablaFeltolt(table);
+    }//GEN-LAST:event_allActionPerformed
 
     /**
      * @param args the command line arguments
@@ -470,6 +488,7 @@ public class visitors extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton all;
     private javax.swing.JTextField arrival;
     private javax.swing.JTextField exit;
     private javax.swing.JComboBox<String> frontbox;

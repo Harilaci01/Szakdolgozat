@@ -68,7 +68,9 @@
                                           <Component id="upload" alignment="0" pref="99" max="32767" attributes="0"/>
                                           <Component id="search" alignment="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                      <Component id="all" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -101,6 +103,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="visitor" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="search" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="all" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="frontbox" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -127,16 +130,17 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="info" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="exit" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="exit" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               <Component id="Back" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -279,6 +283,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="L&#xe1;togat&#xe1;s"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="all">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xd6;sszes l&#xe1;togat&#xf3;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

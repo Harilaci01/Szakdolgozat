@@ -302,13 +302,15 @@ public class cures extends javax.swing.JFrame {
             Statement stmt2=con.createStatement();
             Statement stmt3=con.createStatement();
             ResultSet result=stmt.executeQuery("SELECT kez_id, b_id, kezelo_orvos, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id WHERE b_id in (Select szem_id from szemely "+condition1+") and kezelo_orvos in (Select szem_id from szemely "+condition2+") "+condition3);
-            System.err.println("SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely "+condition1+") and l_id in (Select szem_id from szemely "+condition2+") "+condition3);
+            System.err.println("SELECT kez_id, b_id, kezelo_orvos, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id WHERE b_id in (Select szem_id from szemely "+condition1+") and kezelo_orvos in (Select szem_id from szemely "+condition2+") "+condition3);
             String[] rekord=new String[7];
             while(result.next()){
                 /*ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.kezelo_orvos WHERE ");
                 ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.b_id WHERE b_id='"++"'");*/
                 ResultSet rs1=stmt2.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("b_id"));            
-                ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("kezelo_orvos"));             
+                ResultSet rs2=stmt3.executeQuery("SELECT * FROM szemely where szem_id="+result.getInt("kezelo_orvos"));
+                rs1.next();
+                rs2.next();
                 rekord[0]=result.getString("kez_id");
                 rekord[1]=rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev");
                 rekord[2]=result.getString("betegseg.megnevezes");
@@ -322,6 +324,7 @@ public class cures extends javax.swing.JFrame {
             con.close();
          }
         catch(Exception e){System.err.println("Hiba: "+e);
+        e.printStackTrace();
             
         }                                     
     }//GEN-LAST:event_searchActionPerformed
