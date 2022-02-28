@@ -207,11 +207,11 @@ public class logins extends javax.swing.JFrame {
                 conditions+=" bel_id=? AND";
             }
             if(!us.equals("")){
-                conditions+=" felhasznalo LIKE ('%?%') AND";
+                conditions+=" felhasznalo LIKE ? AND";
                 
             }
             if(!da.equals("")){
-                conditions+=" belepes_ido LIKE ('%?%') AND";
+                conditions+=" belepes_ido LIKE ? AND";
             }
             PreparedStatement pst=con.prepareStatement(sqlparancs);
             if(conditions.equals("WHERE"))conditions="";            
@@ -221,10 +221,12 @@ public class logins extends javax.swing.JFrame {
                 if(i>0){
                     pst.setString(1,kereses);
                 }
-                else if(sqlparancs.contains("belepes_ido")) {
-                    pst.setString(1,us);
-                    pst.setString(2,da);
+                else if((!us.equals(""))&&(!da.equals(""))) {
+                    pst.setString(1,"%"+us+"%");
+                    pst.setString(2,"%"+da+"%");
                 }
+                else if(!us.equals(""))pst.setString(1,"%"+us+"%");
+                else pst.setString(1,"%"+da+"%");
             }
             ResultSet result=pst.executeQuery();
             String[] rekord=new String[3];
