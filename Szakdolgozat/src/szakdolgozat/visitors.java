@@ -327,14 +327,8 @@ public class visitors extends javax.swing.JFrame {
          String ex=exit.getText();
          StringTokenizer st;
          String fr=frontbox.getSelectedItem().toString();
-        String fr2=frontbox2.getSelectedItem().toString();
-         if(fr.equals("-")){
-            fr="";
-        }
-        if(fr2.equals("-")){
-            fr2="";
-        }
-         String su,fi,mi,su2,fi2,mi2,condition1,condition2;
+        String fr2=frontbox2.getSelectedItem().toString();         
+        String su,fi,mi,su2,fi2,mi2,condition1,condition2;
          st = new StringTokenizer(vi," ");
                su = st.nextToken();
                fi= st.nextToken();

@@ -5,6 +5,7 @@
  */
 package szakdolgozat;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -59,6 +60,7 @@ public class cures extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         frontbox = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
+        info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Kezelések");
@@ -165,7 +167,9 @@ public class cures extends javax.swing.JFrame {
                                     .addComponent(search)
                                     .addComponent(upload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 264, Short.MAX_VALUE))))
+                                .addGap(103, 103, 103)
+                                .addComponent(info)
+                                .addGap(0, 242, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
@@ -199,7 +203,8 @@ public class cures extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(patient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(search)
-                            .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(info))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sickness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,11 +337,84 @@ public class cures extends javax.swing.JFrame {
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         String fr=frontbox.getSelectedItem().toString();
         String fr2="Dr.";
+        String pa=patient.getText();
+        String be=sickness.getText();
+        String gy=drug.getText();
+        String strt=start.getText();
+        String end=finish.getText();
+        String dr=doctor.getText();
+        StringTokenizer st;
+        String su="%";
+        String fi="%";
+        String mi,mi2,condition1,condition2;
+        String su2="%";
+        String fi2="%"; 
+        int d_id,b_id;
+        st = new StringTokenizer(pa," ");
+               su = st.nextToken();
+               fi= st.nextToken();
+               if (st.hasMoreTokens()){ 
+               mi=st.nextToken();
+               condition1=" AND masodik_keresztnev='"+mi+"'";
+               }else condition1="";
+        st = new StringTokenizer(dr," ");
+               su2 = st.nextToken();
+               fi2= st.nextToken();
+               if (st.hasMoreTokens()){          
+               mi2=st.nextToken();
+               condition2=" AND masodik_keresztnev='"+mi2+"'";
+               } else condition2="";
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            Statement stmt3=con.createStatement();
+            ResultSet result=stmt.executeQuery("SELECT * FROM kezeles WHERE befekves='"+strt+"' AND gyogyulas='"+end+"'");
+            if(result.next()){
+                info.setForeground(Color.red);
+                info.setText("A látogatás már szerepel a listában!"); 
+            }
+            else{
+                ResultSet rs=stmt2.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"'"+condition1);
+                ResultSet rs2=stmt3.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"'"+condition2);
+                rs.next();
+                rs2.next();
+                b_id=rs.getInt("szem_id");
+                d_id=rs2.getInt("szem_id");
+                stmt.executeUpdate("INSERT INTO kezeles (b_id, bet_id,gy_id,befekves, gyogyulas,kezelo_orvos) VALUES ((SELECT szemely.szem_id FROM szemely WHERE szem_id='"+b_id+"'),(SELECT bet_id FROM betegseg WHERE megnevezes='"+be+"'),(SELECT gy_id FROM gyogyszerek WHERE nev='"+gy+"'),'"+strt+"','"+end+"',(SELECT szemely.szem_id FROM szemely WHERE szem_id='"+d_id+"'))");          
+                patient.setText("");
+                sickness.setText("");
+                drug.setText("");
+                start.setText("");
+                finish.setText("");
+                doctor.setText("");              
+                info.setText("A látogatás feltöltése sikeres!");
+            }
+            TablaTorol(table);
+            TablaFeltolt(table);
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
     }//GEN-LAST:event_uploadActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        String fr=frontbox.getSelectedItem().toString();
-        String fr2="Dr.";
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int sszam=table.getSelectedRow();
+            int kij=Integer.parseInt(table.getValueAt(sszam, 0).toString());                    
+            stmt.executeUpdate("DELETE FROM kezeles WHERE kez_id='"+kij+"'");
+            TablaTorol(table);
+            TablaFeltolt(table);   
+            info.setText("A törlés sikeres!");
+            
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     /**
@@ -439,6 +517,7 @@ public class cures extends javax.swing.JFrame {
     private javax.swing.JTextField drug;
     private javax.swing.JTextField finish;
     private javax.swing.JComboBox<String> frontbox;
+    private javax.swing.JLabel info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

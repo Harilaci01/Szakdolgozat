@@ -59,7 +59,9 @@
                                   <Component id="upload" max="32767" attributes="0"/>
                                   <Component id="delete" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="info" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="242" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -103,6 +105,7 @@
                           <Component id="patient" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="search" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="frontbox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="info" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="sickness" min="-2" max="-2" attributes="0"/>
@@ -295,6 +298,8 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Kezel&#xe9;sek"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="info">
     </Component>
   </SubComponents>
 </Form>
