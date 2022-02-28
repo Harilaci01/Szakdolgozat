@@ -106,22 +106,24 @@ public class login extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            ResultSet idRes=stmt.executeQuery("SELECT dolgozok.beosz_id FROM dolgozok WHERE felhasznalo='"+n+"'");
-            if(idRes.next())
-                id=idRes.getInt("beosz_id");
-            
+            String sqlparancs="SELECT * FROM dolgozok WHERE felhasznalo=? AND jelszo=?";
+            PreparedStatement pst=con.prepareStatement(sqlparancs);
+            pst.setString(1, n); 
+            pst.setString(2,p);
+            ResultSet rs=pst.executeQuery();
             if(n.equals("")&&p.equals("")){
                 info.setForeground(Color.red);
                 info.setText("Kérem adjon meg belépési adatot!");
             }
-            else{
-                ResultSet rs=stmt.executeQuery("SELECT * FROM dolgozok WHERE felhasznalo='"+n+"' AND jelszo='"+p+"'");
+            else{               
                 if(rs.next()){
                    new home().setVisible(true);
-                   dispose();
-                   Class.forName("com.mysql.cj.jdbc.Driver");
-                   stmt.executeUpdate("INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo='"+n+"'))");
+                   id=rs.getInt("beosz_id");
+                   dispose();    
+                   sqlparancs="INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo=?))";
+                   pst=con.prepareStatement(sqlparancs);
+                   pst.setString(1, n);         
+                   pst.executeUpdate();
                 }
                 else{
                     info.setForeground(Color.red);
