@@ -7,6 +7,7 @@ package szakdolgozat;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
@@ -195,24 +196,37 @@ public class logins extends javax.swing.JFrame {
         String conditions="WHERE";
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();            
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");          
             TablaTorol(table);
             DefaultTableModel model=(DefaultTableModel) table.getModel();
+            String sqlparancs="SELECT bejelentkezes.bel_id,bejelentkezes.belepes_ido,dolgozok.felhasznalo FROM bejelentkezes INNER JOIN dolgozok ON bejelentkezes.f_id=dolgozok.d_id ";
+            
             if(i>0){
                 us="";
                 da="";
-                conditions+=" bel_id='"+i+"' AND";
+                conditions+=" bel_id=? AND";
             }
             if(!us.equals("")){
-                conditions+=" felhasznalo LIKE ('%"+us+"%') AND";
+                conditions+=" felhasznalo LIKE ('%?%') AND";
+                
             }
             if(!da.equals("")){
-                conditions+=" belepes_ido LIKE ('%"+da+"%') AND";
+                conditions+=" belepes_ido LIKE ('%?%') AND";
             }
-            if(conditions.equals("WHERE"))conditions="";
-            else conditions=conditions.substring(0,conditions.length()-4);
-            ResultSet result=stmt.executeQuery("SELECT bejelentkezes.bel_id,bejelentkezes.belepes_ido,dolgozok.felhasznalo FROM bejelentkezes INNER JOIN dolgozok ON bejelentkezes.f_id=dolgozok.d_id "+conditions);
+            PreparedStatement pst=con.prepareStatement(sqlparancs);
+            if(conditions.equals("WHERE"))conditions="";            
+            else {conditions=conditions.substring(0,conditions.length()-4);
+                sqlparancs+=conditions;                 
+                pst=con.prepareStatement(sqlparancs);
+                if(i>0){
+                    pst.setString(1,kereses);
+                }
+                else if(sqlparancs.contains("belepes_ido")) {
+                    pst.setString(1,us);
+                    pst.setString(2,da);
+                }
+            }
+            ResultSet result=pst.executeQuery();
             String[] rekord=new String[3];
             while(result.next()){
                 rekord[0]=result.getString("bel_id");
