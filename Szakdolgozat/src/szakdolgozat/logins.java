@@ -5,6 +5,7 @@
  */
 package szakdolgozat;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,6 +50,7 @@ public class logins extends javax.swing.JFrame {
         timel = new javax.swing.JLabel();
         userl = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
+        info = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,22 +133,22 @@ public class logins extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(time)
                     .addComponent(id)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 34, Short.MAX_VALUE)
-                        .addComponent(Back)
-                        .addGap(10, 10, 10))
-                    .addComponent(time)
-                    .addComponent(user, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Back))
+                    .addComponent(user)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(idl)
                             .addComponent(timel)
                             .addComponent(userl)
                             .addComponent(searchb)
-                            .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(info))
+                        .addGap(0, 200, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,6 +177,8 @@ public class logins extends javax.swing.JFrame {
                         .addComponent(searchb)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(delete)
+                        .addGap(18, 18, 18)
+                        .addComponent(info)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -191,9 +195,13 @@ public class logins extends javax.swing.JFrame {
         int i=0;
         String kereses=id.getText().replaceAll("[^0-9]","");
         if(!kereses.equals("")) i=Integer.parseInt(kereses);
-        String da=time.getText();
+        id.setText(kereses);
+        String da=time.getText().replaceAll("[.]","-");
+        da=da.replaceAll("[^0-9 /-]","");
+        time.setText(da);
         String us=user.getText();
         String conditions="WHERE";
+        
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");          
@@ -228,13 +236,21 @@ public class logins extends javax.swing.JFrame {
                 else if(!us.equals(""))pst.setString(1,"%"+us+"%");
                 else pst.setString(1,"%"+da+"%");
             }
+            if(kereses.equals("")&&da.equals("")&&us.equals("")){
+                info.setForeground(Color.blue);
+                info.setText("A kereséshez adjon meg adatot.");
+            }else info.setText("");
             ResultSet result=pst.executeQuery();
-            String[] rekord=new String[3];
+            String[] rekord=new String[3];           
             while(result.next()){
                 rekord[0]=result.getString("bel_id");
                 rekord[1]=result.getString("belepes_ido");
                 rekord[2]=result.getString("felhasznalo");                
                 model.addRow(rekord);
+            }
+            if(model.getRowCount()==0){
+                info.setForeground(Color.red);
+                info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
             }
             con.close();
         }
@@ -263,6 +279,8 @@ public class logins extends javax.swing.JFrame {
             TablaFeltolt(table);
         }
         catch(Exception e){System.err.println("Hiba: "+e);
+        info.setForeground(Color.RED);
+        info.setText("Kérem jelöljön ki a törölendő sort.");
         }
     }//GEN-LAST:event_deleteActionPerformed
 
@@ -334,6 +352,7 @@ public class logins extends javax.swing.JFrame {
     private javax.swing.JButton delete;
     private javax.swing.JTextField id;
     private javax.swing.JLabel idl;
+    private javax.swing.JLabel info;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton searchb;
     private javax.swing.JTable table;
