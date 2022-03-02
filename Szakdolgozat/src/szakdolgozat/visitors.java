@@ -429,6 +429,8 @@ public class visitors extends javax.swing.JFrame {
             con.close();
          }
         catch(Exception e){System.err.println("Hiba: "+e);
+                info.setForeground(Color.red);
+                info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
             
         }
     }//GEN-LAST:event_searchActionPerformed
