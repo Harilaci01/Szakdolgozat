@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -61,6 +62,10 @@ public class visitors extends javax.swing.JFrame {
         frontbox2 = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
         all = new javax.swing.JButton();
+        date1 = new com.toedter.calendar.JDateChooser();
+        date2 = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Látogatás");
@@ -137,6 +142,10 @@ public class visitors extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Pontos dátum:");
+
+        jLabel7.setText("Pontos dátum:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,12 +186,24 @@ public class visitors extends javax.swing.JFrame {
                                     .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(all))
-                            .addComponent(info))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel6)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(22, 22, 22)
                         .addComponent(jLabel5)
-                        .addContainerGap(81, Short.MAX_VALUE))))
+                        .addContainerGap(85, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(215, 215, 215)
+                .addComponent(info)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Back)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -197,11 +218,8 @@ public class visitors extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(63, 63, 63))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(visitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,17 +236,29 @@ public class visitors extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addComponent(frontbox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(info))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(26, 26, 26)))
-                .addComponent(Back)
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel7)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addComponent(Back)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(55, 55, 55)
+                        .addComponent(info)
+                        .addGap(28, 28, 28))))
         );
 
         pack();
@@ -240,13 +270,26 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_BackActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String vi=visitor.getText().replaceAll("[^A-Za-z]","");
-        String pa=patient.getText().replaceAll("[^A-Za-z]","");
-        String ar=arrival.getText().replaceAll("[.]","-");
-        ar=ar.replaceAll("[^0-9 /-]","");
-        String ex=exit.getText().replaceAll("[.]","-");
-        ex=ex.replaceAll("[^0-9 /-]","");
-        StringTokenizer st;
+        String vi=visitor.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String pa=patient.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String ar,ex;
+        String datum1=((JTextField)date1.getDateEditor().getUiComponent()).getText();
+        String datum2=((JTextField)date2.getDateEditor().getUiComponent()).getText();        
+        if(datum1.equals("")){ar=arrival.getText().replaceAll("[.]","-");
+        ar=ar.replaceAll("[^0-9/: /-]","");
+        }else {
+            ar=datum1;
+            ar=ar.replaceAll("[.]","-");
+            ar=ar.substring(0,ar.length()-1);
+        }
+        if(datum2.equals("")){ex=exit.getText().replaceAll("[.]","-");
+        ex=ex.replaceAll("[^0-9/: /-]","");
+        }else{
+            ex=datum2;
+            ex=ex.replaceAll("[.]","-");
+            ex=ex.substring(0,ex.length()-1);
+        }
+        StringTokenizer st,st2;
         String fr=frontbox.getSelectedItem().toString();
         String fr2=frontbox2.getSelectedItem().toString();
         String su="%";
@@ -255,28 +298,32 @@ public class visitors extends javax.swing.JFrame {
         String mi2="";
         String su2="%";
         String fi2="%"; 
-        String condition1="WHERE elotag  LIKE ? AND";
-        String condition2="WHERE elotag  LIKE ? AND";
+        String condition1="WHERE elotag LIKE ? AND";
+        String condition2="WHERE elotag LIKE ? AND";
         String condition3="AND";
-        String sqlparancs="SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely ? ) and l_id in (Select szem_id from szemely ? ) ?";
+        String sqlparancs="SELECT * FROM `latogatas` WHERE l_id in (Select szem_id from szemely co2 )and b_id in (Select szem_id from szemely co1 )  co3";
+        visitor.setText(vi);
+        patient.setText(pa);
+        arrival.setText(ar);
+        exit.setText(ex);
         st = new StringTokenizer(vi," ");
         if(st.countTokens()>0){
                if (st.hasMoreTokens())su = st.nextToken();
                if (st.hasMoreTokens())fi= st.nextToken();
-               condition1+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+               condition2+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
                if (st.hasMoreTokens()){ 
                mi=st.nextToken();
-               condition1+=" masodik_keresztnev LIKE ? AND";
+               condition2+=" masodik_keresztnev LIKE ? AND";
                }
          }
-        st = new StringTokenizer(pa," ");
-        if(st.countTokens()>0){       
-              if (st.hasMoreTokens()) su2 = st.nextToken();
-              if (st.hasMoreTokens()) fi2= st.nextToken();
-               condition2+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
-               if (st.hasMoreTokens()){          
-               mi2=st.nextToken();
-               condition2+=" masodik_keresztnev LIKE ? AND";
+        st2 = new StringTokenizer(pa," ");
+        if(st2.countTokens()>0){       
+              if (st2.hasMoreTokens()) su2 = st2.nextToken();
+              if (st2.hasMoreTokens()) fi2= st2.nextToken();
+               condition1+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+               if (st2.hasMoreTokens()){          
+               mi2=st2.nextToken();
+               condition1+=" masodik_keresztnev LIKE ? AND";
                }
         }
         
@@ -292,50 +339,75 @@ public class visitors extends javax.swing.JFrame {
             else condition2=condition2.substring(0,condition2.length()-4);
         if(condition3.equals("AND"))condition3="";
             else{ condition3=condition3.substring(0,condition3.length()-4);
-        condition3=condition3.substring(4,condition3.length());}       
-        
+        }       
+        sqlparancs=sqlparancs.replace("co1", condition1);
+        sqlparancs=sqlparancs.replace("co2", condition2);
+        sqlparancs=sqlparancs.replace("co3", condition3);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");           
             TablaTorol(table);
             DefaultTableModel model=(DefaultTableModel) table.getModel();
-            Statement stmt=con.createStatement();
             Statement stmt2=con.createStatement();
-            Statement stmt3=con.createStatement();
+            Statement stmt3=con.createStatement();   
             PreparedStatement test=con.prepareStatement(sqlparancs);
-            if(!vi.equals("")){
-                PreparedStatement pst=con.prepareStatement(condition1);                
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")) pst.setString(4,"%"+mi+"%");
-                test.setString(1,condition1);
-            }else test.setString(1,"");            
-            if(!pa.equals("")){
-                PreparedStatement pst2=con.prepareStatement(condition2);
-                pst2.setString(1,fr);
-                pst2.setString(2,"%"+su2+"%");
-                pst2.setString(3,"%"+fi2+"%");
-                if(!mi.equals("")) pst2.setString(4,"%"+mi2+"%");
-                test.setString(2,condition2);
-            }  else test.setString(2,"");           
-            if((!ar.equals(""))&&(!ex.equals(""))) {
-                PreparedStatement pst3=con.prepareStatement(condition3);
-                    pst3.setString(1,"%"+ar+"%");
-                    pst3.setString(2,"%"+ex+"%");
-                    test.setString(3,condition3);
-            } else if(!ar.equals("")){
-                PreparedStatement pst3=con.prepareStatement(condition3);
-                pst3.setString(1,"%"+ar+"%");
-                test.setString(3,condition3);
+            test.setString(1,fr);
+            if(!vi.equals("")){               
+                if (!su.equals(""))test.setString(2,"%"+su+"%");
+                if (!fi.equals(""))test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")) test.setString(4,"%"+mi+"%");
+            }             
+            if(!pa.equals("")&&!vi.equals("")&&!mi.equals("")){
+                test.setString(5,fr2);
+                if (!su2.equals(""))test.setString(6,"%"+su2+"%");
+                if (!fi2.equals("")) test.setString(7,"%"+fi2+"%");
+                if(!mi2.equals("")){
+                    test.setString(8,"%"+mi2+"%");
+                    if((!ar.equals(""))&&(!ex.equals(""))) {               
+                        test.setString(9,"%"+ar+"%");
+                        test.setString(10,"%"+ex+"%");
+                    } else if(!ar.equals("")){                    
+                        test.setString(9,"%"+ar+"%");
+                    }
+                    else if (ar.equals("")&&!ex.equals("")){                       
+                        test.setString(9,"%"+ex+"%");
+                    }
+                }
+            
+                
+                if(mi2.equals("")&&!vi.equals("")&&!pa.equals("")){
+                            if((!ar.equals(""))&&(!ex.equals(""))) {               
+                            test.setString(8,"%"+ar+"%");
+                            test.setString(9,"%"+ex+"%");
+                        } else if(!ar.equals("")){                    
+                            test.setString(8,"%"+ar+"%");
+                        }
+                        else if (ar.equals("")&&!ex.equals("")){                       
+                            test.setString(8,"%"+ex+"%");
+                        }
+                }
             }
-                else {
-                PreparedStatement pst3=con.prepareStatement(condition3);
-                pst3.setString(1,"%"+ex+"%");
-                test.setString(3,condition3);
+            
+            if(mi2.equals("")&&vi.equals("")&&!pa.equals("")){
+                 if((!ar.equals(""))&&(!ex.equals(""))) {               
+                        test.setString(4,"%"+ar+"%");
+                        test.setString(5,"%"+ex+"%");
+                    } else if(!ar.equals("")){                    
+                        test.setString(4,"%"+ar+"%");
+                    }
+                    else if (ar.equals("")&&!ex.equals("")){                       
+                        test.setString(4,"%"+ex+"%");
+                    }
             }
-            System.err.println(sqlparancs);
-            //SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely condition2) and l_id in (Select szem_id from szemely condition1) and condition3
+            if(pa.equals("")&vi.equals("")&&!ar.equals("")&&!ex.equals("")){
+                test.setString(3,"%"+ ar+"%");
+                test.setString(4,"%"+ ex+"%");
+            }else if(pa.equals("")&vi.equals("")&&!ar.equals("")&&ex.equals("")){
+                test.setString(3,"%"+ ar+"%");
+            } else if(pa.equals("")&vi.equals("")&&ar.equals("")&&!ex.equals("")){
+                test.setString(3,"%"+ ex+"%");
+            }            
+            if(pa.equals(""))test.setString(2,fr2);         
             ResultSet result=test.executeQuery();
             String[] rekord=new String[4];
             while(result.next()){
@@ -352,11 +424,11 @@ public class visitors extends javax.swing.JFrame {
             if(model.getRowCount()==0){
                 info.setForeground(Color.red);
                 info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
-            }
+            } else info.setText("");
          
             con.close();
          }
-        catch(Exception e){System.err.println("Hiba: "+e+"\n"+sqlparancs+"\n"+condition1+"\n"+condition2+"\n"+condition3);
+        catch(Exception e){System.err.println("Hiba: "+e);
             
         }
     }//GEN-LAST:event_searchActionPerformed
@@ -366,56 +438,107 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_visitorActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
-         String vi=visitor.getText();
-         String pa=patient.getText();
-         String ar=arrival.getText();
-         String ex=exit.getText();
-         StringTokenizer st;
-         String fr=frontbox.getSelectedItem().toString();
+        try{
+        String vi=visitor.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String pa=patient.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String ar,ex;
+        String datum1=((JTextField)date1.getDateEditor().getUiComponent()).getText();
+        String datum2=((JTextField)date2.getDateEditor().getUiComponent()).getText();        
+        if(datum1.equals("")){ar=arrival.getText().replaceAll("[.]","-");
+        ar=ar.replaceAll("[^0-9/: /-]","");
+        }else {
+            ar=datum1;
+            ar=ar.substring(0,ar.length()-1);
+        }
+        if(datum2.equals("")){ex=exit.getText().replaceAll("[.]","-");
+        ex=ex.replaceAll("[^0-9/: /-]","");
+        }else{
+            ex=datum2;
+            ex=ex.substring(0,ex.length()-1);
+        }
+        StringTokenizer st;
+        String fr=frontbox.getSelectedItem().toString();
         String fr2=frontbox2.getSelectedItem().toString();         
-        String su,fi,mi,su2,fi2,mi2,condition1,condition2;
-         st = new StringTokenizer(vi," ");
+        String su="",fi="",su2="",fi2="";
+        String condition1="";
+        String condition2="";
+        String mi="";
+        String mi2="";
+        int l_id,b_id;
+        String sqlparancs="SELECT * FROM latogatas WHERE bejelentkezes=? AND tavozas=?";
+        String sqlparancs2="SELECT szem_id FROM szemely WHERE elotag='"+fr+"' AND vezeteknev=? AND keresztnev=? co1";
+        String sqlparancs3="SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev=? AND keresztnev=? co2";    
+        String sqlparancs4="";
+        st = new StringTokenizer(vi," "); 
+        if(st.countTokens()>0){
                su = st.nextToken();
                fi= st.nextToken();
                if (st.hasMoreTokens()){ 
                mi=st.nextToken();
-               condition1=" AND masodik_keresztnev='"+mi+"'";
-               }else condition1="";
+               condition1="AND masodik_keresztnev=?";
+               }
+        }
         st = new StringTokenizer(pa," ");
+        if(st.countTokens()>0){
                su2 = st.nextToken();
                fi2= st.nextToken();
                if (st.hasMoreTokens()){          
                mi2=st.nextToken();
-               condition2=" AND masodik_keresztnev='"+mi2+"'";
-               } else condition2="";
-        int l_id,b_id;
+               condition2="AND masodik_keresztnev=?";
+               } 
+        }
+        sqlparancs2=sqlparancs2.replace("co1",condition1);
+        sqlparancs3=sqlparancs3.replace("co2",condition2);        
         
-        try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            Statement stmt2=con.createStatement();
-            Statement stmt3=con.createStatement();
-            ResultSet result=stmt.executeQuery("SELECT * FROM latogatas WHERE bejelentkezes='"+ar+"' AND tavozas='"+ex+"'");
-            if(result.next()){
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");            
+            if(vi.equals("")||pa.equals("")||ar.equals("")||ex.equals("")){
                 info.setForeground(Color.red);
-                info.setText("A látogatás már szerepel a listában!"); 
-            }
-            else{
-                ResultSet rs=stmt2.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"'"+condition1);
-                ResultSet rs2=stmt3.executeQuery("SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev='"+su2+"' AND keresztnev='"+fi2+"'"+condition2);
-                rs.next();
-                rs2.next();
-                l_id=rs.getInt("szem_id");
-                b_id=rs2.getInt("szem_id");
-                stmt.executeUpdate("INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"','"+ar+"','"+ex+"')");
-                visitor.setText("");
-                patient.setText("");
-                arrival.setText("");
-                exit.setText("");
-                info.setText("A látogatás feltöltése sikeres!"); 
-            }
+                info.setText("Valamelyik mező üres!"); 
+            } else{
+                PreparedStatement pst=con.prepareStatement(sqlparancs);
+                pst.setString(1, ar);
+                pst.setString(2, ex);
+                ResultSet result=pst.executeQuery();
+                if(result.next()){
+                    info.setForeground(Color.red);
+                    info.setText("A látogatás már szerepel a listában!"); 
+                }
             
+            
+                else{
+                    PreparedStatement pst2=con.prepareStatement(sqlparancs2);
+                    PreparedStatement pst3=con.prepareStatement(sqlparancs3);
+                    pst2.setString(1,su);
+                    pst2.setString(2,fi);
+                    if(!mi.equals(""))pst2.setString(3,mi);
+                    pst3.setString(1,su2);
+                    pst3.setString(2,fi2);
+                    if(!mi2.equals(""))pst3.setString(3,mi2);
+                    ResultSet rs=pst2.executeQuery();
+                    ResultSet rs2=pst3.executeQuery();
+                    if(!rs.next()){
+                        info.setForeground(Color.red);
+                        info.setText("Az orvos nincs az adatbázisban!"); 
+                    }
+                    if(!rs2.next()){
+                        info.setForeground(Color.red);
+                        info.setText("A beteg nincs az adatbázisban!");                     
+                    }
+                    l_id=rs.getInt("szem_id");
+                    b_id=rs2.getInt("szem_id");
+                    sqlparancs4="INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"',?,?)";
+                    PreparedStatement pst4=con.prepareStatement(sqlparancs4);
+                    pst4.setString(1, ar);
+                    pst4.setString(2, ex);
+                    pst4.executeUpdate();
+                    visitor.setText("");
+                    patient.setText("");
+                    arrival.setText("");
+                    exit.setText("");
+                    info.setText("A látogatás feltöltése sikeres!"); 
+                }
+            }
             TablaTorol(table);
             TablaFeltolt(table);
             con.close();
@@ -423,6 +546,8 @@ public class visitors extends javax.swing.JFrame {
         
         
         catch(Exception e){System.err.println("Hiba: "+e);
+                info.setForeground(Color.red);
+                info.setText("A beteg/látogató nincs az adatbázisban!");
         }
     }//GEN-LAST:event_uploadActionPerformed
 
@@ -530,6 +655,8 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JButton Back;
     private javax.swing.JButton all;
     private javax.swing.JTextField arrival;
+    private com.toedter.calendar.JDateChooser date1;
+    private com.toedter.calendar.JDateChooser date2;
     private javax.swing.JTextField exit;
     private javax.swing.JComboBox<String> frontbox;
     private javax.swing.JComboBox<String> frontbox2;
@@ -539,6 +666,8 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField patient;
     private javax.swing.JButton search;
