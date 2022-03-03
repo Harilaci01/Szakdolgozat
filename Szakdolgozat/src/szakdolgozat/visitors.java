@@ -424,7 +424,10 @@ public class visitors extends javax.swing.JFrame {
             if(model.getRowCount()==0){
                 info.setForeground(Color.red);
                 info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
-            } else info.setText("");
+            } else {
+                info.setForeground(Color.blue);
+                info.setText("A helytelen karaktereket eltávolítottuk/módosítottuk a helyes keresés érdekében.");
+            }
          
             con.close();
          }

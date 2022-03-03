@@ -8,6 +8,7 @@ package szakdolgozat;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
@@ -17,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Harsányi László
  */
-public class drugs extends javax.swing.JFrame {
-
+public class drugs extends javax.swing.JFrame {    
+    
     /**
      * Creates new form drugs
-     */
+     */        
     public drugs() {
         initComponents();
         TablaFeltolt(table);
@@ -57,6 +58,7 @@ public class drugs extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         contain = new javax.swing.JTextArea();
+        info = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -163,14 +165,15 @@ public class drugs extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(id)
-                                    .addComponent(name)
-                                    .addComponent(company, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(145, 145, 145)
-                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(id)
+                                .addComponent(name)
+                                .addComponent(company, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(59, 59, 59)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(info)
+                            .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -210,18 +213,23 @@ public class drugs extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(noStock)
-                        .addComponent(getStock)
-                        .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(Back)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(noStock)
+                                .addComponent(getStock)
+                                .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(Back))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(info)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -236,38 +244,169 @@ public class drugs extends javax.swing.JFrame {
     private void valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valueActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_valueActionPerformed
-
+  
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String az=id.getText();
-        String na=name.getText();
-        String co=company.getText();
-        String ta=contain.getText();
-        String me=value.getText();       
         try{
+            String az=id.getText().replaceAll("[^0-9]","");
+            String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /-]","");
+            String co=company.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+            String ta=contain.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /-]","");
+            String me=value.getText().replaceAll("[^0-9]","");      
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
             TablaTorol(table);
             DefaultTableModel model=(DefaultTableModel) table.getModel();
+            id.setText(az);
+            name.setText(na);
+            company.setText(co);
+            contain.setText(ta);
+            value.setText(me);
+            String sqlparancs="SELECT * FROM gyogyszerek ";
             String conditions="WHERE";
             if(!az.equals("")){
-                conditions+=" gy_id='"+az+"' AND";
+                conditions+=" gy_id=? AND";
             }
             if(!na.equals("")){
-                conditions+=" nev LIKE ('%"+na+"%') AND";
+                conditions+=" nev LIKE ? AND";
             }
             if(!co.equals("")){
-                conditions+=" gyarto LIKE('%"+co+"%') AND";
+                conditions+=" gyarto LIKE ? AND";
             }
             if(!ta.equals("")){
-                conditions+=" tartalma LIKE ('%"+ta+"%') AND";
+                conditions+=" tartalma LIKE ? AND";
             }if(!me.equals("")){
-                conditions+=" mennyiseg='"+me+"' AND";
+                conditions+=" mennyiseg=? AND";
             }       
             if(conditions.equals("WHERE"))conditions="";
             else conditions=conditions.substring(0,conditions.length()-4);
-            
-            ResultSet result=stmt.executeQuery("SELECT * FROM gyogyszerek "+conditions);
+            sqlparancs+=conditions;
+            PreparedStatement pst=con.prepareStatement(sqlparancs);
+            if(!az.equals("")&&!na.equals("")&&!co.equals("")&&!ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");
+                pst.setString(3, "%"+co+"%");
+                pst.setString(4, "%"+ta+"%");
+                pst.setString(5, me);
+                
+            }
+            if(!az.equals("")&&!na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2,"%"+ na+"%");
+                pst.setString(3, "%"+co+"%");
+                pst.setString(4, ta);                
+            }
+            if(!az.equals("")&&!na.equals("")&&!co.equals("")&&ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");
+                pst.setString(3, "%"+co+"%");
+                pst.setString(4, me);                
+            }
+            if(!az.equals("")&&!na.equals("")&&co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");
+                pst.setString(3, "%"+ta+"%");
+                pst.setString(4, me);                
+            }
+            if(!az.equals("")&&na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+co+"%");
+                pst.setString(3, "%"+ta+"%");
+                pst.setString(4, me);                
+            }
+            if(az.equals("")&&!na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, na);
+                pst.setString(2, "%"+co+"%");
+                pst.setString(3, "%"+ta+"%");
+                pst.setString(4, me);                
+            }
+            if(!az.equals("")&&na.equals("")&&co.equals("")&&!ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+ta+"%");
+                pst.setString(3, me);               
+            }
+            if(!az.equals("")&&!na.equals("")&&!co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2,"%"+ na+"%");
+                pst.setString(3, "%"+co+"%");               
+            }
+            if(!az.equals("")&&!na.equals("")&&co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");
+                pst.setString(3, "%"+ta+"%");               
+            }
+            if(!az.equals("")&&!na.equals("")&&co.equals("")&&!ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");
+                pst.setString(3, me);               
+            }
+            if(!az.equals("")&&na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+co+"%");
+                pst.setString(3, "%"+ta+"%");               
+            }
+            if(!az.equals("")&&na.equals("")&&!co.equals("")&&ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+co+"%");
+                pst.setString(3, me);               
+            }
+            if(az.equals("")&&!na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, "%"+na+"%");
+                pst.setString(2, "%"+co+"%");
+                pst.setString(3, "%"+ta+"%");               
+            }
+            if(az.equals("")&&!na.equals("")&&!co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, "%"+na+"%");
+                pst.setString(2, "%"+co+"%");              
+            }
+            if(az.equals("")&&na.equals("")&&!co.equals("")&&!ta.equals("")&&!me.equals("")){
+                pst.setString(1,"%"+ co+"%");
+                pst.setString(2,"%"+ ta+"%");       
+                pst.setString(3, me);
+            }
+            if(az.equals("")&&na.equals("")&&!co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1,"%"+ co+"%");
+                pst.setString(2,"%"+ ta+"%");       
+            }           
+            if(!az.equals("")&&na.equals("")&&co.equals("")&&ta.equals("")&&!me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, me);              
+            }
+            if(!az.equals("")&&na.equals("")&&co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+ta+"%");              
+            }
+            if(!az.equals("")&&na.equals("")&&!co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+co+"%");              
+            }
+            if(!az.equals("")&&!na.equals("")&&co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, az);
+                pst.setString(2, "%"+na+"%");              
+            }
+            if(!az.equals("")&&na.equals("")&&co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, az);              
+            }
+            if(az.equals("")&&!na.equals("")&&co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, "%"+na+"%");              
+            }
+            if(az.equals("")&&na.equals("")&&!co.equals("")&&ta.equals("")&&me.equals("")){
+                pst.setString(1, "%"+co+"%");              
+            }
+            if(az.equals("")&&na.equals("")&&co.equals("")&&!ta.equals("")&&me.equals("")){
+                pst.setString(1,"%"+ ta+"%");              
+            }
+            if(az.equals("")&&na.equals("")&&co.equals("")&&ta.equals("")&&!me.equals("")){
+                pst.setString(1, me);              
+            }
+            if(az.equals("")&&na.equals("")&&co.equals("")&&ta.equals("")&&me.equals("")){
+                info.setForeground(Color.blue);
+                info.setText("A kereséshez adjon meg adatot.");
+            }else {
+                info.setForeground(Color.blue);
+                info.setText("A nem kívánatos karaktereket eltávolítottuk a helyes keresés érdekében.");
+            }            
+            ResultSet result=pst.executeQuery();
             
             String[] rekord=new String[5];
             while(result.next()){
@@ -277,9 +416,18 @@ public class drugs extends javax.swing.JFrame {
                 rekord[2]=result.getString("gyarto");
                 rekord[3]=result.getString("tartalma");
                 rekord[4]=result.getString("mennyiseg");                
-                model.addRow(rekord);
+               if(rekord[4].equals("0")){
+                    rekord[4]="ELFOGYOTT";                    
+                    model.addRow(rekord);       
+                }
+                else {model.addRow(rekord);}
             }
-            con.close();
+            if(model.getRowCount()==0){
+                info.setForeground(Color.red);
+                info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
+            } 
+         
+            con.close();            
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         }        
@@ -293,9 +441,16 @@ public class drugs extends javax.swing.JFrame {
             Statement stmt=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) table.getModel();
             String kiv=table.getValueAt(sszam, 0).toString();
-            stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=0 WHERE gy_id='"+kiv+"'");
-            TablaTorol(table);
-            TablaFeltolt(table);
+            String van=table.getValueAt(sszam, 4).toString();
+            if(van.equals("ELFOGYOTT")){
+                info.setForeground(Color.red);
+                info.setText("A gyógyszer eddig se volt raktáron.");
+            }else{
+                stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=0 WHERE gy_id='"+kiv+"'");
+                TablaTorol(table);
+                TablaFeltolt(table);                
+                info.setText("");
+            }
         }
         catch(Exception e){System.out.println("Hiba:"+e);
             
@@ -323,6 +478,8 @@ public class drugs extends javax.swing.JFrame {
                 case 100:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+100 WHERE gy_id='"+kiv+"'");
                 break;
             }
+            info.setForeground(Color.blue);
+            info.setText("A feltöltés sikeres!");
             TablaTorol(table);
             TablaFeltolt(table);
             
@@ -443,6 +600,7 @@ public class AlternateRowColorTableTest extends JFrame {
     private javax.swing.JTextArea contain;
     private javax.swing.JButton getStock;
     private javax.swing.JTextField id;
+    private javax.swing.JLabel info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
