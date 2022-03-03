@@ -62,10 +62,10 @@ public class visitors extends javax.swing.JFrame {
         frontbox2 = new javax.swing.JComboBox<>();
         title = new javax.swing.JLabel();
         all = new javax.swing.JButton();
-        date1 = new com.toedter.calendar.JDateChooser();
-        date2 = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        date1 = new com.toedter.calendar.JDateChooser();
+        date2 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Látogatás");
@@ -180,26 +180,26 @@ public class visitors extends javax.swing.JFrame {
                                     .addComponent(patient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(upload, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(all))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(upload, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(1, 1, 1)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
-                                        .addComponent(jLabel6)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel5)
-                        .addContainerGap(85, Short.MAX_VALUE))))
+                                        .addComponent(jLabel6)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(all))
+                                .addGap(22, 22, 22)
+                                .addComponent(jLabel5))
+                            .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(215, 215, 215)
                 .addComponent(info)
@@ -236,21 +236,19 @@ public class visitors extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addComponent(frontbox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel7)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(arrival, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel6))
+                            .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel7))
+                            .addComponent(date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
                         .addComponent(Back)
                         .addContainerGap())
@@ -389,24 +387,42 @@ public class visitors extends javax.swing.JFrame {
             }
             
             if(mi2.equals("")&&vi.equals("")&&!pa.equals("")){
-                 if((!ar.equals(""))&&(!ex.equals(""))) {               
-                        test.setString(4,"%"+ar+"%");
-                        test.setString(5,"%"+ex+"%");
-                    } else if(!ar.equals("")){                    
-                        test.setString(4,"%"+ar+"%");
+                 if((!ar.equals(""))&&(!ex.equals(""))) {
+                        test.setString(1,fr);
+                        test.setString(2, fr2);
+                        test.setString(3, "%"+su2+"%");
+                        test.setString(4, "%"+fi2+"%");
+                        test.setString(5,"%"+ar+"%");
+                        test.setString(6,"%"+ex+"%");
+                    } else if(!ar.equals("")){
+                        test.setString(1,fr);
+                        test.setString(2, fr2);
+                        test.setString(3, "%"+su2+"%");
+                        test.setString(4, "%"+fi2+"%");
+                        test.setString(5,"%"+ar+"%");
                     }
-                    else if (ar.equals("")&&!ex.equals("")){                       
-                        test.setString(4,"%"+ex+"%");
+                    else if (ar.equals("")&&!ex.equals("")){
+                        test.setString(1,fr);
+                        test.setString(2, fr2);
+                        test.setString(3, "%"+su2+"%");
+                        test.setString(4, "%"+fi2+"%");
+                        test.setString(5,"%"+ex+"%");
                     }
             }
             if(pa.equals("")&vi.equals("")&&!ar.equals("")&&!ex.equals("")){
+                test.setString(1,fr);
+                test.setString(2,fr2);
                 test.setString(3,"%"+ ar+"%");
                 test.setString(4,"%"+ ex+"%");
             }else if(pa.equals("")&vi.equals("")&&!ar.equals("")&&ex.equals("")){
+                test.setString(1,fr);
+                test.setString(2, fr2);
                 test.setString(3,"%"+ ar+"%");
             } else if(pa.equals("")&vi.equals("")&&ar.equals("")&&!ex.equals("")){
+                test.setString(1,fr);
+                test.setString(2, fr2);
                 test.setString(3,"%"+ ex+"%");
-            }     
+            }            
             if(!su.equals("")&&fi.equals("")&&mi.equals("")){
                 test.setString(3,fr2);
                 if (!su2.equals(""))test.setString(4,"%"+su2+"%");
@@ -438,7 +454,7 @@ public class visitors extends javax.swing.JFrame {
                 }
             }
             if(pa.equals("")&&su.equals(""))test.setString(2,fr2);
-
+            System.err.println(test);
          
             ResultSet result=test.executeQuery();
             String[] rekord=new String[4];
