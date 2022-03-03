@@ -406,8 +406,40 @@ public class visitors extends javax.swing.JFrame {
                 test.setString(3,"%"+ ar+"%");
             } else if(pa.equals("")&vi.equals("")&&ar.equals("")&&!ex.equals("")){
                 test.setString(3,"%"+ ex+"%");
-            }            
-            if(pa.equals(""))test.setString(2,fr2);         
+            }     
+            if(!su.equals("")&&fi.equals("")&&mi.equals("")){
+                test.setString(3,fr2);
+                if (!su2.equals(""))test.setString(4,"%"+su2+"%");
+                if (!fi2.equals("")) test.setString(5,"%"+fi2+"%");
+                if(!mi2.equals("")){
+                    test.setString(6,"%"+mi2+"%");
+                    if((!ar.equals(""))&&(!ex.equals(""))) {               
+                        test.setString(7,"%"+ar+"%");
+                        test.setString(8,"%"+ex+"%");
+                    } else if(!ar.equals("")){                    
+                        test.setString(7,"%"+ar+"%");
+                    }
+                    else if (ar.equals("")&&!ex.equals("")){                       
+                        test.setString(7,"%"+ex+"%");
+                    }
+                }
+            
+                
+                if(mi2.equals("")&&!vi.equals("")&&!pa.equals("")){
+                            if((!ar.equals(""))&&(!ex.equals(""))) {               
+                            test.setString(6,"%"+ar+"%");
+                            test.setString(7,"%"+ex+"%");
+                        } else if(!ar.equals("")){                    
+                            test.setString(6,"%"+ar+"%");
+                        }
+                        else if (ar.equals("")&&!ex.equals("")){                       
+                            test.setString(6,"%"+ex+"%");
+                        }
+                }
+            }
+            if(pa.equals("")&&su.equals(""))test.setString(2,fr2);
+
+         
             ResultSet result=test.executeQuery();
             String[] rekord=new String[4];
             while(result.next()){
