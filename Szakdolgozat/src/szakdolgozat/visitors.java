@@ -32,6 +32,8 @@ public class visitors extends javax.swing.JFrame {
         TablaFeltolt(table);
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);
+        info.setForeground(Color.blue);
+        info.setText("Ha nem ismeri az illető teljes nevét írjon %-ot a helyére. Példa: Lakatos % József");
     }
 
     /**
@@ -268,8 +270,8 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_BackActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String vi=visitor.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
-        String pa=patient.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String vi=visitor.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]","");
+        String pa=patient.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]","");
         String ar,ex;
         String datum1=((JTextField)date1.getDateEditor().getUiComponent()).getText();
         String datum2=((JTextField)date2.getDateEditor().getUiComponent()).getText();        
@@ -290,12 +292,12 @@ public class visitors extends javax.swing.JFrame {
         StringTokenizer st,st2;
         String fr=frontbox.getSelectedItem().toString();
         String fr2=frontbox2.getSelectedItem().toString();
-        String su="%";
-        String fi="%";
+        String su="";
+        String fi="";
         String mi=""; 
         String mi2="";
-        String su2="%";
-        String fi2="%"; 
+        String su2="";
+        String fi2=""; 
         String condition1="WHERE elotag LIKE ? AND";
         String condition2="WHERE elotag LIKE ? AND";
         String condition3="AND";
@@ -306,19 +308,25 @@ public class visitors extends javax.swing.JFrame {
         exit.setText(ex);
         st = new StringTokenizer(vi," ");
         if(st.countTokens()>0){
-               if (st.hasMoreTokens())su = st.nextToken();
-               if (st.hasMoreTokens())fi= st.nextToken();
-               condition2+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+               if (st.hasMoreTokens()){
+                   su = st.nextToken(); 
+                   condition2+=" vezeteknev LIKE ? AND";}
+               if (st.hasMoreTokens()){
+                   fi= st.nextToken();
+                   condition2+=" keresztnev LIKE ? AND";}
                if (st.hasMoreTokens()){ 
-               mi=st.nextToken();
-               condition2+=" masodik_keresztnev LIKE ? AND";
+                    mi=st.nextToken();
+                    condition2+=" masodik_keresztnev LIKE ? AND";
                }
          }
         st2 = new StringTokenizer(pa," ");
         if(st2.countTokens()>0){       
-              if (st2.hasMoreTokens()) su2 = st2.nextToken();
-              if (st2.hasMoreTokens()) fi2= st2.nextToken();
-               condition1+=" vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+              if (st2.hasMoreTokens()){
+                    su2 = st2.nextToken();
+                    condition1+=" vezeteknev LIKE ? AND";}
+              if (st2.hasMoreTokens()){ 
+                    fi2= st2.nextToken();
+                    condition1+=" keresztnev LIKE ? AND";}
                if (st2.hasMoreTokens()){          
                mi2=st2.nextToken();
                condition1+=" masodik_keresztnev LIKE ? AND";
@@ -350,43 +358,148 @@ public class visitors extends javax.swing.JFrame {
             Statement stmt3=con.createStatement();   
             PreparedStatement test=con.prepareStatement(sqlparancs);
             test.setString(1,fr);
-            if(!vi.equals("")){               
+            if(!mi.equals("")&&!mi2.equals("")&&!ar.equals("")&&!ex.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")){ //ÖSSZES TELE
                 if (!su.equals(""))test.setString(2,"%"+su+"%");
                 if (!fi.equals(""))test.setString(3,"%"+fi+"%");
-                if(!mi.equals("")) test.setString(4,"%"+mi+"%");
-            }             
-            if(!pa.equals("")&&!vi.equals("")&&!mi.equals("")){
+                test.setString(4,"%"+mi+"%");
                 test.setString(5,fr2);
                 if (!su2.equals(""))test.setString(6,"%"+su2+"%");
                 if (!fi2.equals("")) test.setString(7,"%"+fi2+"%");
-                if(!mi2.equals("")){
-                    test.setString(8,"%"+mi2+"%");
-                    if((!ar.equals(""))&&(!ex.equals(""))) {               
-                        test.setString(9,"%"+ar+"%");
-                        test.setString(10,"%"+ex+"%");
-                    } else if(!ar.equals("")){                    
-                        test.setString(9,"%"+ar+"%");
-                    }
-                    else if (ar.equals("")&&!ex.equals("")){                       
-                        test.setString(9,"%"+ex+"%");
-                    }
-                }
+                test.setString(8,"%"+mi2+"%");
+                test.setString(9,"%"+ar+"%");
+                test.setString(10,"%"+ex+"%");                
+            }
             
-                
-                if(mi2.equals("")&&!vi.equals("")&&!pa.equals("")){
-                            if((!ar.equals(""))&&(!ex.equals(""))) {               
-                            test.setString(8,"%"+ar+"%");
-                            test.setString(9,"%"+ex+"%");
-                        } else if(!ar.equals("")){                    
-                            test.setString(8,"%"+ar+"%");
-                        }
-                        else if (ar.equals("")&&!ex.equals("")){                       
-                            test.setString(8,"%"+ex+"%");
-                        }
+            if(ar.equals("")&&ex.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")){ //NINCS 2 DATUM 
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){
+                    test.setString(4,"%"+mi+"%");
+                    test.setString(5,fr2);
+                    test.setString(6,"%"+su2+"%");
+                    test.setString(7,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(8,"%"+mi2+"%");}
+                }
+                 else{
+                    test.setString(4,fr2);
+                    test.setString(5,"%"+su2+"%");
+                    test.setString(6,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(7,"%"+mi2+"%");}
                 }
             }
             
-            if(mi2.equals("")&&vi.equals("")&&!pa.equals("")){
+            if(!mi2.equals("")&&ar.equals("")&&!ex.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")){ //NINCS elso DATUM 
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){
+                    test.setString(4,"%"+mi+"%");
+                    test.setString(5,fr2);
+                    test.setString(6,"%"+su2+"%");
+                    test.setString(7,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(8,"%"+mi2+"%");
+                        test.setString(9,"%"+ex+"%");
+                    }else test.setString(8,"%"+ex+"%");
+                }
+                else{
+                    test.setString(4,fr2);
+                    test.setString(5,"%"+su2+"%");
+                    test.setString(6,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(7,"%"+mi2+"%");
+                        test.setString(8,"%"+ex+"%");
+                    }else test.setString(7,"%"+ex+"%");
+                    
+                }
+            }
+            
+            if(!mi.equals("")&&!mi2.equals("")&&!ar.equals("")&&ex.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")){ //NINCS masodik DATUM 
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){
+                    test.setString(4,"%"+mi+"%");
+                    test.setString(5,fr2);
+                    test.setString(6,"%"+su2+"%");
+                    test.setString(7,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(8,"%"+mi2+"%");
+                        test.setString(9,"%"+ar+"%");
+                    }else test.setString(8,"%"+ar+"%");
+                    test.setString(9,"%"+ar+"%");}
+                else{
+                    test.setString(4,fr2);
+                    test.setString(5,"%"+su2+"%");
+                    test.setString(6,"%"+fi2+"%");
+                    if(!mi2.equals("")){
+                        test.setString(7,"%"+mi2+"%");
+                        test.setString(8,"%"+ar+"%");
+                    }else test.setString(7,"%"+ar+"%");
+                    
+                }
+            }
+            
+            if(pa.equals("")&&vi.equals("")&&!ar.equals("")&&!ex.equals("")){ //CSAK 2 datum
+                test.setString(1,fr);
+                test.setString(2,fr2);
+                test.setString(3,"%"+ ar+"%");
+                test.setString(4,"%"+ ex+"%");
+            }else if(pa.equals("")&&vi.equals("")&&!ar.equals("")&&ex.equals("")){
+                test.setString(1,fr);
+                test.setString(2, fr2);
+                test.setString(3,"%"+ ar+"%");
+            } else if(pa.equals("")&&vi.equals("")&&ar.equals("")&&!ex.equals("")){
+                test.setString(1,fr);
+                test.setString(2, fr2);
+                test.setString(3,"%"+ ex+"%");
+            }
+            
+            if(pa.equals("")&&vi.equals("")&&!ar.equals("")&&ex.equals("")){//csak elso datum
+                test.setString(1,fr);
+                test.setString(2, fr2);
+                test.setString(3,"%"+ ar+"%");
+            }
+            
+            if(pa.equals("")&&vi.equals("")&&ar.equals("")&&!ex.equals("")){//csak masodik datum
+                test.setString(1,fr);
+                test.setString(2, fr2);
+                test.setString(3,"%"+ ex+"%");
+            }
+            
+            if(!su.equals("")&&!fi.equals("")&&pa.equals("")&&ar.equals("")&&ex.equals("")){     //CSAK első név          
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){test.setString(4,"%"+mi+"%");
+                test.setString(5, fr2);}else test.setString(4, fr2);
+                
+            }  
+            
+            if(!su2.equals("")&&!fi2.equals("")&&vi.equals("")&&ar.equals("")&&ex.equals("")){  //CSAK masodik név             
+                test.setString(1, fr);
+                test.setString(2, fr2);
+                test.setString(3,"%"+su2+"%");
+                test.setString(4,"%"+fi2+"%");
+                if(!mi2.equals(""))test.setString(5,"%"+mi2+"%");
+            }
+            
+            if(mi.equals("")&&mi2.equals("")&&!ar.equals("")&&!ex.equals("")&&!su.equals("")&&fi.equals("")&&!su2.equals("")&&fi2.equals("")){//csak vezetéknevek és dátumok
+                test.setString(1,fr);
+                test.setString(2,"%"+su+"%");
+                test.setString(3,fr2);
+                test.setString(4,"%"+su2+"%");
+                test.setString(5,"%"+ar+"%");
+                test.setString(6,"%"+ex+"%");
+            }
+            
+            if(mi.equals("")&&mi2.equals("")&&ar.equals("")&&ex.equals("")&&!su.equals("")&&fi.equals("")&&!su2.equals("")&&fi2.equals("")){//csak vezetéknevek 
+                test.setString(1,fr);
+                test.setString(2,"%"+su+"%");
+                test.setString(3,fr2);
+                test.setString(4,"%"+su2+"%");
+            }
+            
+            if(mi2.equals("")&&vi.equals("")&&!fi2.equals("")&&!su2.equals("")){//NINCS első név és más. keresztnév
                  if((!ar.equals(""))&&(!ex.equals(""))) {
                         test.setString(1,fr);
                         test.setString(2, fr2);
@@ -409,52 +522,31 @@ public class visitors extends javax.swing.JFrame {
                         test.setString(5,"%"+ex+"%");
                     }
             }
-            if(pa.equals("")&vi.equals("")&&!ar.equals("")&&!ex.equals("")){
-                test.setString(1,fr);
-                test.setString(2,fr2);
-                test.setString(3,"%"+ ar+"%");
-                test.setString(4,"%"+ ex+"%");
-            }else if(pa.equals("")&vi.equals("")&&!ar.equals("")&&ex.equals("")){
-                test.setString(1,fr);
-                test.setString(2, fr2);
-                test.setString(3,"%"+ ar+"%");
-            } else if(pa.equals("")&vi.equals("")&&ar.equals("")&&!ex.equals("")){
-                test.setString(1,fr);
-                test.setString(2, fr2);
-                test.setString(3,"%"+ ex+"%");
-            }            
-            if(!su.equals("")&&fi.equals("")&&mi.equals("")){
-                test.setString(3,fr2);
-                if (!su2.equals(""))test.setString(4,"%"+su2+"%");
-                if (!fi2.equals("")) test.setString(5,"%"+fi2+"%");
-                if(!mi2.equals("")){
-                    test.setString(6,"%"+mi2+"%");
-                    if((!ar.equals(""))&&(!ex.equals(""))) {               
-                        test.setString(7,"%"+ar+"%");
-                        test.setString(8,"%"+ex+"%");
-                    } else if(!ar.equals("")){                    
-                        test.setString(7,"%"+ar+"%");
-                    }
-                    else if (ar.equals("")&&!ex.equals("")){                       
-                        test.setString(7,"%"+ex+"%");
-                    }
-                }
             
-                
-                if(mi2.equals("")&&!vi.equals("")&&!pa.equals("")){
-                            if((!ar.equals(""))&&(!ex.equals(""))) {               
-                            test.setString(6,"%"+ar+"%");
-                            test.setString(7,"%"+ex+"%");
-                        } else if(!ar.equals("")){                    
-                            test.setString(6,"%"+ar+"%");
-                        }
-                        else if (ar.equals("")&&!ex.equals("")){                       
-                            test.setString(6,"%"+ex+"%");
-                        }
-                }
+            if(mi.equals("")&&!su.equals("")&&pa.equals("")&&!fi.equals("")){//NINCS második név és más. keresztnév
+                 if((!ar.equals(""))&&(!ex.equals(""))) {
+                        test.setString(1,fr);                        
+                        test.setString(2, "%"+su+"%");
+                        test.setString(3, "%"+fi+"%");
+                        test.setString(4, fr2);
+                        test.setString(5,"%"+ar+"%");
+                        test.setString(6,"%"+ex+"%");
+                    } else if(!ar.equals("")){
+                        test.setString(1,fr);
+                        test.setString(2, "%"+su+"%");
+                        test.setString(3, "%"+fi+"%");
+                        test.setString(4, fr2);
+                        test.setString(5,"%"+ar+"%");
+                    }
+                    else if (ar.equals("")&&!ex.equals("")){
+                        test.setString(1,fr);
+                        test.setString(2, "%"+su+"%");
+                        test.setString(3, "%"+fi+"%");
+                        test.setString(4, fr2);
+                        test.setString(5,"%"+ex+"%");
+                    }
             }
-            if(pa.equals("")&&su.equals(""))test.setString(2,fr2);
-            System.err.println(test);
+            if(mi.equals("")&&mi2.equals("")&&ar.equals("")&&ex.equals("")&&su.equals("")&&fi.equals("")&&su2.equals("")&&fi2.equals(""))test.setString(2, fr2);// üres minden          
          
             ResultSet result=test.executeQuery();
             String[] rekord=new String[4];
@@ -556,9 +648,10 @@ public class visitors extends javax.swing.JFrame {
                 if(result.next()){
                     info.setForeground(Color.red);
                     info.setText("A látogatás már szerepel a listában!"); 
-                }
-            
-            
+                }else if(vi.equals(pa)){
+                    info.setForeground(Color.red);
+                    info.setText("A két személy nem lehet ugyan az!"); 
+                }          
                 else{
                     PreparedStatement pst2=con.prepareStatement(sqlparancs2);
                     PreparedStatement pst3=con.prepareStatement(sqlparancs3);
@@ -573,11 +666,11 @@ public class visitors extends javax.swing.JFrame {
                     if(!rs.next()){
                         info.setForeground(Color.red);
                         info.setText("Az orvos nincs az adatbázisban!"); 
-                    }
+                    } else 
                     if(!rs2.next()){
                         info.setForeground(Color.red);
                         info.setText("A beteg nincs az adatbázisban!");                     
-                    }
+                    }else{
                     l_id=rs.getInt("szem_id");
                     b_id=rs2.getInt("szem_id");
                     sqlparancs4="INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"',?,?)";
@@ -589,7 +682,8 @@ public class visitors extends javax.swing.JFrame {
                     patient.setText("");
                     arrival.setText("");
                     exit.setText("");
-                    info.setText("A látogatás feltöltése sikeres!"); 
+                    info.setForeground(Color.blue);
+                    info.setText("A látogatás feltöltése sikeres!"); }
                 }
             }
             TablaTorol(table);
