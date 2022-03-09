@@ -461,6 +461,56 @@ public class visitors extends javax.swing.JFrame {
                 test.setString(3,"%"+ ar+"%");
             }
             
+            if(pa.equals("")&&!vi.equals("")&&!ar.equals("")&&ex.equals("")){//csak elso datum +elso nev
+                test.setString(1,fr);
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){
+                    test.setString(4,"%"+mi+"%");
+                    test.setString(5, fr2);
+                    test.setString(6,"%"+ ar+"%");
+                }else{
+                test.setString(4, fr2);
+                test.setString(5,"%"+ ar+"%");}
+            }
+            
+            if(!pa.equals("")&&vi.equals("")&&!ar.equals("")&&ex.equals("")){//csak elso datum +masodik nev
+                test.setString(1,fr);                
+                test.setString(2, fr2);
+                test.setString(3,"%"+su2+"%");
+                test.setString(4,"%"+fi2+"%");
+                if(!mi2.equals("")){
+                    test.setString(5,"%"+mi2+"%");
+                    test.setString(6,"%"+ ar+"%");
+                }else
+                test.setString(5,"%"+ ar+"%");
+            }
+            
+            if(pa.equals("")&&!vi.equals("")&&ar.equals("")&&!ex.equals("")){//csak madosik datum +elso nev
+                test.setString(1,fr);
+                test.setString(2,"%"+su+"%");
+                test.setString(3,"%"+fi+"%");
+                if(!mi.equals("")){
+                    test.setString(4,"%"+mi+"%");
+                    test.setString(5, fr2);
+                    test.setString(6,"%"+ ex+"%");
+                }else{
+                test.setString(4, fr2);
+                test.setString(5,"%"+ ex+"%");}
+            }
+            
+            if(!pa.equals("")&&vi.equals("")&&ar.equals("")&&!ex.equals("")){//csak masodik datum +masodik nev
+                test.setString(1,fr);                
+                test.setString(2, fr2);
+                test.setString(3,"%"+su2+"%");
+                test.setString(4,"%"+fi2+"%");
+                if(!mi2.equals("")){
+                    test.setString(5,"%"+mi2+"%");
+                    test.setString(6,"%"+ ex+"%");
+                }else
+                test.setString(5,"%"+ ex+"%");
+            }
+            
             if(pa.equals("")&&vi.equals("")&&ar.equals("")&&!ex.equals("")){//csak masodik datum
                 test.setString(1,fr);
                 test.setString(2, fr2);
