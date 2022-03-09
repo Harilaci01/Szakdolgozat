@@ -385,7 +385,8 @@ public class cures extends javax.swing.JFrame {
             con.close();
          }
         catch(Exception e){System.err.println("Hiba: "+e);
-            
+            info.setForeground(Color.red);
+            info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
         }                                     
     }//GEN-LAST:event_searchActionPerformed
 
@@ -426,14 +427,14 @@ public class cures extends javax.swing.JFrame {
                    fi= st.nextToken();
                    if (st.hasMoreTokens()){ 
                    mi=st.nextToken();
-                   condition1="AND masodik_keresztnev='"+mi+"'";
+                   condition1="AND masodik_keresztnev=?";
                    }else condition1="";
             st = new StringTokenizer(dr," ");
                    su2 = st.nextToken();
                    fi2= st.nextToken();
                    if (st.hasMoreTokens()){          
                    mi2=st.nextToken();
-                   condition2="AND masodik_keresztnev='"+mi2+"'";
+                   condition2="AND masodik_keresztnev=?";
                    } else condition2="";
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -455,15 +456,15 @@ public class cures extends javax.swing.JFrame {
                 String sqlparancs3="SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev=? AND keresztnev=? co2";
                 sqlparancs2=sqlparancs2.replace("co1", condition1);
                 sqlparancs3=sqlparancs3.replace("co2", condition2);
-                PreparedStatement pst2=con.prepareStatement(sqlparancs2);
-                PreparedStatement pst3=con.prepareStatement(sqlparancs3);                
+                PreparedStatement pst2=con.prepareStatement(sqlparancs2);                               
                 pst2.setString(1,su);
                 pst2.setString(2,fi);
                 if(!mi.equals(""))pst2.setString(3,mi);
+                ResultSet rs=pst2.executeQuery();
+                PreparedStatement pst3=con.prepareStatement(sqlparancs3);
                 pst3.setString(1,su2);
                 pst3.setString(2,fi2);
-                if(!mi2.equals(""))pst3.setString(3,mi2);
-                ResultSet rs=pst2.executeQuery();
+                if(!mi2.equals(""))pst3.setString(3,mi2);                
                 ResultSet rs2=pst3.executeQuery();               
                 if(!rs.next()){
                         info.setForeground(Color.red);
@@ -472,7 +473,7 @@ public class cures extends javax.swing.JFrame {
                     if(!rs2.next()){
                         info.setForeground(Color.red);
                         info.setText("Az orvos nincs az adatbázisban!");                     
-                    }else{ 
+                    }else{                        
                         b_id=rs.getInt("szem_id");
                         d_id=rs2.getInt("szem_id");
                         String sqlparancs="INSERT INTO kezeles (b_id, bet_id,gy_id,befekves, gyogyulas,kezelo_orvos) VALUES ((SELECT szemely.szem_id FROM szemely WHERE szem_id='"+b_id+"'),(SELECT bet_id FROM betegseg WHERE megnevezes=?),(SELECT gy_id FROM gyogyszerek WHERE nev=?),?,?,(SELECT szemely.szem_id FROM szemely WHERE szem_id='"+d_id+"'))";
