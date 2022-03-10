@@ -32,6 +32,8 @@ public class workers extends javax.swing.JFrame {
         workers.setVisible(false);
         database.setVisible(false);
         confirm.setVisible(false);
+        info.setForeground(Color.blue);
+        info.setText("Kérem adjon meg adatokat a kereséshez.");
         
     }
 
@@ -308,11 +310,7 @@ public class workers extends javax.swing.JFrame {
         
         if(condition1.equals("WHERE"))condition1="";
             else condition1=condition1.substring(0,condition1.length()-4); 
-        sqlparancs = sqlparancs.replace("co1", condition1);
-        if(na.equals("%")&&jo.equals("%")&&us.equals("%")){
-                info.setForeground(Color.blue);
-                info.setText("Kérem adjon meg adatokat a kereséshez.");
-        }     
+        sqlparancs = sqlparancs.replace("co1", condition1);          
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -335,12 +333,15 @@ public class workers extends javax.swing.JFrame {
             if(model.getRowCount()==0){
                 info.setForeground(Color.red);
                 info.setText("A dolgozó nincs az adatbázisban!");
+            }else{
+                info.setForeground(Color.blue);
+                info.setText("A nem kívánatos karaktereket eltávolítottuk a helyes keresés érdekében.");
             }
             
          
             con.close();
          }
-        catch(Exception e){System.err.println("Hiba: "+e+sqlparancs);
+        catch(Exception e){System.err.println("Hiba: "+e);
             
         }   
     }//GEN-LAST:event_searchActionPerformed
@@ -352,6 +353,8 @@ public class workers extends javax.swing.JFrame {
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         TablaTorol(table);
         TablaFeltolt(table);
+        info.setForeground(Color.blue);
+        info.setText("Kérem adjon meg adatokat a kereséshez.");
     }//GEN-LAST:event_resetActionPerformed
 
     private void hireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hireActionPerformed
@@ -438,28 +441,19 @@ public class workers extends javax.swing.JFrame {
         String fr=front.getSelectedItem().toString();
         String su="%";
         String fi="%";
-        String mi="";        
-        String condition1="WHERE elotag LIKE ('"+fr+"') AND"; 
+        String mi="";       
+        
         String testP="SELECT * FROM szemely WHERE elotag=? AND vezeteknev=? AND keresztnev=? AND masodik_keresztnev=?";
         st = new StringTokenizer(na," ");
         if(st.countTokens()>0){
                if (st.hasMoreTokens())su = st.nextToken();
                if (st.hasMoreTokens())fi= st.nextToken();
-               condition1+=" vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
+              
                if (st.hasMoreTokens()){ 
                mi=st.nextToken();
-               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
+               
                }
-        }       
-        
-        if(!jo.equals("")){
-            condition1+=" beosztas.megnevezes LIKE ('%"+jo+"%') AND";
-        }
-        if(!us.equals("")){
-            condition1+=" felhasznalo LIKE ('%"+us+"%') AND";
-        }
-        
-        condition1=condition1.substring(0,condition1.length()-4);
+        }   
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");

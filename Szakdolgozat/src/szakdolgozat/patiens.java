@@ -162,8 +162,7 @@ public class patiens extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(info)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Back)
-                        .addGap(20, 20, 20))
+                        .addComponent(Back))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -207,19 +206,14 @@ public class patiens extends javax.swing.JFrame {
                                     .addComponent(upload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(reset))))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addComponent(Back)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(patiens)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -261,10 +255,13 @@ public class patiens extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(delete)
-                            .addComponent(reset))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(info)
-                        .addGap(28, 28, 28))))
+                            .addComponent(reset)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(info)
+                    .addComponent(Back))
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -357,46 +354,47 @@ public class patiens extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String fr=frontbox.getSelectedItem().toString();
-        String su=surname.getText();
-        String fi=firstname.getText();
-        String mi=middlename.getText();
-        String da=birthdate.getText();
-        String po=postcode.getText();
-        String ci=city.getText();
-        String ot=other.getText();
+        String su=surname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        surname.setText(su);
+        String fi=firstname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        firstname.setText(fi);
+        String mi=middlename.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        middlename.setText(mi);
+        String da=birthdate.getText().replaceAll("[.]", "-");        
+        da=da.replaceAll("[^0-9/:/% /-]", "");
+        birthdate.setText(da);
+        String po=postcode.getText().replaceAll("[^0-9]","");
+        postcode.setText(po);
+        String ci=city.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        city.setText(ci);
+        String ot=other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]","");
+        other.setText(ot);
+        String sqlparancs="SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? ";
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
             TablaTorol(table);
             DefaultTableModel model=(DefaultTableModel) table.getModel();
-            String conditions="WHERE";
-            if(!fr.equals("")){
-                conditions+="  elotag LIKE ('"+fr+"') AND";
-            }
-            if(!su.equals("")){
-                conditions+=" vezeteknev LIKE ('%"+su+"%') AND";
-            }
-            if(!fi.equals("")){
-                conditions+=" keresztnev LIKE('%"+fi+"%') AND";
-            }
-            if(!mi.equals("")){
-                conditions+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
-            }if(!da.equals("")){
-                conditions+=" szuletesi_datum LIKE('%"+da+"%') AND";
-            }if(!po.equals("")){
-                conditions+=" iranyitoszam LIKE ('%"+po+"%') AND";
-            }if(!ci.equals("")){
-                conditions+=" telepules LIKE ('%"+ci+"%') AND";
-            }if(!ot.equals("")){
-                conditions+=" egyeb_cim LIKE ('%"+ot+"%') AND";
-            }
+            if(fr.equals(""))fr="%";
+            if(su.equals(""))su="%";
+            if(fi.equals(""))fi="%";
+            if(mi.equals(""))mi="%";
+            if(da.equals(""))da="%";
+            if(po.equals(""))po="%";
+            if(ci.equals(""))ci="%";
+            if(ot.equals(""))ot="%";
             
             
-            if(conditions.equals("WHERE"))conditions="";
-            else conditions=conditions.substring(0,conditions.length()-4);
-            
-            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id "+conditions);
+            PreparedStatement pst=con.prepareStatement(sqlparancs);
+            pst.setString(1,"%"+fr+"%");
+            pst.setString(2,"%"+su+"%");
+            pst.setString(3,"%"+fi+"%");
+            pst.setString(4,"%"+mi+"%");
+            pst.setString(5,"%"+da+"%");
+            pst.setString(6,"%"+po+"%");
+            pst.setString(7,"%"+ci+"%");
+            pst.setString(8,"%"+ot+"%");
+            ResultSet result=pst.executeQuery();
             String[] rekord=new String[8];
             while(result.next()){
                 
@@ -411,6 +409,9 @@ public class patiens extends javax.swing.JFrame {
                 model.addRow(rekord);
             }
             con.close();
+            info.setForeground(Color.blue);
+            info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");
+            
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         }
