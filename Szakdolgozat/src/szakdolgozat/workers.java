@@ -259,50 +259,68 @@ public class workers extends javax.swing.JFrame {
     }//GEN-LAST:event_nameActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String na=name.getText();
-        String jo=job.getText();
+        String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");;
+        String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");;
         String us=username.getText();
         StringTokenizer st;
         String fr=front.getSelectedItem().toString();
-        String su="%";
-        String fi="%";
-        String mi;        
+        String su="";
+        String fi="";
+        String mi="";        
         String condition1="WHERE elotag LIKE ('"+fr+"') AND";
-        st = new StringTokenizer(na," ");
-        if(st.countTokens()>0){
-               if (st.hasMoreTokens())su = st.nextToken();
-               if (st.hasMoreTokens())fi= st.nextToken();
-               condition1+=" vezeteknev LIKE ('%"+su+"%') AND keresztnev LIKE ('%"+fi+"%') AND";
-               if (st.hasMoreTokens()){ 
-               mi=st.nextToken();
-               condition1+=" masodik_keresztnev LIKE ('%"+mi+"%') AND";
-               }
+        String sqlparancs="SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, dolgozok.felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON beosztas.beosz_id=dolgozok.beosz_id INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id co1";
+        if(na.equals(""))na="%";
+        if(na.equals("%")){
+            su="%";
+            mi="%";
+            fi="%";
+            condition1 += " vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND";
+        }else{
+            st = new StringTokenizer(na, " ");
+            if (st.countTokens() > 0) {
+                if (st.hasMoreTokens()) {
+                    su = st.nextToken();
+                    condition1 += " vezeteknev LIKE ? AND";
+                }
+                if (st.hasMoreTokens()) {
+                    fi = st.nextToken();
+                }else fi="%";
+                condition1 += " keresztnev LIKE ? AND";
+                if (st.hasMoreTokens()) {
+                    mi = st.nextToken();                     
+                }else mi="%";
+                condition1 += " masodik_keresztnev LIKE ? AND";
+                
+            } 
         }       
         
         if(!jo.equals("")){
-            condition1+=" beosztas.megnevezes LIKE ('%"+jo+"%') AND";
-        }
+            condition1+=" beosztas.megnevezes LIKE ? AND";
+        }else{
+            jo="%";
+            condition1+=" beosztas.megnevezes LIKE ? AND";}
         if(!us.equals("")){
-            condition1+=" felhasznalo LIKE ('%"+us+"%') AND";
+            condition1+=" felhasznalo LIKE ? AND";
+        }else{ us="%";
+            condition1+=" felhasznalo LIKE ? AND";
         }
         
+        
         if(condition1.equals("WHERE"))condition1="";
-            else condition1=condition1.substring(0,condition1.length()-4);
-        /*if(condition2.equals("AND"))condition2="";
-            else condition2=condition2.substring(0,condition2.length()-4);
-        if(condition3.equals("AND"))condition3="";
-            else{ condition3=condition3.substring(0,condition3.length()-4);
-        condition3=condition3.substring(4,condition3.length());}*/
+            else condition1=condition1.substring(0,condition1.length()-4); 
+        sqlparancs = sqlparancs.replace("co1", condition1);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();            
+            PreparedStatement pst=con.prepareStatement(sqlparancs);  
+            pst.setString(1,"%"+su+"%");
+            pst.setString(2,"%"+fi+"%");
+            pst.setString(3,"%"+mi+"%");
+            pst.setString(4,"%"+jo+"%");
+            pst.setString(5,"%"+us+"%");
             TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            Statement stmt2=con.createStatement();
-            Statement stmt3=con.createStatement();            
-            //SELECT * FROM `latogatas` WHERE b_id in (Select szem_id from szemely condition2) and l_id in (Select szem_id from szemely condition1) and condition3
-            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, dolgozok.felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON beosztas.beosz_id=dolgozok.beosz_id INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id "+condition1);
+            DefaultTableModel model=(DefaultTableModel) table.getModel(); 
+            ResultSet result=pst.executeQuery();
             String[] rekord=new String[3];
             while(result.next()){
                 rekord[0]=result.getString("elotag")+" "+result.getString("vezeteknev")+" "+result.getString("keresztnev")+" "+result.getString("masodik_keresztnev");
@@ -310,10 +328,14 @@ public class workers extends javax.swing.JFrame {
                 rekord[2]=result.getString("felhasznalo");
                 model.addRow(rekord);
             }
+            if(model.getRowCount()==0){
+                info.setForeground(Color.red);
+                info.setText("A dolgozó nincs az adatbázisban!");
+            }
          
             con.close();
          }
-        catch(Exception e){System.err.println("Hiba: "+e);
+        catch(Exception e){System.err.println("Hiba: "+e+sqlparancs);
             
         }   
     }//GEN-LAST:event_searchActionPerformed
@@ -484,7 +506,8 @@ public class workers extends javax.swing.JFrame {
                 rs2.next();
                 rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
                 rekord[1]=rs2.getString("megnevezes");
-                rekord[2]=rs2.getString("felhasznalo");
+                if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
+                else rekord[2]=rs2.getString("felhasznalo");
                 model.addRow(rekord);
             }
             con.close();
