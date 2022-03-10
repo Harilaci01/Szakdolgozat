@@ -306,6 +306,7 @@ public class cures extends javax.swing.JFrame {
         String condition2 = "WHERE elotag LIKE ? AND";
         String condition3 = "AND";
         String sqlparancs = "SELECT kez_id, b_id, kezelo_orvos, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id WHERE b_id in (Select szem_id from szemely co1 ) and kezelo_orvos in (Select szem_id from szemely co2 ) co3";
+        if(pa.equals(""))pa="%";
         if(pa.equals("%")){
             su="%";
             mi="%";
@@ -316,17 +317,20 @@ public class cures extends javax.swing.JFrame {
             if (st.countTokens() > 0) {
                 if (st.hasMoreTokens()) {
                     su = st.nextToken();
+                    condition1 += " vezeteknev LIKE ? AND";
                 }
                 if (st.hasMoreTokens()) {
                     fi = st.nextToken();
-                }
-                condition1 += " vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+                }else fi="%";
+                condition1 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
-                    mi = st.nextToken();                    
+                    mi = st.nextToken();                     
                 }else mi="%";
                 condition1 += " masodik_keresztnev LIKE ? AND";
+                
             } 
         }    
+        if(dr.equals(""))dr="%";
         if(dr.equals("%")){
             su2="%";
             mi2="%";
@@ -338,15 +342,17 @@ public class cures extends javax.swing.JFrame {
             if (st.countTokens() > 0) {
                 if (st.hasMoreTokens()) {
                     su2 = st.nextToken();
+                    condition2 += " vezeteknev LIKE ? AND";
                 }
                 if (st.hasMoreTokens()) {
                     fi2 = st.nextToken();
-                }
-                condition2 += " vezeteknev LIKE ? AND keresztnev LIKE ? AND";
+                }else fi2="%";
+                condition1 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
                     mi2 = st.nextToken();                    
                 }else mi2="%";
                 condition2 += " masodik_keresztnev LIKE ? AND";
+                
             }
         }if (be.equals("")) {
             be="%";
@@ -700,13 +706,9 @@ public class cures extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             Statement stmt2 = con.createStatement();
             Statement stmt3 = con.createStatement();
-            ResultSet result = pst.executeQuery();
-            System.err.println("SELECT kez_id, b_id, kezelo_orvos, betegseg.megnevezes ,gyogyszerek.nev, befekves, gyogyulas FROM kezeles INNER JOIN betegseg ON betegseg.bet_id=kezeles.bet_id INNER JOIN gyogyszerek ON gyogyszerek.gy_id=kezeles.gy_id WHERE b_id in (Select szem_id from szemely " + condition1 + ") and kezelo_orvos in (Select szem_id from szemely " + condition2 + ") " + condition3);
-             System.err.println(pst);
+            ResultSet result = pst.executeQuery();            
             String[] rekord = new String[7];
             while (result.next()) {
-                /*ResultSet rs2=stmt3.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.kezelo_orvos WHERE ");
-                ResultSet rs1=stmt2.executeQuery("SELECT szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN kezeles ON szemely.szem_id=kezeles.b_id WHERE b_id='"++"'");*/
                 ResultSet rs1 = stmt2.executeQuery("SELECT * FROM szemely where szem_id=" + result.getInt("b_id"));
                 ResultSet rs2 = stmt3.executeQuery("SELECT * FROM szemely where szem_id=" + result.getInt("kezelo_orvos"));
                 rs1.next();
@@ -731,7 +733,7 @@ public class cures extends javax.swing.JFrame {
 
             con.close();
         } catch (Exception e) {
-            System.err.println("Hiba: " + e+ " "+sqlparancs);
+            System.err.println("Hiba: " + e);
             info.setForeground(Color.red);
             info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
         }
@@ -791,10 +793,22 @@ public class cures extends javax.swing.JFrame {
             }
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
-            String testparancs = "SELECT * FROM kezeles WHERE befekves=? AND gyogyulas=?";
+            String testparancs = "SELECT * FROM kezeles WHERE befekves=? AND gyogyulas=? AND b_id=(SELECT szemely.szem_id FROM szemely WHERE szem_id=?)";
+            String sqlparancs2 = "SELECT szem_id FROM szemely WHERE elotag='" + fr + "' AND vezeteknev=? AND keresztnev=? co1";
+            sqlparancs2 = sqlparancs2.replace("co1", condition1);
+            PreparedStatement pst2 = con.prepareStatement(sqlparancs2);
+                pst2.setString(1, su);
+                pst2.setString(2, fi);
+                if (!mi.equals("")) {
+                    pst2.setString(3, mi);
+                }
+                ResultSet rs = pst2.executeQuery();
+                rs.next();
+                String beteg_id = rs.getString("szem_id");
             PreparedStatement test = con.prepareStatement(testparancs);
             test.setString(1, strt);
             test.setString(2, end);
+            test.setString(3, beteg_id);
             ResultSet result = test.executeQuery();
             if (dr.equals("") || pa.equals("") || strt.equals("") || end.equals("") || gy.equals("") || be.equals("")) {
                 info.setForeground(Color.red);
@@ -803,17 +817,17 @@ public class cures extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("A kezelés már szerepel a listában!");
             } else {
-                String sqlparancs2 = "SELECT szem_id FROM szemely WHERE elotag='" + fr + "' AND vezeteknev=? AND keresztnev=? co1";
-                String sqlparancs3 = "SELECT szem_id FROM szemely WHERE elotag='" + fr2 + "' AND vezeteknev=? AND keresztnev=? co2";
+                sqlparancs2 = "SELECT szem_id FROM szemely WHERE elotag='" + fr + "' AND vezeteknev=? AND keresztnev=? co1";
                 sqlparancs2 = sqlparancs2.replace("co1", condition1);
-                sqlparancs3 = sqlparancs3.replace("co2", condition2);
-                PreparedStatement pst2 = con.prepareStatement(sqlparancs2);
+                pst2 = con.prepareStatement(sqlparancs2);
                 pst2.setString(1, su);
                 pst2.setString(2, fi);
                 if (!mi.equals("")) {
                     pst2.setString(3, mi);
                 }
-                ResultSet rs = pst2.executeQuery();
+                rs = pst2.executeQuery();
+                String sqlparancs3 = "SELECT szem_id FROM szemely WHERE elotag='" + fr2 + "' AND vezeteknev=? AND keresztnev=? co2";
+                sqlparancs3 = sqlparancs3.replace("co2", condition2);
                 PreparedStatement pst3 = con.prepareStatement(sqlparancs3);
                 pst3.setString(1, su2);
                 pst3.setString(2, fi2);
