@@ -166,8 +166,8 @@ public class workers extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -205,7 +205,7 @@ public class workers extends javax.swing.JFrame {
                                                 .addComponent(reset))))))
                             .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(title))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,8 +259,8 @@ public class workers extends javax.swing.JFrame {
     }//GEN-LAST:event_nameActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");;
-        String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");;
+        String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");
         String us=username.getText();
         StringTokenizer st;
         String fr=front.getSelectedItem().toString();
@@ -309,6 +309,10 @@ public class workers extends javax.swing.JFrame {
         if(condition1.equals("WHERE"))condition1="";
             else condition1=condition1.substring(0,condition1.length()-4); 
         sqlparancs = sqlparancs.replace("co1", condition1);
+        if(na.equals("%")&&jo.equals("%")&&us.equals("%")){
+                info.setForeground(Color.blue);
+                info.setText("Kérem adjon meg adatokat a kereséshez.");
+        }     
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -332,6 +336,7 @@ public class workers extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("A dolgozó nincs az adatbázisban!");
             }
+            
          
             con.close();
          }
@@ -425,8 +430,8 @@ public class workers extends javax.swing.JFrame {
     }//GEN-LAST:event_workersActionPerformed
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
-        String na=name.getText();
-        String jo=job.getText();
+        String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
+        String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");
         String us=username.getText();       
         String pw=String.valueOf(password.getPassword());
         StringTokenizer st;
@@ -435,6 +440,7 @@ public class workers extends javax.swing.JFrame {
         String fi="%";
         String mi="";        
         String condition1="WHERE elotag LIKE ('"+fr+"') AND"; 
+        String testP="SELECT * FROM szemely WHERE elotag=? AND vezeteknev=? AND keresztnev=? AND masodik_keresztnev=?";
         st = new StringTokenizer(na," ");
         if(st.countTokens()>0){
                if (st.hasMoreTokens())su = st.nextToken();
@@ -453,33 +459,63 @@ public class workers extends javax.swing.JFrame {
             condition1+=" felhasznalo LIKE ('%"+us+"%') AND";
         }
         
-        if(condition1.equals("WHERE"))condition1="";
-            else condition1=condition1.substring(0,condition1.length()-4);
+        condition1=condition1.substring(0,condition1.length()-4);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
             Statement stmt2=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) table.getModel();
-           ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+            PreparedStatement test=con.prepareStatement(testP);
+            test.setString(1,fr);
+            test.setString(2,su);
+            test.setString(3,fi);
+            test.setString(4,mi);
+           ResultSet result=test.executeQuery();
+           String insTestP="INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES (?,?,?,?)";
+           PreparedStatement insTest=con.prepareStatement(insTestP);
+            insTest.setString(1,fr);
+            insTest.setString(2,su);
+            insTest.setString(3,fi);
+            insTest.setString(4,mi);
             if(result.next()){                
-                result=stmt.executeQuery("SELECT d_id FROM dolgozok INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
+                result=stmt.executeQuery("SELECT d_id FROM dolgozok INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'");
                 if(!result.next()){
-                stmt.executeUpdate("INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ('%"+jo+"%')),'"+us+"','"+pw+"')");
+                    String insP="INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ?),?,?)";
+                    PreparedStatement ins=con.prepareStatement(insP);
+                    ins.setString(1,"%"+jo+"%");
+                    ins.setString(2, us);
+                    ins.setString(3,pw);
+                    ins.executeUpdate();
+                    password.setVisible(false);     
+                    confirm.setVisible(false);
+                    password.setText("");
+                    TablaTorol(table);
+                    TablaFeltolt(table);
+                    info.setForeground(Color.blue);
+                    info.setText("Sikeres feltöltés!");
                 }else {
                     info.setForeground(Color.red);
                     info.setText("A személy már szerepel a listában!"); 
+                    password.setText("");
                 }
             }
             
-            else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0){
-                stmt.executeUpdate("INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ('%"+jo+"%')),'"+us+"','"+pw+"')");
-                info.setText("");
-            }
-            password.setVisible(false);     
-            confirm.setVisible(false);
-            TablaTorol(table);
-            TablaFeltolt(table);
+            else if(insTest.executeUpdate()>0){
+                String insDolgP="INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ?),?,?)";
+                PreparedStatement insDolg=con.prepareStatement(insDolgP);
+                insDolg.setString(1,"%"+jo+"%");
+                insDolg.setString(2, us);
+                insDolg.setString(3,pw);
+                insDolg.executeUpdate();
+                info.setForeground(Color.blue);
+                info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
+                password.setVisible(false);     
+                confirm.setVisible(false);
+                TablaTorol(table);
+                TablaFeltolt(table);
+                password.setText("");
+            }           
         
             
        }
