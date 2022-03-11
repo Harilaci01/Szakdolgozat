@@ -10,7 +10,8 @@ public class home extends javax.swing.JFrame {
     /**
      * Creates new form home
      */
-    public home() {
+    
+    public home() {          
         initComponents();
         switch(id){
             case 2:
@@ -27,8 +28,14 @@ public class home extends javax.swing.JFrame {
                 workers.setVisible(false);
                 logins.setVisible(false);
                 break;
+            default:
+                workers.setVisible(true);
+                logins.setVisible(true);
+                visitors.setVisible(true);
+                drugs.setVisible(true);
+                patiens.setVisible(true);
                 
-        }
+        }          
         
     }
 
@@ -52,6 +59,7 @@ public class home extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fő oldal");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         logout.setText("Kijelentkezés");
         logout.addActionListener(new java.awt.event.ActionListener() {

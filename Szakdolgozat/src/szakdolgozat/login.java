@@ -1,8 +1,5 @@
 package szakdolgozat;
 import java.sql.*;
-import javax.swing.JOptionPane;
-import java.io.*;
-import java.util.ArrayList;
 import java.awt.Color;
 import static szakdolgozat.Szakdolgozat.id;
 public class login extends javax.swing.JFrame {
