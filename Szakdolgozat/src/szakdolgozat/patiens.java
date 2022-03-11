@@ -304,8 +304,7 @@ public class patiens extends javax.swing.JFrame {
                 pst.setString(2, "%" + su + "%");
                 pst.setString(3, "%" + fi + "%");
                 pst.setString(4, "%" + mi + "%");
-                ResultSet result = pst.executeQuery();
-                System.out.println(pst);
+                ResultSet result = pst.executeQuery();                
                 String insTestP = "INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES (?,?,?,?)";
                 PreparedStatement insTest = con.prepareStatement(insTestP);
                 insTest.setString(1, fr);
@@ -313,16 +312,17 @@ public class patiens extends javax.swing.JFrame {
                 insTest.setString(3, fi);
                 insTest.setString(4, mi);
                 if (result.next()) {
-                    result = stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
-                    System.out.println("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag=" + result.getString("elotag") + "AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
-                    if (!result.next()) {
-                        String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),?,?,?,?)";
+                   ResultSet result2 = stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
+                    if (!result2.next()) {
+                        String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'),?,?,?,?)";
                         PreparedStatement insB = con.prepareStatement(ins);
                         insB.setString(1, da);
                         insB.setString(2, po);
                         insB.setString(3, ci);
                         insB.setString(4, ot);
                         insB.executeUpdate();
+                        info.setForeground(Color.blue);
+                    info.setText("Sikeres feltöltés!");
                     } else {
                         info.setForeground(Color.red);
                         info.setText("A személy már szerepel a listában!");

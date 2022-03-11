@@ -457,8 +457,7 @@ public class workers extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            Statement stmt2=con.createStatement();
+            Statement stmt=con.createStatement();            
             DefaultTableModel model=(DefaultTableModel) table.getModel();
             PreparedStatement test=con.prepareStatement(testP);
             test.setString(1,fr);
@@ -473,9 +472,9 @@ public class workers extends javax.swing.JFrame {
             insTest.setString(3,fi);
             insTest.setString(4,mi);
             if(result.next()){                
-                result=stmt.executeQuery("SELECT d_id FROM dolgozok INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'");
-                if(!result.next()){
-                    String insP="INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ?),?,?)";
+                ResultSet result2=stmt.executeQuery("SELECT d_id FROM dolgozok INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'");
+                if(!result2.next()){
+                    String insP="INSERT INTO dolgozok (d_id, beosz_id, felhasznalo, jelszo) VALUES ((SELECT szem_id FROM szemely WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'),(SELECT beosz_id FROM beosztas WHERE beosztas.megnevezes LIKE ?),?,?)";
                     PreparedStatement ins=con.prepareStatement(insP);
                     ins.setString(1,"%"+jo+"%");
                     ins.setString(2, us);
