@@ -24,9 +24,9 @@ public class patiens extends javax.swing.JFrame {
     public patiens() {
         initComponents();
         TablaFeltolt(table);
-        switch(id){
+        switch (id) {
             case 2:
-                delete.setVisible(false);                
+                delete.setVisible(false);
                 break;
             case 3:
                 upload.setVisible(false);
@@ -36,7 +36,7 @@ public class patiens extends javax.swing.JFrame {
                 upload.setVisible(false);
                 delete.setVisible(false);
                 break;
-                
+
         }
         ElotagBeszur(frontbox);
     }
@@ -273,147 +273,182 @@ public class patiens extends javax.swing.JFrame {
     }//GEN-LAST:event_BackActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
-         String fr=frontbox.getSelectedItem().toString();
-         String su=surname.getText();
-         String fi=firstname.getText();
-         String mi=middlename.getText();
-         String da=birthdate.getText();
-         String po=postcode.getText();
-         String ci=city.getText();
-         String ot=other.getText();
-         info.setText("");
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            ResultSet result=stmt.executeQuery("SELECT * FROM szemely WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
-            if(result.next()){                
-                result=stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='"+fr+"' AND vezeteknev='"+su+"' AND keresztnev='"+fi+"' AND masodik_keresztnev='"+mi+"'");
-                if(!result.next()){
-                stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
-                }else {
-                    info.setForeground(Color.red);
-                    info.setText("A személy már szerepel a listában!"); 
+        String fr = frontbox.getSelectedItem().toString();
+        String su = surname.getText().replaceAll("[^A-Za-záéőúűóüöí /-]", "");;
+        String fi = firstname.getText().replaceAll("[^A-Za-záéőúűóüöí /-]", "");;
+        String mi = middlename.getText().replaceAll("[^A-Za-záéőúűóüöí /-]", "");;
+        String da = birthdate.getText().replaceAll("[.]", "-");
+        da = da.replaceAll("[^0-9/: /-]", "");
+        String po = postcode.getText().replaceAll("[^0-9]", "");
+        String ci = city.getText().replaceAll("[^A-Za-záéőúűóüöí /-]", "");
+        String ot = other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /./-]", "");
+        surname.setText(su);
+        firstname.setText(fi);
+        birthdate.setText(da);
+        postcode.setText(po);
+        city.setText(ci);
+        other.setText(ot);
+        if (su.equals("") || fi.equals("") || da.equals("") || po.equals("") || ci.equals("") || ot.equals("")) {
+            info.setForeground(Color.red);
+            info.setText("Valamelyik mező üres.(A második keresztneven kívül)");
+        } else {
+            try {
+                info.setForeground(Color.blue);
+                info.setText("A helytelen karaktereket eltávolítottuk.");
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+                Statement stmt = con.createStatement();
+                String sqlparancs = "SELECT * FROM szemely WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ?";
+                PreparedStatement pst = con.prepareStatement(sqlparancs);
+                pst.setString(1, fr);
+                pst.setString(2, "%" + su + "%");
+                pst.setString(3, "%" + fi + "%");
+                pst.setString(4, "%" + mi + "%");
+                ResultSet result = pst.executeQuery();
+                System.out.println(pst);
+                String insTestP = "INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES (?,?,?,?)";
+                PreparedStatement insTest = con.prepareStatement(insTestP);
+                insTest.setString(1, fr);
+                insTest.setString(2, su);
+                insTest.setString(3, fi);
+                insTest.setString(4, mi);
+                if (result.next()) {
+                    result = stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
+                    System.out.println("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag=" + result.getString("elotag") + "AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
+                    if (!result.next()) {
+                        String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),?,?,?,?)";
+                        PreparedStatement insB = con.prepareStatement(ins);
+                        insB.setString(1, da);
+                        insB.setString(2, po);
+                        insB.setString(3, ci);
+                        insB.setString(4, ot);
+                        insB.executeUpdate();
+                    } else {
+                        info.setForeground(Color.red);
+                        info.setText("A személy már szerepel a listában!");
+                    }
+                } else if (insTest.executeUpdate() > 0) {
+                    String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),?,?,?,?)";
+                    PreparedStatement insB = con.prepareStatement(ins);
+                    insB.setString(1, da);
+                    insB.setString(2, po);
+                    insB.setString(3, ci);
+                    insB.setString(4, ot);
+                    insB.executeUpdate();
+                    info.setForeground(Color.blue);
+                    info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
                 }
+                surname.setText("");
+                firstname.setText("");
+                middlename.setText("");
+                birthdate.setText("");
+                postcode.setText("");
+                city.setText("");
+                other.setText("");
+                TablaTorol(table);
+                TablaFeltolt(table);
+            } catch (Exception e) {
+                System.err.println("Hiba: " + e);
             }
-            
-            else if(stmt.executeUpdate("INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES ('"+fr+"','"+su+"','"+fi+"','"+mi+"')")>0)
-                stmt.executeUpdate("INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),'"+da+"','"+po+"','"+ci+"','"+ot+"')");
-            
-            surname.setText("");
-            firstname.setText("");
-            middlename.setText("");
-            birthdate.setText("");
-            postcode.setText("");
-            city.setText("");
-            other.setText("");
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int ssz=model.getRowCount();
-            for (int i = 0; i < ssz; i++) {
-                model.removeRow(0);
-            }
-            result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
-            String[] rekord=new String[8];
-            while(result.next()){
-                rekord[0]=result.getString("elotag");
-                rekord[1]=result.getString("vezeteknev");
-                rekord[2]=result.getString("keresztnev");
-                rekord[3]=result.getString("masodik_keresztnev");
-                rekord[4]=result.getString("szuletesi_datum");
-                rekord[5]=result.getString("iranyitoszam");
-                rekord[6]=result.getString("telepules");
-                rekord[7]=result.getString("egyeb_cim");
-                model.addRow(rekord);
-            }
-            con.close();
-        }
-        
-        
-        catch(Exception e){System.err.println("Hiba: "+e);
         }
     }//GEN-LAST:event_uploadActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int sszam=table.getSelectedRow();
-            String torles[]=new String[8];
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+            Statement stmt = con.createStatement();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int sszam = table.getSelectedRow();
+            String torles[] = new String[8];
             for (int i = 0; i < 8; i++) {
-                torles[i]=table.getValueAt(sszam,i).toString();
-            }            
-            stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+                torles[i] = table.getValueAt(sszam, i).toString();
+            }
+            stmt.executeUpdate("DELETE FROM szemely WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
             TablaTorol(table);
             TablaFeltolt(table);
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
         }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        String fr=frontbox.getSelectedItem().toString();
-        String su=surname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        String fr = frontbox.getSelectedItem().toString();
+        String su = surname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         surname.setText(su);
-        String fi=firstname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        String fi = firstname.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         firstname.setText(fi);
-        String mi=middlename.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        String mi = middlename.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         middlename.setText(mi);
-        String da=birthdate.getText().replaceAll("[.]", "-");        
-        da=da.replaceAll("[^0-9/:/% /-]", "");
+        String da = birthdate.getText().replaceAll("[.]", "-");
+        da = da.replaceAll("[^0-9/:/% /-]", "");
         birthdate.setText(da);
-        String po=postcode.getText().replaceAll("[^0-9]","");
+        String po = postcode.getText().replaceAll("[^0-9]", "");
         postcode.setText(po);
-        String ci=city.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]","");
+        String ci = city.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         city.setText(ci);
-        String ot=other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]","");
+        String ot = other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]", "");
         other.setText(ot);
-        String sqlparancs="SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? ";
-        try{
+        String sqlparancs = "SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? ";
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            if(fr.equals(""))fr="%";
-            if(su.equals(""))su="%";
-            if(fi.equals(""))fi="%";
-            if(mi.equals(""))mi="%";
-            if(da.equals(""))da="%";
-            if(po.equals(""))po="%";
-            if(ci.equals(""))ci="%";
-            if(ot.equals(""))ot="%";
-            
-            
-            PreparedStatement pst=con.prepareStatement(sqlparancs);
-            pst.setString(1,"%"+fr+"%");
-            pst.setString(2,"%"+su+"%");
-            pst.setString(3,"%"+fi+"%");
-            pst.setString(4,"%"+mi+"%");
-            pst.setString(5,"%"+da+"%");
-            pst.setString(6,"%"+po+"%");
-            pst.setString(7,"%"+ci+"%");
-            pst.setString(8,"%"+ot+"%");
-            ResultSet result=pst.executeQuery();
-            String[] rekord=new String[8];
-            while(result.next()){
-                
-                rekord[0]=result.getString("elotag");
-                rekord[1]=result.getString("vezeteknev");
-                rekord[2]=result.getString("keresztnev");
-                rekord[3]=result.getString("masodik_keresztnev");
-                rekord[4]=result.getString("szuletesi_datum");
-                rekord[5]=result.getString("iranyitoszam");
-                rekord[6]=result.getString("telepules");
-                rekord[7]=result.getString("egyeb_cim");
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            if (fr.equals("")) {
+                fr = "%";
+            }
+            if (su.equals("")) {
+                su = "%";
+            }
+            if (fi.equals("")) {
+                fi = "%";
+            }
+            if (mi.equals("")) {
+                mi = "%";
+            }
+            if (da.equals("")) {
+                da = "%";
+            }
+            if (po.equals("")) {
+                po = "%";
+            }
+            if (ci.equals("")) {
+                ci = "%";
+            }
+            if (ot.equals("")) {
+                ot = "%";
+            }
+
+            PreparedStatement pst = con.prepareStatement(sqlparancs);
+            pst.setString(1, "%" + fr + "%");
+            pst.setString(2, "%" + su + "%");
+            pst.setString(3, "%" + fi + "%");
+            pst.setString(4, "%" + mi + "%");
+            pst.setString(5, "%" + da + "%");
+            pst.setString(6, "%" + po + "%");
+            pst.setString(7, "%" + ci + "%");
+            pst.setString(8, "%" + ot + "%");
+            ResultSet result = pst.executeQuery();
+            String[] rekord = new String[8];
+            while (result.next()) {
+
+                rekord[0] = result.getString("elotag");
+                rekord[1] = result.getString("vezeteknev");
+                rekord[2] = result.getString("keresztnev");
+                rekord[3] = result.getString("masodik_keresztnev");
+                rekord[4] = result.getString("szuletesi_datum");
+                rekord[5] = result.getString("iranyitoszam");
+                rekord[6] = result.getString("telepules");
+                rekord[7] = result.getString("egyeb_cim");
                 model.addRow(rekord);
             }
             con.close();
             info.setForeground(Color.blue);
             info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");
-            
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
+
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
         }
     }//GEN-LAST:event_searchActionPerformed
 
@@ -428,59 +463,63 @@ public class patiens extends javax.swing.JFrame {
         city.setText("");
         other.setText("");
     }//GEN-LAST:event_resetActionPerformed
-    public static void TablaFeltolt(JTable JTable){
-        try{
+    public static void TablaFeltolt(JTable JTable) {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
-            ResultSet result=stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
-            String[] rekord=new String[8];
-            while(result.next()){
-                rekord[0]=result.getString("elotag");
-                rekord[1]=result.getString("vezeteknev");
-                rekord[2]=result.getString("keresztnev");
-                rekord[3]=result.getString("masodik_keresztnev");
-                rekord[4]=result.getString("szuletesi_datum");
-                rekord[5]=result.getString("iranyitoszam");
-                rekord[6]=result.getString("telepules");
-                rekord[7]=result.getString("egyeb_cim");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+            Statement stmt = con.createStatement();
+            DefaultTableModel model = (DefaultTableModel) JTable.getModel();
+            ResultSet result = stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
+            String[] rekord = new String[8];
+            while (result.next()) {
+                rekord[0] = result.getString("elotag");
+                rekord[1] = result.getString("vezeteknev");
+                rekord[2] = result.getString("keresztnev");
+                rekord[3] = result.getString("masodik_keresztnev");
+                rekord[4] = result.getString("szuletesi_datum");
+                rekord[5] = result.getString("iranyitoszam");
+                rekord[6] = result.getString("telepules");
+                rekord[7] = result.getString("egyeb_cim");
                 model.addRow(rekord);
             }
             con.close();
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
         }
     }
-    public static void TablaTorol(JTable JTable){
-        try{
-            DefaultTableModel model=(DefaultTableModel) JTable.getModel();
-            int ssz=model.getRowCount();
+
+    public static void TablaTorol(JTable JTable) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) JTable.getModel();
+            int ssz = model.getRowCount();
             for (int i = 0; i < ssz; i++) {
                 model.removeRow(0);
             }
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
         }
     }
-    public static void ElotagBeszur(JComboBox belist){
-        try{
+
+    public static void ElotagBeszur(JComboBox belist) {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            String sqlparancs="SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
-            PreparedStatement pst=con.prepareStatement(sqlparancs);
-            ResultSet rs=pst.executeQuery();
-            ArrayList<String> elotagok=new ArrayList<String>();
-            while(rs.next())elotagok.add(rs.getString("elotag"));
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+            String sqlparancs = "SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
+            PreparedStatement pst = con.prepareStatement(sqlparancs);
+            ResultSet rs = pst.executeQuery();
+            ArrayList<String> elotagok = new ArrayList<String>();
+            while (rs.next()) {
+                elotagok.add(rs.getString("elotag"));
+            }
             con.close();
             for (int i = 0; i < elotagok.size(); i++) {
                 belist.addItem(elotagok.get(i));
             }
-        }
-        catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
+
     /**
      * @param args the command line arguments
      */
