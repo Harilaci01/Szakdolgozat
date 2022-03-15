@@ -660,7 +660,7 @@ public class visitors extends javax.swing.JFrame {
         String mi="";
         String mi2="";
         int l_id,b_id;
-        String sqlparancs="SELECT * FROM latogatas WHERE bejelentkezes=? AND tavozas=?";
+        String sqlparancs="SELECT * FROM latogatas WHERE bejelentkezes=? AND tavozas=? AND b_id=? AND l_id=?";
         String sqlparancs2="SELECT szem_id FROM szemely WHERE elotag='"+fr+"' AND vezeteknev=? AND keresztnev=? co1";
         String sqlparancs3="SELECT szem_id FROM szemely WHERE elotag='"+fr2+"' AND vezeteknev=? AND keresztnev=? co2";    
         String sqlparancs4="";
@@ -691,19 +691,7 @@ public class visitors extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("Valamelyik mező üres!"); 
             } else{
-                PreparedStatement pst=con.prepareStatement(sqlparancs);
-                pst.setString(1, ar);
-                pst.setString(2, ex);
-                ResultSet result=pst.executeQuery();
-                if(result.next()){
-                    info.setForeground(Color.red);
-                    info.setText("A látogatás már szerepel a listában!"); 
-                }else if(vi.equals(pa)){
-                    info.setForeground(Color.red);
-                    info.setText("A két személy nem lehet ugyan az!"); 
-                }          
-                else{
-                    PreparedStatement pst2=con.prepareStatement(sqlparancs2);
+                PreparedStatement pst2=con.prepareStatement(sqlparancs2);
                     PreparedStatement pst3=con.prepareStatement(sqlparancs3);
                     pst2.setString(1,su);
                     pst2.setString(2,fi);
@@ -715,14 +703,29 @@ public class visitors extends javax.swing.JFrame {
                     ResultSet rs2=pst3.executeQuery();
                     if(!rs.next()){
                         info.setForeground(Color.red);
-                        info.setText("Az orvos nincs az adatbázisban!"); 
+                        info.setText("A látogató nincs az adatbázisban!"); 
                     } else 
                     if(!rs2.next()){
                         info.setForeground(Color.red);
-                        info.setText("A beteg nincs az adatbázisban!");                     
-                    }else{
+                        info.setText("A beteg nincs az adatbázisban!"); }
+                    else{
                     l_id=rs.getInt("szem_id");
                     b_id=rs2.getInt("szem_id");
+                        PreparedStatement pst = con.prepareStatement(sqlparancs);
+                        pst.setString(1, ar);
+                        pst.setString(2, ex);
+                        pst.setString(3, rs2.getString("szem_id"));
+                        pst.setString(4, rs.getString("szem_id"));
+                        ResultSet result = pst.executeQuery();
+
+                        if (result.next()) {
+                            info.setForeground(Color.red);
+                            info.setText("A látogatás már szerepel a listában!");
+                        } else if (vi.equals(pa)) {
+                            info.setForeground(Color.red);
+                            info.setText("A két személy nem lehet ugyan az!"); 
+                }          
+                else{                    
                     sqlparancs4="INSERT INTO latogatas (l_id, b_id, bejelentkezes, tavozas) VALUES ('"+l_id+"','"+b_id+"',?,?)";
                     PreparedStatement pst4=con.prepareStatement(sqlparancs4);
                     pst4.setString(1, ar);
@@ -736,6 +739,7 @@ public class visitors extends javax.swing.JFrame {
                     info.setText("A látogatás feltöltése sikeres!"); }
                 }
             }
+            
             TablaTorol(table);
             TablaFeltolt(table);
             con.close();

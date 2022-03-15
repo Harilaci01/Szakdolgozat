@@ -453,7 +453,11 @@ public class workers extends javax.swing.JFrame {
                mi=st.nextToken();
                
                }
-        }   
+        }
+        if(na.equals("")||jo.equals("")){
+            info.setForeground(Color.RED);
+            info.setText("A név és beosztás mező nem lehet üres!");
+        }
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");

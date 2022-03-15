@@ -369,6 +369,8 @@ public class patiens extends javax.swing.JFrame {
             TablaFeltolt(table);
         } catch (Exception e) {
             System.err.println("Hiba: " + e);
+            info.setForeground(Color.RED);
+            info.setText("Kérem jelöljön ki a törölendő sort.");
         }
     }//GEN-LAST:event_deleteActionPerformed
 

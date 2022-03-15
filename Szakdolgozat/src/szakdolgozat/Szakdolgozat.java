@@ -8,7 +8,7 @@ public class Szakdolgozat {
 
     public static int id=0;
     public static void main(String[] args) {
-        // TODO code application logic here
+        new login().setVisible(true);
     }
     
 }
