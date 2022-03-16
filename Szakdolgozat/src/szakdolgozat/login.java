@@ -1,11 +1,13 @@
 package szakdolgozat;
 import java.sql.*;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 import static szakdolgozat.Szakdolgozat.id;
 public class login extends javax.swing.JFrame {
 
     public login() {
-        initComponents();
+        initComponents(); 
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
     }
 
     @SuppressWarnings("unchecked")
@@ -19,79 +21,43 @@ public class login extends javax.swing.JFrame {
         pw = new javax.swing.JPasswordField();
         button = new javax.swing.JButton();
         info = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bejelentkezés");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        title.setForeground(new java.awt.Color(0, 0, 204));
         title.setText("Bejelentkezés");
+        getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 11, -1, -1));
 
         username.setText("Felhasználónév:");
+        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 71, -1, -1));
 
         password.setText("Jelszó:");
+        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 123, -1, -1));
 
         user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userActionPerformed(evt);
             }
         });
+        getContentPane().add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 68, 155, -1));
+        getContentPane().add(pw, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 120, 155, -1));
 
+        button.setForeground(new java.awt.Color(0, 153, 0));
         button.setText("Belépés");
         button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonActionPerformed(evt);
             }
         });
+        getContentPane().add(button, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 98, 40));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(123, 123, 123)
-                                    .addComponent(title))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(username)
-                                        .addComponent(password))
-                                    .addGap(26, 26, 26)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(pw)
-                                        .addComponent(user))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(info)))
-                        .addGap(0, 105, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(title)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username)
-                    .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(password)
-                    .addComponent(pw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(info))
-                .addContainerGap(44, Short.MAX_VALUE))
-        );
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/doctor-ge3daf9422_640.jpg"))); // NOI18N
+        getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 270));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,8 +80,8 @@ public class login extends javax.swing.JFrame {
             }
             else{               
                 if(rs.next()){
-                   new home().setVisible(true);
                    id=rs.getInt("beosz_id");
+                   new home().setVisible(true);
                    dispose();    
                    sqlparancs="INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo=?))";
                    pst=con.prepareStatement(sqlparancs);
@@ -177,6 +143,7 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel background;
     private javax.swing.JButton button;
     private javax.swing.JLabel info;
     private javax.swing.JLabel password;

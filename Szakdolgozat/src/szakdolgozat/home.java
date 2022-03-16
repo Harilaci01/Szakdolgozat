@@ -1,4 +1,5 @@
 package szakdolgozat;
+import javax.swing.ImageIcon;
 import static szakdolgozat.Szakdolgozat.id;
 
 /**
@@ -13,6 +14,7 @@ public class home extends javax.swing.JFrame {
     
     public home() {          
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         switch(id){
             case 2:
                 workers.setVisible(false);

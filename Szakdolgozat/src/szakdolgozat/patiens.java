@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class patiens extends javax.swing.JFrame {
      */
     public patiens() {
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         TablaFeltolt(table);
         switch (id) {
             case 2:

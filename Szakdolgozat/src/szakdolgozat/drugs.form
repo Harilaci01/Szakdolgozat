@@ -84,10 +84,9 @@
                           <Component id="jScrollPane3" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="info" min="-2" max="-2" attributes="0"/>
-                          <Component id="search" min="-2" pref="77" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="search" min="-2" pref="90" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="info" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">

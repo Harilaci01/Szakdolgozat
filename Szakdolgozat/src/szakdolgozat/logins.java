@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +26,7 @@ public class logins extends javax.swing.JFrame {
      */
     public logins() {
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         TablaFeltolt(table);
         
     }

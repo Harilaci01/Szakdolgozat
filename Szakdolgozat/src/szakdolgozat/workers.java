@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +27,7 @@ public class workers extends javax.swing.JFrame {
 
     public workers() {
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         ElotagBeszur(front);
         TablaFeltolt(table);
         password.setVisible(false);
@@ -170,7 +172,7 @@ public class workers extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
@@ -184,8 +186,11 @@ public class workers extends javax.swing.JFrame {
                                                 .addComponent(jLabel1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                                                 .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(hire, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fire))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(hire, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(fire, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -205,7 +210,7 @@ public class workers extends javax.swing.JFrame {
                                                 .addComponent(confirm)
                                                 .addComponent(search)
                                                 .addComponent(reset))))))
-                            .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(title))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
@@ -270,6 +275,10 @@ public class workers extends javax.swing.JFrame {
         String fi="";
         String mi="";        
         String condition1="WHERE elotag LIKE ('"+fr+"') AND";
+        password.setVisible(false);
+        workers.setVisible(false);
+        database.setVisible(false);
+        confirm.setVisible(false);
         String sqlparancs="SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, dolgozok.felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON beosztas.beosz_id=dolgozok.beosz_id INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id co1";
         if(na.equals(""))na="%";
         if(na.equals("%")){
@@ -355,11 +364,17 @@ public class workers extends javax.swing.JFrame {
         TablaFeltolt(table);
         info.setForeground(Color.blue);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
+        password.setVisible(false);
+        workers.setVisible(false);
+        database.setVisible(false);
+        confirm.setVisible(false);
     }//GEN-LAST:event_resetActionPerformed
 
     private void hireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hireActionPerformed
         password.setVisible(true);     
         confirm.setVisible(true);
+        workers.setVisible(false);
+        database.setVisible(false);
         info.setForeground(Color.blue);
         info.setText("Kérem adjon meg egy jelszót");
     }//GEN-LAST:event_hireActionPerformed
@@ -369,11 +384,15 @@ public class workers extends javax.swing.JFrame {
         info.setText("Kérem válasszon honnan szeretné törölni a személyt");
         workers.setVisible(true);
         database.setVisible(true);
+        password.setVisible(false);        
+        confirm.setVisible(false);
         
     }//GEN-LAST:event_fireActionPerformed
 
     private void databaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_databaseActionPerformed
         StringTokenizer st;
+        password.setVisible(false);        
+        confirm.setVisible(false);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -401,6 +420,8 @@ public class workers extends javax.swing.JFrame {
 
     private void workersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workersActionPerformed
         StringTokenizer st;
+        password.setVisible(false);        
+        confirm.setVisible(false);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
@@ -433,6 +454,8 @@ public class workers extends javax.swing.JFrame {
     }//GEN-LAST:event_workersActionPerformed
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
+        workers.setVisible(false);
+        database.setVisible(false);
         String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
         String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");
         String us=username.getText();       

@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -29,6 +30,7 @@ public class visitors extends javax.swing.JFrame {
      */
     public visitors() {
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         TablaFeltolt(table);
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);

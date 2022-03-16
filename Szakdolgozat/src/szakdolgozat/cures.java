@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,8 +28,9 @@ public class cures extends javax.swing.JFrame {
     /**
      * Creates new form cures
      */
-    public cures() {
+    public cures() {        
         initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         ElotagBeszur(frontbox);
         TablaFeltolt(table);
         info.setForeground(Color.blue);
