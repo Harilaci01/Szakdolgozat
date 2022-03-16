@@ -71,9 +71,11 @@ public class workers extends javax.swing.JFrame {
         workers = new javax.swing.JButton();
         confirm = new javax.swing.JButton();
         title = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dolgozók");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Back.setText("Vissza");
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +83,7 @@ public class workers extends javax.swing.JFrame {
                 BackActionPerformed(evt);
             }
         });
+        getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(767, 316, -1, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,17 +95,25 @@ public class workers extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(table);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 389, 275));
+
         name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameActionPerformed(evt);
             }
         });
+        getContentPane().add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 36, 155, -1));
+        getContentPane().add(job, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 70, 155, -1));
+        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 103, 155, -1));
 
         jLabel1.setText("Név:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 39, -1, -1));
 
         jLabel2.setText("Beosztás:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 73, -1, -1));
 
         jLabel3.setText("Felhasználó:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 106, -1, -1));
 
         search.setText("Keresés");
         search.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +121,7 @@ public class workers extends javax.swing.JFrame {
                 searchActionPerformed(evt);
             }
         });
+        getContentPane().add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(721, 35, -1, -1));
 
         fire.setText("Elbocsát");
         fire.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +129,7 @@ public class workers extends javax.swing.JFrame {
                 fireActionPerformed(evt);
             }
         });
+        getContentPane().add(fire, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 175, 82, -1));
 
         hire.setText("Felvesz");
         hire.addActionListener(new java.awt.event.ActionListener() {
@@ -124,12 +137,14 @@ public class workers extends javax.swing.JFrame {
                 hireActionPerformed(evt);
             }
         });
+        getContentPane().add(hire, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 141, 82, -1));
 
         front.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frontActionPerformed(evt);
             }
         });
+        getContentPane().add(front, new org.netbeans.lib.awtextra.AbsoluteConstraints(499, 36, -1, -1));
 
         reset.setText("Összes dolgozó");
         reset.addActionListener(new java.awt.event.ActionListener() {
@@ -137,6 +152,9 @@ public class workers extends javax.swing.JFrame {
                 resetActionPerformed(evt);
             }
         });
+        getContentPane().add(reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(721, 69, -1, -1));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 236, 419, 18));
+        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 142, 155, -1));
 
         database.setText("Adatbázisból");
         database.addActionListener(new java.awt.event.ActionListener() {
@@ -144,6 +162,7 @@ public class workers extends javax.swing.JFrame {
                 databaseActionPerformed(evt);
             }
         });
+        getContentPane().add(database, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 175, -1, -1));
 
         workers.setText("Dolgozókból");
         workers.addActionListener(new java.awt.event.ActionListener() {
@@ -151,6 +170,7 @@ public class workers extends javax.swing.JFrame {
                 workersActionPerformed(evt);
             }
         });
+        getContentPane().add(workers, new org.netbeans.lib.awtextra.AbsoluteConstraints(721, 175, -1, -1));
 
         confirm.setText("Véglegesít");
         confirm.addActionListener(new java.awt.event.ActionListener() {
@@ -158,100 +178,14 @@ public class workers extends javax.swing.JFrame {
                 confirmActionPerformed(evt);
             }
         });
+        getContentPane().add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(721, 141, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Dolgozók");
+        getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3))
-                                        .addGap(58, 58, 58))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                                .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(hire, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(fire, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(database)
-                                        .addGap(95, 95, 95)
-                                        .addComponent(workers))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(Back)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(job, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                                                .addComponent(username)
-                                                .addComponent(name)
-                                                .addComponent(password))
-                                            .addGap(33, 33, 33)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(confirm)
-                                                .addComponent(search)
-                                                .addComponent(reset))))))
-                            .addComponent(info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(title))
-                .addContainerGap(76, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(front, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(search))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(job, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(reset))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(hire)
-                            .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(confirm))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fire)
-                            .addComponent(database)
-                            .addComponent(workers))
-                        .addGap(38, 38, 38)
-                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Back)
-                .addContainerGap())
-        );
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/workers.jpg"))); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -643,6 +577,7 @@ public class workers extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField job;
     private javax.swing.JTextField name;

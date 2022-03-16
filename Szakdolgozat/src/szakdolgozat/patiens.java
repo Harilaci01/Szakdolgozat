@@ -77,9 +77,12 @@ public class patiens extends javax.swing.JFrame {
         info = new javax.swing.JLabel();
         frontbox = new javax.swing.JComboBox<>();
         reset = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Betegek");
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Back.setText("Vissza");
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -87,25 +90,42 @@ public class patiens extends javax.swing.JFrame {
                 BackActionPerformed(evt);
             }
         });
+        getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(958, 363, -1, -1));
 
         patiens.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         patiens.setText("Betegek");
+        getContentPane().add(patiens, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         frontl.setText("Előtag:");
+        getContentPane().add(frontl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 54, -1, -1));
 
         surnamel.setText("Vezetéknév:");
+        getContentPane().add(surnamel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         firstnamel.setText("Keresztnév:");
+        getContentPane().add(firstnamel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 106, -1, -1));
 
         middlenamel.setText("Másodiknév:");
+        getContentPane().add(middlenamel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 132, -1, -1));
 
         birthdatel.setText("Születési dátum:");
+        getContentPane().add(birthdatel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 158, -1, -1));
 
         postcodel.setText("Irányítószám:");
+        getContentPane().add(postcodel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 184, -1, -1));
 
         cityl.setText("Település:");
+        getContentPane().add(cityl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
         otherl.setText("Egyéb cím:");
+        getContentPane().add(otherl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 236, -1, -1));
+        getContentPane().add(surname, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 77, 108, -1));
+        getContentPane().add(firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 103, 108, -1));
+        getContentPane().add(middlename, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 129, 108, -1));
+        getContentPane().add(birthdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 155, 108, -1));
+        getContentPane().add(postcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 181, 108, -1));
+        getContentPane().add(city, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 207, 108, -1));
+        getContentPane().add(other, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 233, 108, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,12 +145,15 @@ public class patiens extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 11, 785, 323));
+
         upload.setText("Feltöltés");
         upload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uploadActionPerformed(evt);
             }
         });
+        getContentPane().add(upload, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 271, 83, -1));
 
         search.setText("Keresés");
         search.addActionListener(new java.awt.event.ActionListener() {
@@ -138,6 +161,7 @@ public class patiens extends javax.swing.JFrame {
                 searchActionPerformed(evt);
             }
         });
+        getContentPane().add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 271, -1, -1));
 
         delete.setText("Törlés");
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +169,10 @@ public class patiens extends javax.swing.JFrame {
                 deleteActionPerformed(evt);
             }
         });
+        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 305, 71, -1));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 363, -1, -1));
+
+        getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 51, -1, -1));
 
         reset.setText("Újra töltés");
         reset.addActionListener(new java.awt.event.ActionListener() {
@@ -152,119 +180,10 @@ public class patiens extends javax.swing.JFrame {
                 resetActionPerformed(evt);
             }
         });
+        getContentPane().add(reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 305, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(info)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Back))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(patiens)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(frontl)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(1, 1, 1))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(firstnamel)
-                                    .addGap(31, 31, 31)
-                                    .addComponent(firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(middlenamel)
-                                    .addGap(29, 29, 29)
-                                    .addComponent(middlename))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(birthdatel)
-                                        .addComponent(postcodel)
-                                        .addComponent(cityl)
-                                        .addComponent(otherl))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(other)
-                                        .addComponent(city)
-                                        .addComponent(postcode)
-                                        .addComponent(birthdate, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(surnamel)
-                                    .addGap(29, 29, 29)
-                                    .addComponent(surname)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(upload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(reset))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(patiens)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(frontl)
-                            .addComponent(frontbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(surnamel)
-                            .addComponent(surname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(firstnamel)
-                            .addComponent(firstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(middlenamel)
-                            .addComponent(middlename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(birthdatel)
-                            .addComponent(birthdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(postcodel)
-                            .addComponent(postcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cityl)
-                            .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(otherl)
-                            .addComponent(other, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(upload)
-                            .addComponent(search))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(delete)
-                            .addComponent(reset)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(info)
-                    .addComponent(Back))
-                .addGap(5, 5, 5))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/patiens.jpg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -571,6 +490,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> frontbox;
     private javax.swing.JLabel frontl;
     private javax.swing.JLabel info;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField middlename;
     private javax.swing.JLabel middlenamel;

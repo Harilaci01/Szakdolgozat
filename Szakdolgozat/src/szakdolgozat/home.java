@@ -58,10 +58,13 @@ public class home extends javax.swing.JFrame {
         cures = new javax.swing.JButton();
         visitors = new javax.swing.JButton();
         logins = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fő oldal");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logout.setText("Kijelentkezés");
         logout.addActionListener(new java.awt.event.ActionListener() {
@@ -69,9 +72,11 @@ public class home extends javax.swing.JFrame {
                 logoutActionPerformed(evt);
             }
         });
+        getContentPane().add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Fő oldal");
+        getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 11, -1, -1));
 
         patiens.setText("Betegek");
         patiens.addActionListener(new java.awt.event.ActionListener() {
@@ -79,6 +84,7 @@ public class home extends javax.swing.JFrame {
                 patiensActionPerformed(evt);
             }
         });
+        getContentPane().add(patiens, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 68, 200, -1));
 
         workers.setText("Dolgozók");
         workers.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +92,7 @@ public class home extends javax.swing.JFrame {
                 workersActionPerformed(evt);
             }
         });
+        getContentPane().add(workers, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 97, 200, -1));
 
         drugs.setText("Gyógyszerek");
         drugs.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +100,7 @@ public class home extends javax.swing.JFrame {
                 drugsActionPerformed(evt);
             }
         });
+        getContentPane().add(drugs, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 126, 200, -1));
 
         cures.setText("Kezelések");
         cures.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +108,7 @@ public class home extends javax.swing.JFrame {
                 curesActionPerformed(evt);
             }
         });
+        getContentPane().add(cures, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 155, 200, -1));
 
         visitors.setText("Látogatás");
         visitors.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +116,7 @@ public class home extends javax.swing.JFrame {
                 visitorsActionPerformed(evt);
             }
         });
+        getContentPane().add(visitors, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 184, 200, -1));
 
         logins.setText("Bejelentkezések");
         logins.addActionListener(new java.awt.event.ActionListener() {
@@ -114,54 +124,22 @@ public class home extends javax.swing.JFrame {
                 loginsActionPerformed(evt);
             }
         });
+        getContentPane().add(logins, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 213, 200, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(295, Short.MAX_VALUE)
-                        .addComponent(logout))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(152, 152, 152)
-                                .addComponent(title))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(workers, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(patiens, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(drugs, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cures, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(visitors, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(logins, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+        jPanel1.setBackground(new java.awt.Color(0, 153, 0));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(title)
-                .addGap(28, 28, 28)
-                .addComponent(patiens)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(workers)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(drugs)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cures)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(visitors)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(logins)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(logout)
-                .addContainerGap())
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -239,6 +217,7 @@ public class home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cures;
     private javax.swing.JButton drugs;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logins;
     private javax.swing.JButton logout;
     private javax.swing.JButton patiens;

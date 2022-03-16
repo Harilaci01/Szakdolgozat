@@ -61,6 +61,8 @@ public class drugs extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         contain = new javax.swing.JTextArea();
         info = new javax.swing.JLabel();
+        sellStock = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -71,6 +73,8 @@ public class drugs extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gyógyszerek");
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Back.setText("Vissza");
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +82,7 @@ public class drugs extends javax.swing.JFrame {
                 BackActionPerformed(evt);
             }
         });
+        getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 583, -1, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,21 +102,32 @@ public class drugs extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 696, 275));
+        getContentPane().add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 102, -1));
+        getContentPane().add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 102, -1));
+        getContentPane().add(company, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 102, -1));
+
         value.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 valueActionPerformed(evt);
             }
         });
+        getContentPane().add(value, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 550, 102, -1));
 
         jLabel1.setText("Gyógyszer azonosító:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
 
         jLabel2.setText("Megnevezés:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 360, -1, -1));
 
         jLabel3.setText("Gyártó:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, -1, -1));
 
         jLabel4.setText("Tartalma:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, -1, -1));
 
         jLabel5.setText("Mennyiség:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 548, -1, -1));
 
         search.setText("Keresés");
         search.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +135,7 @@ public class drugs extends javax.swing.JFrame {
                 searchActionPerformed(evt);
             }
         });
+        getContentPane().add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 328, 90, -1));
 
         noStock.setText("Elfogyott");
         noStock.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +143,7 @@ public class drugs extends javax.swing.JFrame {
                 noStockActionPerformed(evt);
             }
         });
+        getContentPane().add(noStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 548, -1, -1));
 
         getStock.setText("Feltölt");
         getStock.addActionListener(new java.awt.event.ActionListener() {
@@ -133,107 +151,32 @@ public class drugs extends javax.swing.JFrame {
                 getStockActionPerformed(evt);
             }
         });
+        getContentPane().add(getStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 548, 77, -1));
 
         valuebox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "5", "10", "50", "100" }));
+        getContentPane().add(valuebox, new org.netbeans.lib.awtextra.AbsoluteConstraints(647, 549, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Gyógyszerek");
+        getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         contain.setColumns(20);
         contain.setRows(5);
         jScrollPane3.setViewportView(contain);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
-                        .addGap(100, 100, 100))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(title)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(id)
-                                .addComponent(name)
-                                .addComponent(company, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(59, 59, 59)
-                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(info))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(108, 108, 108)
-                                .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(145, 145, 145)
-                                .addComponent(noStock)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(getStock, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Back)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(search))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(company, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(noStock)
-                                .addComponent(getStock)
-                                .addComponent(valuebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addComponent(Back))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(info)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 188, 116));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(487, 414, -1, -1));
+
+        sellStock.setText("Eltávolít");
+        sellStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellStockActionPerformed(evt);
+            }
+        });
+        getContentPane().add(sellStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(559, 548, 77, -1));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/drugs.png"))); // NOI18N
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -491,6 +434,38 @@ public class drugs extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_getStockActionPerformed
 
+    private void sellStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellStockActionPerformed
+        int sszam=table.getSelectedRow();
+        int va=Integer.parseInt(valuebox.getSelectedItem().toString());
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
+            switch(va){
+                case 1:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-1 WHERE gy_id='"+kiv+"'");
+                break;
+                case 5:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-5 WHERE gy_id='"+kiv+"'");
+                break;
+                case 10:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-10 WHERE gy_id='"+kiv+"'");
+                break;
+                case 50:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-50 WHERE gy_id='"+kiv+"'");
+                break;
+                case 100:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-100 WHERE gy_id='"+kiv+"'");
+                break;
+            }
+            info.setForeground(Color.blue);
+            info.setText("A kívétel sikeres!");
+            TablaTorol(table);
+            TablaFeltolt(table);
+            
+        }
+        catch(Exception e){System.out.println("Hiba:"+e);
+            
+        }
+    }//GEN-LAST:event_sellStockActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -608,6 +583,7 @@ public class AlternateRowColorTableTest extends JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -615,6 +591,7 @@ public class AlternateRowColorTableTest extends JFrame {
     private javax.swing.JTextField name;
     private javax.swing.JButton noStock;
     private javax.swing.JButton search;
+    private javax.swing.JButton sellStock;
     private javax.swing.JTable table;
     private javax.swing.JLabel title;
     private javax.swing.JTextField value;
