@@ -172,7 +172,7 @@ public class patiens extends javax.swing.JFrame {
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 305, 71, -1));
         getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 363, -1, -1));
 
-        getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 51, -1, -1));
+        getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
         reset.setText("Újra töltés");
         reset.addActionListener(new java.awt.event.ActionListener() {
@@ -189,8 +189,10 @@ public class patiens extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        new home().setVisible(true);
-        dispose();        // TODO add your handling code here:
+        home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();            // TODO add your handling code here:
     }//GEN-LAST:event_BackActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
@@ -214,7 +216,7 @@ public class patiens extends javax.swing.JFrame {
             info.setText("Valamelyik mező üres.(A második keresztneven kívül)");
         } else {
             try {
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A helytelen karaktereket eltávolítottuk.");
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
@@ -242,7 +244,7 @@ public class patiens extends javax.swing.JFrame {
                         insB.setString(3, ci);
                         insB.setString(4, ot);
                         insB.executeUpdate();
-                        info.setForeground(Color.blue);
+                        info.setForeground(Color.white);
                     info.setText("Sikeres feltöltés!");
                     } else {
                         info.setForeground(Color.red);
@@ -256,7 +258,7 @@ public class patiens extends javax.swing.JFrame {
                     insB.setString(3, ci);
                     insB.setString(4, ot);
                     insB.executeUpdate();
-                    info.setForeground(Color.blue);
+                    info.setForeground(Color.white);
                     info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
                 }
                 surname.setText("");
@@ -367,7 +369,7 @@ public class patiens extends javax.swing.JFrame {
                 model.addRow(rekord);
             }
             con.close();
-            info.setForeground(Color.blue);
+            info.setForeground(Color.white);
             info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");
 
         } catch (Exception e) {

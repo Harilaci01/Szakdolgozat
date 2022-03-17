@@ -34,7 +34,7 @@ public class visitors extends javax.swing.JFrame {
         TablaFeltolt(table);
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);
-        info.setForeground(Color.blue);
+        info.setForeground(Color.white);
         info.setText("Ha nem ismeri az illető teljes nevét írjon %-ot a helyére. Példa: Lakatos % József");
     }
 
@@ -189,8 +189,10 @@ public class visitors extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-       new home().setVisible(true);
-       dispose();  
+       home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();    
     }//GEN-LAST:event_BackActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
@@ -539,7 +541,7 @@ public class visitors extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
             } else {
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A helytelen karaktereket eltávolítottuk/módosítottuk a helyes keresés érdekében.");
             }
          
@@ -614,6 +616,9 @@ public class visitors extends javax.swing.JFrame {
             if(vi.equals("")||pa.equals("")||ar.equals("")||ex.equals("")){
                 info.setForeground(Color.red);
                 info.setText("Valamelyik mező üres!"); 
+            }else if(date1.getDate().after(date2.getDate())){
+                info.setForeground(Color.red);
+                info.setText("Az idő intervallum nem létezik!");
             } else{
                 PreparedStatement pst2=con.prepareStatement(sqlparancs2);
                     PreparedStatement pst3=con.prepareStatement(sqlparancs3);
@@ -659,7 +664,7 @@ public class visitors extends javax.swing.JFrame {
                     patient.setText("");
                     arrival.setText("");
                     exit.setText("");
-                    info.setForeground(Color.blue);
+                    info.setForeground(Color.white);
                     info.setText("A látogatás feltöltése sikeres!"); }
                 }
             }

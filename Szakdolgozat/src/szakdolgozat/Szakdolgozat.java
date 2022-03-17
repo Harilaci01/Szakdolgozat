@@ -8,7 +8,9 @@ public class Szakdolgozat {
 
     public static int id=0;
     public static void main(String[] args) {
-        new login().setVisible(true);
+        login l=new login();
+        l.setVisible(true);
+        l.setLocationRelativeTo(null);          
     }
     
 }

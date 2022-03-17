@@ -189,8 +189,10 @@ public class logins extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        new home().setVisible(true);
-        dispose();  
+        home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();    
     }//GEN-LAST:event_BackActionPerformed
 
     private void searchbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbActionPerformed

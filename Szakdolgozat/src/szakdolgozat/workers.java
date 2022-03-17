@@ -34,7 +34,7 @@ public class workers extends javax.swing.JFrame {
         workers.setVisible(false);
         database.setVisible(false);
         confirm.setVisible(false);
-        info.setForeground(Color.blue);
+        info.setForeground(Color.white);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
         
     }
@@ -129,7 +129,7 @@ public class workers extends javax.swing.JFrame {
                 fireActionPerformed(evt);
             }
         });
-        getContentPane().add(fire, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 175, 82, -1));
+        getContentPane().add(fire, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 175, 100, -1));
 
         hire.setText("Felvesz");
         hire.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +144,7 @@ public class workers extends javax.swing.JFrame {
                 frontActionPerformed(evt);
             }
         });
-        getContentPane().add(front, new org.netbeans.lib.awtextra.AbsoluteConstraints(499, 36, -1, -1));
+        getContentPane().add(front, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, -1, -1));
 
         reset.setText("Összes dolgozó");
         reset.addActionListener(new java.awt.event.ActionListener() {
@@ -185,14 +185,16 @@ public class workers extends javax.swing.JFrame {
         getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/workers.jpg"))); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        new home().setVisible(true);
-        dispose();          // TODO add your handling code here:
+        home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();            // TODO add your handling code here:
     }//GEN-LAST:event_BackActionPerformed
 
     private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
@@ -277,7 +279,7 @@ public class workers extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("A dolgozó nincs az adatbázisban!");
             }else{
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A nem kívánatos karaktereket eltávolítottuk a helyes keresés érdekében.");
             }
             
@@ -296,7 +298,7 @@ public class workers extends javax.swing.JFrame {
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         TablaTorol(table);
         TablaFeltolt(table);
-        info.setForeground(Color.blue);
+        info.setForeground(Color.white);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
         password.setVisible(false);
         workers.setVisible(false);
@@ -309,12 +311,12 @@ public class workers extends javax.swing.JFrame {
         confirm.setVisible(true);
         workers.setVisible(false);
         database.setVisible(false);
-        info.setForeground(Color.blue);
+        info.setForeground(Color.white);
         info.setText("Kérem adjon meg egy jelszót");
     }//GEN-LAST:event_hireActionPerformed
 
     private void fireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fireActionPerformed
-        info.setForeground(Color.blue);
+        info.setForeground(Color.white);
         info.setText("Kérem válasszon honnan szeretné törölni a személyt");
         workers.setVisible(true);
         database.setVisible(true);
@@ -446,7 +448,7 @@ public class workers extends javax.swing.JFrame {
                     password.setText("");
                     TablaTorol(table);
                     TablaFeltolt(table);
-                    info.setForeground(Color.blue);
+                    info.setForeground(Color.white);
                     info.setText("Sikeres feltöltés!");
                 }else {
                     info.setForeground(Color.red);
@@ -462,7 +464,7 @@ public class workers extends javax.swing.JFrame {
                 insDolg.setString(2, us);
                 insDolg.setString(3,pw);
                 insDolg.executeUpdate();
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
                 password.setVisible(false);     
                 confirm.setVisible(false);

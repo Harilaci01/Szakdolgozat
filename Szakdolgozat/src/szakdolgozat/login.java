@@ -25,6 +25,8 @@ public class login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bejelentkezés");
+        setLocation(new java.awt.Point(300, 400));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -80,8 +82,10 @@ public class login extends javax.swing.JFrame {
             }
             else{               
                 if(rs.next()){
-                   id=rs.getInt("beosz_id");
-                   new home().setVisible(true);
+                   id=rs.getInt("beosz_id");                  
+                   home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
                    dispose();    
                    sqlparancs="INSERT INTO bejelentkezes (f_id) VALUES ((SELECT dolgozok.d_id FROM dolgozok WHERE felhasznalo=?))";
                    pst=con.prepareStatement(sqlparancs);

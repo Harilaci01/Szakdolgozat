@@ -58,7 +58,7 @@ public class home extends javax.swing.JFrame {
         cures = new javax.swing.JButton();
         visitors = new javax.swing.JButton();
         logins = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fő oldal");
@@ -75,6 +75,7 @@ public class home extends javax.swing.JFrame {
         getContentPane().add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
         title.setText("Fő oldal");
         getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 11, -1, -1));
 
@@ -126,56 +127,58 @@ public class home extends javax.swing.JFrame {
         });
         getContentPane().add(logins, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 213, 200, -1));
 
-        jPanel1.setBackground(new java.awt.Color(0, 153, 0));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/home.jpg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
-        new login().setVisible(true);
-        dispose();
+        login l=new login();
+        l.setVisible(true);
+        l.setLocationRelativeTo(null);
+        dispose();    
     }//GEN-LAST:event_logoutActionPerformed
 
     private void workersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workersActionPerformed
-       new workers().setVisible(true);
-       dispose();
+        workers w= new workers();
+        w.setVisible(true);
+        w.setLocationRelativeTo(null);
+        dispose();
     }//GEN-LAST:event_workersActionPerformed
 
     private void patiensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patiensActionPerformed
-       new patiens().setVisible(true);
+       patiens p=new patiens();
+       p.setVisible(true);
+       p.setLocationRelativeTo(null);
        dispose();
     }//GEN-LAST:event_patiensActionPerformed
 
     private void drugsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drugsActionPerformed
-       new drugs().setVisible(true);
+       drugs d=new drugs();
+       d.setVisible(true);
+       d.setLocationRelativeTo(null);
        dispose();
     }//GEN-LAST:event_drugsActionPerformed
 
     private void curesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_curesActionPerformed
-       new cures().setVisible(true);
+       cures c=new cures();
+       c.setVisible(true);
+       c.setLocationRelativeTo(null);
        dispose();        
     }//GEN-LAST:event_curesActionPerformed
 
     private void visitorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visitorsActionPerformed
-       new visitors().setVisible(true);
+       visitors v=new visitors();
+       v.setVisible(true);
+       v.setLocationRelativeTo(null);
        dispose();
     }//GEN-LAST:event_visitorsActionPerformed
 
     private void loginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginsActionPerformed
-       new logins().setVisible(true);
+       logins l=new logins();
+       l.setVisible(true);
+       l.setLocationRelativeTo(null);
        dispose();
     }//GEN-LAST:event_loginsActionPerformed
 
@@ -217,7 +220,7 @@ public class home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cures;
     private javax.swing.JButton drugs;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton logins;
     private javax.swing.JButton logout;
     private javax.swing.JButton patiens;

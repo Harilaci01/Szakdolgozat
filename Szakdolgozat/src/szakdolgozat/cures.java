@@ -33,8 +33,8 @@ public class cures extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         ElotagBeszur(frontbox);
         TablaFeltolt(table);
-        info.setForeground(Color.blue);
-        info.setText("Az ismeretlen adatokhozírjion %-ot . Példa: Lakatos % József");
+        info.setForeground(Color.white);
+        info.setText("Az ismeretlen adatokhoz írjon %-ot . Példa: Lakatos % József");       
     }
 
     /**
@@ -160,12 +160,14 @@ public class cures extends javax.swing.JFrame {
         });
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(707, 460, 73, -1));
 
-        getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(273, 339, -1, -1));
+        getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Kezelések");
         getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
-        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 500, 603, -1));
+
+        info.setBackground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 500, 20));
         getContentPane().add(startd, new org.netbeans.lib.awtextra.AbsoluteConstraints(565, 417, -1, -1));
         getContentPane().add(finishd, new org.netbeans.lib.awtextra.AbsoluteConstraints(565, 443, -1, -1));
 
@@ -182,8 +184,10 @@ public class cures extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        new home().setVisible(true);
-        dispose();
+        home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();    
     }//GEN-LAST:event_BackActionPerformed
 
     private void patientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientActionPerformed
@@ -241,11 +245,12 @@ public class cures extends javax.swing.JFrame {
                 }
                 if (st.hasMoreTokens()) {
                     fi = st.nextToken();
-                }else fi="%";
+                }else
+                    fi="";
                 condition1 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
                     mi = st.nextToken();                     
-                }else mi="%";
+                }else mi="";
                 condition1 += " masodik_keresztnev LIKE ? AND";
                 
             } 
@@ -266,11 +271,11 @@ public class cures extends javax.swing.JFrame {
                 }
                 if (st.hasMoreTokens()) {
                     fi2 = st.nextToken();
-                }else fi2="%";
-                condition1 += " keresztnev LIKE ? AND";
+                }else fi2="";
+                condition2 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
                     mi2 = st.nextToken();                    
-                }else mi2="%";
+                }else mi2="";
                 condition2 += " masodik_keresztnev LIKE ? AND";
                 
             }
@@ -310,7 +315,7 @@ public class cures extends javax.swing.JFrame {
         }
         sqlparancs = sqlparancs.replace("co1", condition1);
         sqlparancs = sqlparancs.replace("co2", condition2);
-        sqlparancs = sqlparancs.replace("co3", condition3);
+        sqlparancs = sqlparancs.replace("co3", condition3);        
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
@@ -592,6 +597,7 @@ public class cures extends javax.swing.JFrame {
             }
             
             if(!su.equals("")&&!fi.equals("")&&pa.equals("")&&strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){     //CSAK első név          
+                pst.setString(1,fr);
                 pst.setString(2,"%"+su+"%");
                 pst.setString(3,"%"+fi+"%");
                 if(!mi.equals("")){pst.setString(4,"%"+mi+"%");
@@ -622,7 +628,7 @@ public class cures extends javax.swing.JFrame {
                 pst.setString(3,fr2);
                 pst.setString(4,"%"+su2+"%");
             }
-            
+           
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             Statement stmt2 = con.createStatement();
             Statement stmt3 = con.createStatement();
@@ -646,7 +652,7 @@ public class cures extends javax.swing.JFrame {
                 info.setForeground(Color.red);
                 info.setText("A keresett adat(ok) nem szerepelnek a rendszerben.");
             } else {
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A helytelen karaktereket eltávolítottuk/módosítottuk a helyes keresés érdekében.");
 
             }
@@ -736,7 +742,11 @@ public class cures extends javax.swing.JFrame {
             } else if (result.next()) {
                 info.setForeground(Color.red);
                 info.setText("A kezelés már szerepel a listában!");
-            } else {
+            }else if(startd.getDate().after(finishd.getDate())){
+                info.setForeground(Color.red);
+                info.setText("Az idő intervallum nem létezik!");
+            }
+            else {
                 sqlparancs2 = "SELECT szem_id FROM szemely WHERE elotag='" + fr + "' AND vezeteknev=? AND keresztnev=? co1";
                 sqlparancs2 = sqlparancs2.replace("co1", condition1);
                 pst2 = con.prepareStatement(sqlparancs2);

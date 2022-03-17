@@ -143,7 +143,7 @@ public class drugs extends javax.swing.JFrame {
                 noStockActionPerformed(evt);
             }
         });
-        getContentPane().add(noStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 548, -1, -1));
+        getContentPane().add(noStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 550, -1, -1));
 
         getStock.setText("Feltölt");
         getStock.addActionListener(new java.awt.event.ActionListener() {
@@ -151,10 +151,10 @@ public class drugs extends javax.swing.JFrame {
                 getStockActionPerformed(evt);
             }
         });
-        getContentPane().add(getStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 548, 77, -1));
+        getContentPane().add(getStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 550, 77, -1));
 
         valuebox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "5", "10", "50", "100" }));
-        getContentPane().add(valuebox, new org.netbeans.lib.awtextra.AbsoluteConstraints(647, 549, -1, -1));
+        getContentPane().add(valuebox, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 550, -1, -1));
 
         title.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         title.setText("Gyógyszerek");
@@ -173,7 +173,7 @@ public class drugs extends javax.swing.JFrame {
                 sellStockActionPerformed(evt);
             }
         });
-        getContentPane().add(sellStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(559, 548, 77, -1));
+        getContentPane().add(sellStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 550, 90, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/drugs.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -182,8 +182,10 @@ public class drugs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        new home().setVisible(true);
-        dispose();     
+        home h = new home();
+                   h.setVisible(true);
+                   h.setLocationRelativeTo(null);
+                   dispose();        
     }//GEN-LAST:event_BackActionPerformed
 
     private void valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valueActionPerformed
@@ -345,10 +347,10 @@ public class drugs extends javax.swing.JFrame {
                 pst.setString(1, me);              
             }
             if(az.equals("")&&na.equals("")&&co.equals("")&&ta.equals("")&&me.equals("")){
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A kereséshez adjon meg adatot.");
             }else {
-                info.setForeground(Color.blue);
+                info.setForeground(Color.white);
                 info.setText("A nem kívánatos karaktereket eltávolítottuk a helyes keresés érdekében.");
             }            
             ResultSet result=pst.executeQuery();
@@ -423,7 +425,7 @@ public class drugs extends javax.swing.JFrame {
                 case 100:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+100 WHERE gy_id='"+kiv+"'");
                 break;
             }
-            info.setForeground(Color.blue);
+            info.setForeground(Color.white);
             info.setText("A feltöltés sikeres!");
             TablaTorol(table);
             TablaFeltolt(table);
@@ -455,7 +457,7 @@ public class drugs extends javax.swing.JFrame {
                 case 100:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-100 WHERE gy_id='"+kiv+"'");
                 break;
             }
-            info.setForeground(Color.blue);
+            info.setForeground(Color.white);
             info.setText("A kívétel sikeres!");
             TablaTorol(table);
             TablaFeltolt(table);
