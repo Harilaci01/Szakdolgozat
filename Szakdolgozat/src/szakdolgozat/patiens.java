@@ -287,7 +287,7 @@ public class patiens extends javax.swing.JFrame {
             for (int i = 0; i < 8; i++) {
                 torles[i] = table.getValueAt(sszam, i).toString();
             }
-            stmt.executeUpdate("DELETE FROM szemely WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
+            stmt.executeUpdate("DELETE b_id FROM szemely INNER JOIN betegek ON betegek.b_id=szemely.szem_id WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
             TablaTorol(table);
             TablaFeltolt(table);
         } catch (Exception e) {
