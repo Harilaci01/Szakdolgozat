@@ -439,12 +439,17 @@ public class drugs extends javax.swing.JFrame {
     private void sellStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellStockActionPerformed
         int sszam=table.getSelectedRow();
         int va=Integer.parseInt(valuebox.getSelectedItem().toString());
+        int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
+        String ertek=table.getValueAt(sszam,4).toString();
+        if(ertek.contains("ELFOGYOTT")){
+            info.setForeground(Color.red);
+            info.setText("A gyógyszer már elfogyott!");
+        }else
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
+            DefaultTableModel model=(DefaultTableModel) table.getModel();            
             switch(va){
                 case 1:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-1 WHERE gy_id='"+kiv+"'");
                 break;
@@ -487,11 +492,9 @@ public class drugs extends javax.swing.JFrame {
                 rekord[4]=result.getString("mennyiseg"); 
                 if(rekord[4].equals("0")){
                     rekord[4]="ELFOGYOTT";                    
-                    model.addRow(rekord);
-                   /* model.getRowCount();
-                    JTable.setBackground(Color.RED);*/                }
+                    model.addRow(rekord);                                  }
                 else {model.addRow(rekord);
-                    //JTable.setBackground(Color.gray);
+                    
                 }
             }
             con.close();

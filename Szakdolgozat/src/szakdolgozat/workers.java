@@ -372,7 +372,6 @@ public class workers extends javax.swing.JFrame {
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
             ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
-            System.err.println("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
             result.next();
             
             d_id=result.getString("d_id");
