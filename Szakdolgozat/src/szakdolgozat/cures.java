@@ -32,7 +32,7 @@ public class cures extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         ElotagBeszur(frontbox);
-        TablaFeltolt(table);
+        TablaFeltolt(tablec);
         info.setForeground(Color.white);
         info.setText("Az ismeretlen adatokhoz írjon %-ot . Példa: Lakatos % József");       
     }
@@ -48,7 +48,7 @@ public class cures extends javax.swing.JFrame {
 
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tablec = new javax.swing.JTable();
         patient = new javax.swing.JTextField();
         sickness = new javax.swing.JTextField();
         drug = new javax.swing.JTextField();
@@ -85,7 +85,7 @@ public class cures extends javax.swing.JFrame {
         });
         getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(871, 520, -1, -1));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tablec.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -101,7 +101,7 @@ public class cures extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tablec);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 922, 275));
 
@@ -319,7 +319,7 @@ public class cures extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
-            TablaTorol(table);
+            TablaTorol(tablec);
             PreparedStatement pst = con.prepareStatement(sqlparancs);      
                         
             if(pa.equals("")&&!dr.equals("")&&!strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){//csak elso datum +elso nev
@@ -629,7 +629,7 @@ public class cures extends javax.swing.JFrame {
                 pst.setString(4,"%"+su2+"%");
             }
            
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            DefaultTableModel model = (DefaultTableModel) tablec.getModel();
             Statement stmt2 = con.createStatement();
             Statement stmt3 = con.createStatement();
             ResultSet result = pst.executeQuery();            
@@ -790,8 +790,8 @@ public class cures extends javax.swing.JFrame {
                     info.setText("A kezelés feltöltése sikeres!");
                 }
             }
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablec);
+            TablaFeltolt(tablec);
             con.close();
         } catch (Exception e) {
             System.err.println("Hiba: " + e);
@@ -805,12 +805,12 @@ public class cures extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             Statement stmt = con.createStatement();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            int sszam = table.getSelectedRow();
-            int kij = Integer.parseInt(table.getValueAt(sszam, 0).toString());
+            DefaultTableModel model = (DefaultTableModel) tablec.getModel();
+            int sszam = tablec.getSelectedRow();
+            int kij = Integer.parseInt(tablec.getValueAt(sszam, 0).toString());
             stmt.executeUpdate("DELETE FROM kezeles WHERE kez_id='" + kij + "'");
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablec);
+            TablaFeltolt(tablec);
             info.setText("A törlés sikeres!");
 
         } catch (Exception e) {
@@ -942,7 +942,7 @@ public class cures extends javax.swing.JFrame {
     private javax.swing.JTextField sickness;
     private javax.swing.JTextField start;
     private com.toedter.calendar.JDateChooser startd;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tablec;
     private javax.swing.JLabel title;
     private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables

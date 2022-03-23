@@ -29,7 +29,7 @@ public class workers extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
         ElotagBeszur(front);
-        TablaFeltolt(table);
+        TablaFeltolt(tablew);
         password.setVisible(false);
         workers.setVisible(false);
         database.setVisible(false);
@@ -53,7 +53,7 @@ public class workers extends javax.swing.JFrame {
 
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tablew = new javax.swing.JTable();
         name = new javax.swing.JTextField();
         job = new javax.swing.JTextField();
         username = new javax.swing.JTextField();
@@ -85,7 +85,7 @@ public class workers extends javax.swing.JFrame {
         });
         getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(767, 316, -1, -1));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tablew.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -93,7 +93,7 @@ public class workers extends javax.swing.JFrame {
                 "Név", "Beosztás", "Felhasználó"
             }
         ));
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tablew);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 389, 275));
 
@@ -265,8 +265,8 @@ public class workers extends javax.swing.JFrame {
             pst.setString(3,"%"+mi+"%");
             pst.setString(4,"%"+jo+"%");
             pst.setString(5,"%"+us+"%");
-            TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel(); 
+            TablaTorol(tablew);
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel(); 
             ResultSet result=pst.executeQuery();
             String[] rekord=new String[3];
             while(result.next()){
@@ -296,8 +296,8 @@ public class workers extends javax.swing.JFrame {
     }//GEN-LAST:event_frontActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        TablaTorol(table);
-        TablaFeltolt(table);
+        TablaTorol(tablew);
+        TablaFeltolt(tablew);
         info.setForeground(Color.white);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
         password.setVisible(false);
@@ -333,17 +333,17 @@ public class workers extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int sszam=table.getSelectedRow();
-            String sszamS=table.getValueAt(sszam, 0).toString();
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
+            int sszam=tablew.getSelectedRow();
+            String sszamS=tablew.getValueAt(sszam, 0).toString();
             String torles[]={"","","",""};
             st = new StringTokenizer(sszamS," ");
             for (int i = 0; i < 4; i++) {                
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
             stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablew);
+            TablaFeltolt(tablew);
             workers.setVisible(false);
             database.setVisible(false);
             info.setForeground(Color.green);
@@ -362,9 +362,9 @@ public class workers extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int sszam=table.getSelectedRow();
-            String sszamS=table.getValueAt(sszam, 0).toString();
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
+            int sszam=tablew.getSelectedRow();
+            String sszamS=tablew.getValueAt(sszam, 0).toString();
             String torles[]={"","","",""};
             String d_id;
             st = new StringTokenizer(sszamS," ");
@@ -376,8 +376,8 @@ public class workers extends javax.swing.JFrame {
             
             d_id=result.getString("d_id");
             stmt.executeUpdate("DELETE FROM dolgozok WHERE d_id='"+d_id+"'");            
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablew);
+            TablaFeltolt(tablew);
             workers.setVisible(false);
             database.setVisible(false);
             info.setForeground(Color.green);
@@ -420,7 +420,7 @@ public class workers extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();            
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
             PreparedStatement test=con.prepareStatement(testP);
             test.setString(1,fr);
             test.setString(2,su);
@@ -445,8 +445,8 @@ public class workers extends javax.swing.JFrame {
                     password.setVisible(false);     
                     confirm.setVisible(false);
                     password.setText("");
-                    TablaTorol(table);
-                    TablaFeltolt(table);
+                    TablaTorol(tablew);
+                    TablaFeltolt(tablew);
                     info.setForeground(Color.white);
                     info.setText("Sikeres feltöltés!");
                 }else {
@@ -467,8 +467,8 @@ public class workers extends javax.swing.JFrame {
                 info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
                 password.setVisible(false);     
                 confirm.setVisible(false);
-                TablaTorol(table);
-                TablaFeltolt(table);
+                TablaTorol(tablew);
+                TablaFeltolt(tablew);
                 password.setText("");
             }           
         
@@ -585,7 +585,7 @@ public class workers extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JButton reset;
     private javax.swing.JButton search;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tablew;
     private javax.swing.JLabel title;
     private javax.swing.JTextField username;
     private javax.swing.JButton workers;

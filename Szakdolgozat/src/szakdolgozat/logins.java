@@ -27,7 +27,7 @@ public class logins extends javax.swing.JFrame {
     public logins() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
-        TablaFeltolt(table);
+        TablaFeltolt(tablel);
         
     }
 
@@ -44,7 +44,7 @@ public class logins extends javax.swing.JFrame {
         id = new javax.swing.JTextField();
         searchb = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tablel = new javax.swing.JTable();
         delete = new javax.swing.JButton();
         time = new javax.swing.JTextField();
         user = new javax.swing.JTextField();
@@ -76,8 +76,8 @@ public class logins extends javax.swing.JFrame {
             }
         });
 
-        table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tablel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tablel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -100,7 +100,7 @@ public class logins extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tablel);
 
         delete.setText("Törlés");
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -209,8 +209,8 @@ public class logins extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");          
-            TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            TablaTorol(tablel);
+            DefaultTableModel model=(DefaultTableModel) tablel.getModel();
             String sqlparancs="SELECT bejelentkezes.bel_id,bejelentkezes.belepes_ido,dolgozok.felhasznalo FROM bejelentkezes INNER JOIN dolgozok ON bejelentkezes.f_id=dolgozok.d_id ";
             
             if(i>0){
@@ -275,12 +275,12 @@ public class logins extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int sszam=table.getSelectedRow();
-            int torles=Integer.parseInt(table.getValueAt(sszam,0).toString());            
+            DefaultTableModel model=(DefaultTableModel) tablel.getModel();
+            int sszam=tablel.getSelectedRow();
+            int torles=Integer.parseInt(tablel.getValueAt(sszam,0).toString());            
             stmt.executeUpdate("DELETE FROM bejelentkezes WHERE bel_id="+torles);
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablel);
+            TablaFeltolt(tablel);
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         info.setForeground(Color.RED);
@@ -359,7 +359,7 @@ public class logins extends javax.swing.JFrame {
     private javax.swing.JLabel info;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton searchb;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tablel;
     private javax.swing.JTextField time;
     private javax.swing.JLabel timel;
     private javax.swing.JLabel title;

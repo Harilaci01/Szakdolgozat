@@ -27,7 +27,7 @@ public class drugs extends javax.swing.JFrame {
     public drugs() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
-        TablaFeltolt(table);
+        TablaFeltolt(tabled);
     }
 
     /**
@@ -43,7 +43,7 @@ public class drugs extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tabled = new javax.swing.JTable();
         id = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
         company = new javax.swing.JTextField();
@@ -84,7 +84,7 @@ public class drugs extends javax.swing.JFrame {
         });
         getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 583, -1, -1));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tabled.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -100,7 +100,7 @@ public class drugs extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tabled);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 696, 275));
         getContentPane().add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 102, -1));
@@ -202,8 +202,8 @@ public class drugs extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            TablaTorol(tabled);
+            DefaultTableModel model=(DefaultTableModel) tabled.getModel();
             id.setText(az);
             name.setText(na);
             company.setText(co);
@@ -381,21 +381,21 @@ public class drugs extends javax.swing.JFrame {
     }//GEN-LAST:event_searchActionPerformed
 
     private void noStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noStockActionPerformed
-        int sszam=table.getSelectedRow();
+        int sszam=tabled.getSelectedRow();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            String kiv=table.getValueAt(sszam, 0).toString();
-            String van=table.getValueAt(sszam, 4).toString();
+            DefaultTableModel model=(DefaultTableModel) tabled.getModel();
+            String kiv=tabled.getValueAt(sszam, 0).toString();
+            String van=tabled.getValueAt(sszam, 4).toString();
             if(van.equals("ELFOGYOTT")){
                 info.setForeground(Color.red);
                 info.setText("A gyógyszer eddig se volt raktáron.");
             }else{
                 stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=0 WHERE gy_id='"+kiv+"'");
-                TablaTorol(table);
-                TablaFeltolt(table);                
+                TablaTorol(tabled);
+                TablaFeltolt(tabled);                
                 info.setText("");
             }
         }
@@ -405,14 +405,14 @@ public class drugs extends javax.swing.JFrame {
     }//GEN-LAST:event_noStockActionPerformed
 
     private void getStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getStockActionPerformed
-        int sszam=table.getSelectedRow();
+        int sszam=tabled.getSelectedRow();
         int va=Integer.parseInt(valuebox.getSelectedItem().toString());
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
-            int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
+            DefaultTableModel model=(DefaultTableModel) tabled.getModel();
+            int kiv=Integer.parseInt(tabled.getValueAt(sszam, 0).toString());
             switch(va){
                 case 1:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg+1 WHERE gy_id='"+kiv+"'");
                 break;
@@ -427,8 +427,8 @@ public class drugs extends javax.swing.JFrame {
             }
             info.setForeground(Color.white);
             info.setText("A feltöltés sikeres!");
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tabled);
+            TablaFeltolt(tabled);
             
         }
         catch(Exception e){System.out.println("Hiba:"+e);
@@ -437,10 +437,10 @@ public class drugs extends javax.swing.JFrame {
     }//GEN-LAST:event_getStockActionPerformed
 
     private void sellStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellStockActionPerformed
-        int sszam=table.getSelectedRow();
+        int sszam=tabled.getSelectedRow();
         int va=Integer.parseInt(valuebox.getSelectedItem().toString());
-        int kiv=Integer.parseInt(table.getValueAt(sszam, 0).toString());
-        String ertek=table.getValueAt(sszam,4).toString();
+        int kiv=Integer.parseInt(tabled.getValueAt(sszam, 0).toString());
+        String ertek=tabled.getValueAt(sszam,4).toString();
         if(ertek.contains("ELFOGYOTT")){
             info.setForeground(Color.red);
             info.setText("A gyógyszer már elfogyott!");
@@ -449,7 +449,7 @@ public class drugs extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) table.getModel();            
+            DefaultTableModel model=(DefaultTableModel) tabled.getModel();            
             switch(va){
                 case 1:stmt.executeUpdate("UPDATE `gyogyszerek` SET `mennyiseg`=mennyiseg-1 WHERE gy_id='"+kiv+"'");
                 break;
@@ -464,8 +464,8 @@ public class drugs extends javax.swing.JFrame {
             }
             info.setForeground(Color.white);
             info.setText("A kívétel sikeres!");
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tabled);
+            TablaFeltolt(tabled);
             
         }
         catch(Exception e){System.out.println("Hiba:"+e);
@@ -597,7 +597,7 @@ public class AlternateRowColorTableTest extends JFrame {
     private javax.swing.JButton noStock;
     private javax.swing.JButton search;
     private javax.swing.JButton sellStock;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tabled;
     private javax.swing.JLabel title;
     private javax.swing.JTextField value;
     private javax.swing.JComboBox<String> valuebox;

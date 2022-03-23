@@ -31,7 +31,7 @@ public class visitors extends javax.swing.JFrame {
     public visitors() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
-        TablaFeltolt(table);
+        TablaFeltolt(tablev);
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);
         info.setForeground(Color.white);
@@ -49,7 +49,7 @@ public class visitors extends javax.swing.JFrame {
 
         Back = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tablev = new javax.swing.JTable();
         visitor = new javax.swing.JTextField();
         patient = new javax.swing.JTextField();
         arrival = new javax.swing.JTextField();
@@ -88,7 +88,7 @@ public class visitors extends javax.swing.JFrame {
         });
         getContentPane().add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(746, 527, -1, -1));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tablev.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -104,7 +104,7 @@ public class visitors extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tablev);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 35, 730, 317));
 
@@ -278,8 +278,8 @@ public class visitors extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");           
-            TablaTorol(table);
-            DefaultTableModel model=(DefaultTableModel) table.getModel();
+            TablaTorol(tablev);
+            DefaultTableModel model=(DefaultTableModel) tablev.getModel();
             Statement stmt2=con.createStatement();
             Statement stmt3=con.createStatement();   
             PreparedStatement test=con.prepareStatement(sqlparancs);
@@ -669,8 +669,8 @@ public class visitors extends javax.swing.JFrame {
                 }
             }
             
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablev);
+            TablaFeltolt(tablev);
             con.close();
         }
         
@@ -686,8 +686,8 @@ public class visitors extends javax.swing.JFrame {
     }//GEN-LAST:event_frontbox2ActionPerformed
 
     private void allActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allActionPerformed
-        TablaTorol(table);
-        TablaFeltolt(table);
+        TablaTorol(tablev);
+        TablaFeltolt(tablev);
         info.setText("");
     }//GEN-LAST:event_allActionPerformed
 
@@ -802,7 +802,7 @@ public class visitors extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField patient;
     private javax.swing.JButton search;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tablev;
     private javax.swing.JLabel title;
     private javax.swing.JButton upload;
     private javax.swing.JTextField visitor;

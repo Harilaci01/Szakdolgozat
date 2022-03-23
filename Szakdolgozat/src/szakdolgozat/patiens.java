@@ -25,7 +25,7 @@ public class patiens extends javax.swing.JFrame {
     public patiens() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
-        TablaFeltolt(table);
+        TablaFeltolt(tablep);
         switch (id) {
             case 2:
                 delete.setVisible(false);
@@ -70,7 +70,7 @@ public class patiens extends javax.swing.JFrame {
         city = new javax.swing.JTextField();
         other = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tablep = new javax.swing.JTable();
         upload = new javax.swing.JButton();
         search = new javax.swing.JButton();
         delete = new javax.swing.JButton();
@@ -127,7 +127,7 @@ public class patiens extends javax.swing.JFrame {
         getContentPane().add(city, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 207, 108, -1));
         getContentPane().add(other, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 233, 108, -1));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tablep.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -143,7 +143,7 @@ public class patiens extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
+        jScrollPane1.setViewportView(tablep);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 11, 785, 323));
 
@@ -268,8 +268,8 @@ public class patiens extends javax.swing.JFrame {
                 postcode.setText("");
                 city.setText("");
                 other.setText("");
-                TablaTorol(table);
-                TablaFeltolt(table);
+                TablaTorol(tablep);
+                TablaFeltolt(tablep);
             } catch (Exception e) {
                 System.err.println("Hiba: " + e);
             }
@@ -281,19 +281,19 @@ public class patiens extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             Statement stmt = con.createStatement();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            int sszam = table.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel) tablep.getModel();
+            int sszam = tablep.getSelectedRow();
             String torles[] = new String[8];
             for (int i = 0; i < 8; i++) {
-                torles[i] = table.getValueAt(sszam, i).toString();
+                torles[i] = tablep.getValueAt(sszam, i).toString();
             }
             ResultSet result=stmt.executeQuery("Select b_id FROM betegek INNER JOIN szemely ON betegek.b_id=szemely.szem_id WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
             result.next();
             
             String b_id=result.getString("b_id");
             stmt.executeUpdate("DELETE FROM betegek WHERE b_id='"+b_id+"'"); 
-            TablaTorol(table);
-            TablaFeltolt(table);
+            TablaTorol(tablep);
+            TablaFeltolt(tablep);
         } catch (Exception e) {
             System.err.println("Hiba: " + e);
             info.setForeground(Color.RED);
@@ -322,8 +322,8 @@ public class patiens extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
-            TablaTorol(table);
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            TablaTorol(tablep);
+            DefaultTableModel model = (DefaultTableModel) tablep.getModel();
             if (fr.equals("")) {
                 fr = "%";
             }
@@ -382,8 +382,8 @@ public class patiens extends javax.swing.JFrame {
     }//GEN-LAST:event_searchActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        TablaTorol(table);
-        TablaFeltolt(table);
+        TablaTorol(tablep);
+        TablaFeltolt(tablep);
         surname.setText("");
         firstname.setText("");
         middlename.setText("");
@@ -509,7 +509,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JButton search;
     private javax.swing.JTextField surname;
     private javax.swing.JLabel surnamel;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tablep;
     private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables
 }
