@@ -123,6 +123,12 @@ public class patiens extends javax.swing.JFrame {
         getContentPane().add(firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 103, 108, -1));
         getContentPane().add(middlename, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 129, 108, -1));
         getContentPane().add(birthdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 155, 108, -1));
+
+        postcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postcodeActionPerformed(evt);
+            }
+        });
         getContentPane().add(postcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 181, 108, -1));
         getContentPane().add(city, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 207, 108, -1));
         getContentPane().add(other, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 233, 108, -1));
@@ -214,7 +220,10 @@ public class patiens extends javax.swing.JFrame {
         if (su.equals("") || fi.equals("") || da.equals("") || po.equals("") || ci.equals("") || ot.equals("")) {
             info.setForeground(Color.red);
             info.setText("Valamelyik mező üres.(A második keresztneven kívül)");
-        } else {
+        } else if(postcode.getText().length()>4){
+            info.setForeground(Color.red);
+            info.setText("Az írányítószám 4 számhosszú lehet!");
+        }else {
             try {
                 info.setForeground(Color.white);
                 info.setText("A helytelen karaktereket eltávolítottuk.");
@@ -319,7 +328,11 @@ public class patiens extends javax.swing.JFrame {
         String ot = other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]", "");
         other.setText(ot);
         String sqlparancs = "SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? ";
-        try {
+        if(postcode.getText().length()>4){
+            info.setForeground(Color.red);
+            info.setText("Az írányítószám 4 számhosszú lehet!");
+        }
+        else try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             TablaTorol(tablep);
@@ -392,6 +405,10 @@ public class patiens extends javax.swing.JFrame {
         city.setText("");
         other.setText("");
     }//GEN-LAST:event_resetActionPerformed
+
+    private void postcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postcodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postcodeActionPerformed
     public static void TablaFeltolt(JTable JTable) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

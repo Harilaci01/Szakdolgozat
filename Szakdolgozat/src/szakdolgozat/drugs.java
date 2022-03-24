@@ -501,37 +501,6 @@ public class drugs extends javax.swing.JFrame {
         }
         catch(Exception e){System.err.println("Hiba: "+e);
         }
-        //https://www.tutorialspoint.com/how-to-set-the-color-to-alternate-rows-of-jtable-in-java
-        /*import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-public class AlternateRowColorTableTest extends JFrame {
-   public AlternateRowColorTableTest() {
-      setTitle("AlternateRowColorTable Test");
-      JTable table = new JTable(new Object[][] {{"115", "Ramesh"}, {"120", "Adithya"}, {"125", "Jai"}, {"130", "Chaitanya"}, {"135", "Raja"}}, new String[] {"Employee Id", "Employee Name"}) {
-         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-            Component comp = super.prepareRenderer(renderer, row, column);
-            Color alternateColor = new Color(200, 201, 210);
-            Color whiteColor = Color.WHITE;
-            if(!comp.getBackground().equals(getSelectionBackground())) {
-               Color c = (row % 2 == 0 ? alternateColor : whiteColor);
-               comp.setBackground(bg);
-               c = null;
-            }
-            return returnComp;
-         }
-      };
-      add(new JScrollPane(table));
-      setSize(400, 300);
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setLocationRelativeTo(null);
-      setVisible(true);
-   }
-   public static void main(String[] args) {
-      new AlternateRowColorTableTest();
-   }
-}*/
     }
     public static void TablaTorol(JTable JTable){
         try{

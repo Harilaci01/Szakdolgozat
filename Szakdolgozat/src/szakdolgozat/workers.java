@@ -340,7 +340,11 @@ public class workers extends javax.swing.JFrame {
             st = new StringTokenizer(sszamS," ");
             for (int i = 0; i < 4; i++) {                
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
-            }            
+            }
+            ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            result.next();            
+            String d_id=result.getString("d_id");
+            stmt.executeUpdate("UPDATE kezeles SET kezelo_orvos=1 WHERE kezelo_orvos='"+d_id+"'");            
             stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
             TablaTorol(tablew);
             TablaFeltolt(tablew);
@@ -372,9 +376,9 @@ public class workers extends javax.swing.JFrame {
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
             ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
-            result.next();
-            
+            result.next();            
             d_id=result.getString("d_id");
+            stmt.executeUpdate("UPDATE kezeles SET kezelo_orvos=1 WHERE kezelo_orvos='"+d_id+"'");
             stmt.executeUpdate("DELETE FROM dolgozok WHERE d_id='"+d_id+"'");            
             TablaTorol(tablew);
             TablaFeltolt(tablew);
@@ -385,6 +389,7 @@ public class workers extends javax.swing.JFrame {
             
         }
         catch(Exception e){System.err.println("Hiba: "+e);
+        e.printStackTrace();
         }
     }//GEN-LAST:event_workersActionPerformed
 
@@ -499,7 +504,7 @@ public class workers extends javax.swing.JFrame {
                 rekord[1]=rs2.getString("megnevezes");
                 if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
                 else rekord[2]=rs2.getString("felhasznalo");
-                model.addRow(rekord);
+                if(!rs1.getString("vezeteknev").equals(""))model.addRow(rekord);
             }
             con.close();
         }

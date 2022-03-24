@@ -865,7 +865,8 @@ public class cures extends javax.swing.JFrame {
                 rekord[3] = result.getString("gyogyszerek.nev");
                 rekord[4] = result.getString("befekves");
                 rekord[5] = result.getString("gyogyulas");
-                rekord[6] = rs2.getString("vezeteknev") + " " + rs2.getString("keresztnev") + " " + rs2.getString("masodik_keresztnev");
+                if(!rs2.getString("vezeteknev").equals(""))rekord[6] = rs2.getString("vezeteknev") + " " + rs2.getString("keresztnev") + " " + rs2.getString("masodik_keresztnev");
+                else rekord[6]="Nincs kirendelve";
                 model.addRow(rekord);
             }
             con.close();
