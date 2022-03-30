@@ -386,8 +386,11 @@ public class patiens extends javax.swing.JFrame {
                 model.addRow(rekord);
             }
             con.close();
+            if(model.getRowCount()==0){
+                info.setForeground(Color.red);
+                info.setText("A beteg nincs az adatbázisban!");}else{            
             info.setForeground(Color.white);
-            info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");
+            info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");}
 
         } catch (Exception e) {
             System.err.println("Hiba: " + e);
