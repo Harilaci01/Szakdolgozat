@@ -31,9 +31,8 @@ public class workers extends javax.swing.JFrame {
         ElotagBeszur(front);
         TablaFeltolt(tablew);
         password.setVisible(false);
-        workers.setVisible(false);
-        database.setVisible(false);
         confirm.setVisible(false);
+        activate.setVisible(false);
         info.setForeground(Color.white);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
         
@@ -67,8 +66,8 @@ public class workers extends javax.swing.JFrame {
         reset = new javax.swing.JButton();
         info = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
-        database = new javax.swing.JButton();
-        workers = new javax.swing.JButton();
+        nonactive = new javax.swing.JButton();
+        activate = new javax.swing.JButton();
         confirm = new javax.swing.JButton();
         title = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -156,21 +155,21 @@ public class workers extends javax.swing.JFrame {
         getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 236, 419, 18));
         getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 142, 155, -1));
 
-        database.setText("Adatbázisból");
-        database.addActionListener(new java.awt.event.ActionListener() {
+        nonactive.setText("Nem aktív dolgozók");
+        nonactive.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                databaseActionPerformed(evt);
+                nonactiveActionPerformed(evt);
             }
         });
-        getContentPane().add(database, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 175, -1, -1));
+        getContentPane().add(nonactive, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, -1, -1));
 
-        workers.setText("Dolgozókból");
-        workers.addActionListener(new java.awt.event.ActionListener() {
+        activate.setText("Aktívál");
+        activate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workersActionPerformed(evt);
+                activateActionPerformed(evt);
             }
         });
-        getContentPane().add(workers, new org.netbeans.lib.awtextra.AbsoluteConstraints(721, 175, -1, -1));
+        getContentPane().add(activate, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, -1, -1));
 
         confirm.setText("Véglegesít");
         confirm.addActionListener(new java.awt.event.ActionListener() {
@@ -212,9 +211,8 @@ public class workers extends javax.swing.JFrame {
         String mi="";        
         String condition1="WHERE elotag LIKE ('"+fr+"') AND";
         password.setVisible(false);
-        workers.setVisible(false);
-        database.setVisible(false);
         confirm.setVisible(false);
+        activate.setVisible(false);
         String sqlparancs="SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, dolgozok.felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON beosztas.beosz_id=dolgozok.beosz_id INNER JOIN szemely ON szemely.szem_id=dolgozok.d_id co1";
         if(na.equals(""))na="%";
         if(na.equals("%")){
@@ -273,7 +271,7 @@ public class workers extends javax.swing.JFrame {
                 rekord[0]=result.getString("elotag")+" "+result.getString("vezeteknev")+" "+result.getString("keresztnev")+" "+result.getString("masodik_keresztnev");
                 rekord[1]=result.getString("beosztas.megnevezes");  
                 rekord[2]=result.getString("felhasznalo");
-                model.addRow(rekord);
+                if(!result.getString("vezeteknev").equals(""))model.addRow(rekord);
             }
             if(model.getRowCount()==0){
                 info.setForeground(Color.red);
@@ -301,64 +299,19 @@ public class workers extends javax.swing.JFrame {
         info.setForeground(Color.white);
         info.setText("Kérem adjon meg adatokat a kereséshez.");
         password.setVisible(false);
-        workers.setVisible(false);
-        database.setVisible(false);
         confirm.setVisible(false);
+        activate.setVisible(false);
     }//GEN-LAST:event_resetActionPerformed
 
     private void hireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hireActionPerformed
         password.setVisible(true);     
         confirm.setVisible(true);
-        workers.setVisible(false);
-        database.setVisible(false);
         info.setForeground(Color.white);
         info.setText("Kérem adjon meg egy jelszót");
+        activate.setVisible(false);
     }//GEN-LAST:event_hireActionPerformed
 
     private void fireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fireActionPerformed
-        info.setForeground(Color.white);
-        info.setText("Kérem válasszon honnan szeretné törölni a személyt");
-        workers.setVisible(true);
-        database.setVisible(true);
-        password.setVisible(false);        
-        confirm.setVisible(false);
-        
-    }//GEN-LAST:event_fireActionPerformed
-
-    private void databaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_databaseActionPerformed
-        StringTokenizer st;
-        password.setVisible(false);        
-        confirm.setVisible(false);
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
-            int sszam=tablew.getSelectedRow();
-            String sszamS=tablew.getValueAt(sszam, 0).toString();
-            String torles[]={"","","",""};
-            st = new StringTokenizer(sszamS," ");
-            for (int i = 0; i < 4; i++) {                
-                if (st.hasMoreTokens()) torles[i]=st.nextToken();
-            }
-            ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
-            result.next();            
-            String d_id=result.getString("d_id");
-            stmt.executeUpdate("UPDATE kezeles SET kezelo_orvos=1 WHERE kezelo_orvos='"+d_id+"'");            
-            stmt.executeUpdate("DELETE FROM szemely WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
-            TablaTorol(tablew);
-            TablaFeltolt(tablew);
-            workers.setVisible(false);
-            database.setVisible(false);
-            info.setForeground(Color.green);
-            info.setText("A törlés sikeres!");
-            
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
-        }
-    }//GEN-LAST:event_databaseActionPerformed
-
-    private void workersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workersActionPerformed
         StringTokenizer st;
         password.setVisible(false);        
         confirm.setVisible(false);
@@ -379,23 +332,22 @@ public class workers extends javax.swing.JFrame {
             result.next();            
             d_id=result.getString("d_id");
             stmt.executeUpdate("UPDATE kezeles SET kezelo_orvos=1 WHERE kezelo_orvos='"+d_id+"'");
-            stmt.executeUpdate("DELETE FROM dolgozok WHERE d_id='"+d_id+"'");            
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=0 WHERE szem_id='"+d_id+"'");            
             TablaTorol(tablew);
-            TablaFeltolt(tablew);
-            workers.setVisible(false);
-            database.setVisible(false);
+            TablaFeltolt(tablew);            
             info.setForeground(Color.green);
             info.setText("A törlés sikeres!");
             
         }
-        catch(Exception e){System.err.println("Hiba: "+e);
-        e.printStackTrace();
+        catch(Exception e){System.err.println("Hiba: "+e);        
         }
-    }//GEN-LAST:event_workersActionPerformed
+        password.setVisible(false);        
+        confirm.setVisible(false);
+        activate.setVisible(false);
+        
+    }//GEN-LAST:event_fireActionPerformed
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
-        workers.setVisible(false);
-        database.setVisible(false);
         String na=name.getText().replaceAll("[^A-Za-záéőúűóüöí /-]","");
         String jo=job.getText().replaceAll("[^A-Za-záéőúűóüöí ]","");
         String us=username.getText();       
@@ -405,7 +357,7 @@ public class workers extends javax.swing.JFrame {
         String su="%";
         String fi="%";
         String mi="";       
-        
+        activate.setVisible(false);
         String testP="SELECT * FROM szemely WHERE elotag=? AND vezeteknev=? AND keresztnev=? AND masodik_keresztnev=?";
         st = new StringTokenizer(na," ");
         if(st.countTokens()>0){
@@ -472,6 +424,7 @@ public class workers extends javax.swing.JFrame {
                 info.setText("Sikeres feltöltés! \n Új személyt vett fel.");
                 password.setVisible(false);     
                 confirm.setVisible(false);
+                activate.setVisible(false);
                 TablaTorol(tablew);
                 TablaFeltolt(tablew);
                 password.setText("");
@@ -484,6 +437,81 @@ public class workers extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_confirmActionPerformed
 
+    private void nonactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nonactiveActionPerformed
+       TablaTorol(tablew);
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            Statement stmt2=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.szem_id,szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=0 ORDER BY d_id");
+            String[] rekord=new String[3];
+            while(rs1.next()){
+                ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id where d_id="+rs1.getString("szem_id"));                
+                rs2.next();
+                rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
+                rekord[1]=rs2.getString("megnevezes");
+                if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
+                else rekord[2]=rs2.getString("felhasznalo");
+                if(!rs1.getString("vezeteknev").equals(""))model.addRow(rekord);
+                System.err.println(rekord);
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+       activate.setVisible(true);
+        
+    }//GEN-LAST:event_nonactiveActionPerformed
+
+    private void activateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateActionPerformed
+        StringTokenizer st;
+        password.setVisible(false);
+        confirm.setVisible(false);
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            DefaultTableModel model=(DefaultTableModel) tablew.getModel();
+            int sszam=tablew.getSelectedRow();
+            String sszamS=tablew.getValueAt(sszam, 0).toString();
+            String torles[]={"","","",""};
+            String d_id;
+            st = new StringTokenizer(sszamS," ");
+            for (int i = 0; i < 4; i++) {
+                if (st.hasMoreTokens()) torles[i]=st.nextToken();
+            }
+            ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            result.next();
+            d_id=result.getString("d_id");            
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='"+d_id+"'");
+            TablaTorol(tablew);
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Statement stmt2=con.createStatement();
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=0 ORDER BY d_id");
+            ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id ORDER BY d_id");
+            String[] rekord=new String[3];
+            while(rs1.next()){
+                rs2.next();
+                rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
+                rekord[1]=rs2.getString("megnevezes");
+                if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
+                else rekord[2]=rs2.getString("felhasznalo");
+                if(!rs1.getString("vezeteknev").equals(""))model.addRow(rekord);
+            }
+            con.close();
+        
+            activate.setVisible(false);            
+            info.setForeground(Color.green);
+            info.setText("Az aktíválás sikeres!");
+
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        }
+    }//GEN-LAST:event_activateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -495,7 +523,7 @@ public class workers extends javax.swing.JFrame {
             Statement stmt=con.createStatement();
             Statement stmt2=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) JTable.getModel();
-            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id ORDER BY d_id");
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=1 ORDER BY d_id");
             ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id ORDER BY d_id");
             String[] rekord=new String[3];
             while(rs1.next()){
@@ -574,8 +602,8 @@ public class workers extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton activate;
     private javax.swing.JButton confirm;
-    private javax.swing.JButton database;
     private javax.swing.JButton fire;
     private javax.swing.JComboBox<String> front;
     private javax.swing.JButton hire;
@@ -587,12 +615,12 @@ public class workers extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField job;
     private javax.swing.JTextField name;
+    private javax.swing.JButton nonactive;
     private javax.swing.JPasswordField password;
     private javax.swing.JButton reset;
     private javax.swing.JButton search;
     private javax.swing.JTable tablew;
     private javax.swing.JLabel title;
     private javax.swing.JTextField username;
-    private javax.swing.JButton workers;
     // End of variables declaration//GEN-END:variables
 }
