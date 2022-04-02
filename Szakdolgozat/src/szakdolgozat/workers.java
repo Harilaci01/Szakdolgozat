@@ -330,16 +330,17 @@ public class workers extends javax.swing.JFrame {
             }            
             ResultSet result=stmt.executeQuery("Select d_id FROM szemely INNER JOIN dolgozok ON dolgozok.d_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
             result.next();            
-            d_id=result.getString("d_id");
-            stmt.executeUpdate("UPDATE kezeles SET kezelo_orvos=1 WHERE kezelo_orvos='"+d_id+"'");
+            d_id=result.getString("d_id");            
             stmt.executeUpdate("UPDATE szemely SET aktivitas=0 WHERE szem_id='"+d_id+"'");            
             TablaTorol(tablew);
             TablaFeltolt(tablew);            
             info.setForeground(Color.green);
-            info.setText("A törlés sikeres!");
+            info.setText("A deaktíválás sikeres!");
             
         }
-        catch(Exception e){System.err.println("Hiba: "+e);        
+        catch(Exception e){System.err.println("Hiba: "+e); 
+            info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki a törölendő sort.");
         }
         password.setVisible(false);        
         confirm.setVisible(false);
@@ -455,11 +456,13 @@ public class workers extends javax.swing.JFrame {
                 if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
                 else rekord[2]=rs2.getString("felhasznalo");
                 if(!rs1.getString("vezeteknev").equals(""))model.addRow(rekord);
-                System.err.println(rekord);
+               
             }
             con.close();
         }
         catch(Exception e){System.err.println("Hiba: "+e);
+        info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
         }
        activate.setVisible(true);
         
@@ -487,13 +490,12 @@ public class workers extends javax.swing.JFrame {
             d_id=result.getString("d_id");            
             stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='"+d_id+"'");
             TablaTorol(tablew);
-            
             Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt2=con.createStatement();
-            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=0 ORDER BY d_id");
-            ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id ORDER BY d_id");
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.szem_id,szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=1 ORDER BY d_id");
             String[] rekord=new String[3];
             while(rs1.next()){
+                ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id  where d_id="+rs1.getString("szem_id"));
                 rs2.next();
                 rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
                 rekord[1]=rs2.getString("megnevezes");
@@ -509,6 +511,8 @@ public class workers extends javax.swing.JFrame {
 
         }
         catch(Exception e){System.err.println("Hiba: "+e);
+        info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
         }
     }//GEN-LAST:event_activateActionPerformed
 
@@ -523,10 +527,10 @@ public class workers extends javax.swing.JFrame {
             Statement stmt=con.createStatement();
             Statement stmt2=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) JTable.getModel();
-            ResultSet rs1=stmt.executeQuery("SELECT szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=1 ORDER BY d_id");
-            ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id ORDER BY d_id");
+            ResultSet rs1=stmt.executeQuery("SELECT szemely.szem_id, szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=1 ORDER BY d_id");
             String[] rekord=new String[3];
             while(rs1.next()){
+                ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id where d_id="+rs1.getString("szem_id"));
                 rs2.next();
                 rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
                 rekord[1]=rs2.getString("megnevezes");

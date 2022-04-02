@@ -756,7 +756,7 @@ public class cures extends javax.swing.JFrame {
                     pst2.setString(3, mi);
                 }
                 rs = pst2.executeQuery();
-                String sqlparancs3 = "SELECT szem_id FROM szemely WHERE elotag='" + fr2 + "' AND vezeteknev=? AND keresztnev=? co2";
+                String sqlparancs3 = "SELECT szem_id FROM szemely WHERE aktivitas=1 AND elotag='" + fr2 + "' AND vezeteknev=? AND keresztnev=? co2";
                 sqlparancs3 = sqlparancs3.replace("co2", condition2);
                 PreparedStatement pst3 = con.prepareStatement(sqlparancs3);
                 pst3.setString(1, su2);
@@ -770,7 +770,7 @@ public class cures extends javax.swing.JFrame {
                     info.setText("A beteg nincs az adatbázisban!");
                 } else if (!rs2.next()) {
                     info.setForeground(Color.red);
-                    info.setText("Az orvos nincs az adatbázisban!");
+                    info.setText("Az orvos nincs az adatbázisban vagy már nem aktív!");
                 } else {
                     b_id = rs.getInt("szem_id");
                     d_id = rs2.getInt("szem_id");
@@ -865,8 +865,7 @@ public class cures extends javax.swing.JFrame {
                 rekord[3] = result.getString("gyogyszerek.nev");
                 rekord[4] = result.getString("befekves");
                 rekord[5] = result.getString("gyogyulas");
-                if(!rs2.getString("vezeteknev").equals(""))rekord[6] = rs2.getString("vezeteknev") + " " + rs2.getString("keresztnev") + " " + rs2.getString("masodik_keresztnev");
-                else rekord[6]="Nincs kirendelve";
+                rekord[6] = rs2.getString("vezeteknev") + " " + rs2.getString("keresztnev") + " " + rs2.getString("masodik_keresztnev");               
                 model.addRow(rekord);
             }
             con.close();
