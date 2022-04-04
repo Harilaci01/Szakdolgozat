@@ -224,10 +224,7 @@ public class visitors extends javax.swing.JFrame {
         String mi2="%";
         String su2="%";
         String fi2="%"; 
-        String condition1="WHERE elotag LIKE ? AND";
-        String condition2="WHERE elotag LIKE ? AND";
-        String condition3="AND";
-        String sqlparancs="SELECT * FROM `latogatas` WHERE l_id in (Select szem_id from szemely co2 vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND)and b_id in (Select szem_id from szemely co1 vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND)  co3";
+        String sqlparancs="SELECT * FROM `latogatas` WHERE l_id in (Select szem_id from szemely WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ?)and b_id in (Select szem_id from szemely WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ?) AND bejelentkezes LIKE ? AND tavozas LIKE ?";
         visitor.setText(vi);
         patient.setText(pa);
         arrival.setText(ar);
@@ -263,33 +260,15 @@ public class visitors extends javax.swing.JFrame {
                mi2=st2.nextToken();               
                }
         }
-        
-        if(!ar.equals("")){
-            condition3+=" bejelentkezes LIKE ? AND";
-        }
-        if(!ex.equals("")){
-            condition3+=" tavozas LIKE ? AND";
-        }        
-        if(condition1.equals("WHERE"))condition1="";
-            else condition1=condition1.substring(0,condition1.length()-4);
-        if(condition2.equals("WHERE"))condition2="";
-            else condition2=condition2.substring(0,condition2.length()-4);
-        if(condition3.equals("AND"))condition3="";
-            else{ condition3=condition3.substring(0,condition3.length()-4);
-        }       
-        sqlparancs=sqlparancs.replace("co1", condition1);
-        sqlparancs=sqlparancs.replace("co2", condition2);
-        sqlparancs=sqlparancs.replace("co3", condition3);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");           
             TablaTorol(tablev);
             DefaultTableModel model=(DefaultTableModel) tablev.getModel();
             Statement stmt2=con.createStatement();
-            Statement stmt3=con.createStatement();
-            System.out.println(sqlparancs);
+            Statement stmt3=con.createStatement();            
             PreparedStatement test=con.prepareStatement(sqlparancs);            
-            if(!mi.equals("")&&!mi2.equals("")&&!ar.equals("")&&!ex.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")){ //ÖSSZES TELE
+            
                 test.setString(1,fr);
                 test.setString(2,"%"+su+"%");
                 test.setString(3,"%"+fi+"%");
@@ -300,7 +279,7 @@ public class visitors extends javax.swing.JFrame {
                 test.setString(8,"%"+mi2+"%");
                 test.setString(9,"%"+ar+"%");
                 test.setString(10,"%"+ex+"%");                
-            }
+            
             
             ResultSet result=test.executeQuery();
             String[] rekord=new String[4];
