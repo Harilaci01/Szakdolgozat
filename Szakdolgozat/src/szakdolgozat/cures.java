@@ -197,9 +197,9 @@ public class cures extends javax.swing.JFrame {
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String fr = frontbox.getSelectedItem().toString();
         String fr2 = "Dr.";
-        String pa = patient.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]", "");
-        String be = sickness.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]", "");
-        String gy = drug.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]", "");
+        String pa = patient.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
+        String be = sickness.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
+        String gy = drug.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         String strt, end;
         String datum1 = ((JTextField) startd.getDateEditor().getUiComponent()).getText();
         String datum2 = ((JTextField) finishd.getDateEditor().getUiComponent()).getText();
@@ -219,13 +219,19 @@ public class cures extends javax.swing.JFrame {
             end = end.replaceAll("[.]", "-");
             end = end.substring(0, end.length() - 1);
         }
-        String dr = doctor.getText().replaceAll("[^A-Za-záéőúűóüöí /-/%]", "");
+        String dr = doctor.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
+        doctor.setText(dr);
+        patient.setText(pa);
+        sickness.setText(be);
+        drug.setText(gy);
+        start.setText(strt);
+        finish.setText(end);
         StringTokenizer st;
-        String su = "";
-        String fi = "";
-        String mi="", mi2="";
-        String su2 = "";
-        String fi2 = "";
+        String su = "%";
+        String fi = "%";
+        String mi="%", mi2="%";
+        String su2 = "%";
+        String fi2 = "%";
         String condition1 = "WHERE elotag LIKE ? AND";
         String condition2 = "WHERE elotag LIKE ? AND";
         String condition3 = "AND";
@@ -246,11 +252,11 @@ public class cures extends javax.swing.JFrame {
                 if (st.hasMoreTokens()) {
                     fi = st.nextToken();
                 }else
-                    fi="";
+                    fi="%";
                 condition1 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
                     mi = st.nextToken();                     
-                }else mi="";
+                }else mi="%";
                 condition1 += " masodik_keresztnev LIKE ? AND";
                 
             } 
@@ -271,11 +277,11 @@ public class cures extends javax.swing.JFrame {
                 }
                 if (st.hasMoreTokens()) {
                     fi2 = st.nextToken();
-                }else fi2="";
+                }else fi2="%";
                 condition2 += " keresztnev LIKE ? AND";
                 if (st.hasMoreTokens()) {
                     mi2 = st.nextToken();                    
-                }else mi2="";
+                }else mi2="%";
                 condition2 += " masodik_keresztnev LIKE ? AND";
                 
             }
@@ -321,121 +327,7 @@ public class cures extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             TablaTorol(tablec);
             PreparedStatement pst = con.prepareStatement(sqlparancs);      
-                        
-            if(pa.equals("")&&!dr.equals("")&&!strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){//csak elso datum +elso nev
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){
-                    pst.setString(4,"%"+mi+"%");
-                    pst.setString(5, fr2);
-                    pst.setString(6,"%"+ strt+"%");
-                }else{
-                pst.setString(4, fr2);
-                pst.setString(5,"%"+ strt+"%");}
-            }
-            
-            if(!pa.equals("")&&dr.equals("")&&!strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){//csak elso datum +masodik nev
-                pst.setString(1,fr);                
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+su2+"%");
-                pst.setString(4,"%"+fi2+"%");
-                if(!mi2.equals("")){
-                    pst.setString(5,"%"+mi2+"%");
-                    pst.setString(6,"%"+ strt+"%");
-                }else
-                pst.setString(5,"%"+ strt+"%");
-            }
-            
-            if(pa.equals("")&&!dr.equals("")&&strt.equals("")&&!end.equals("")&&be.equals("")&&gy.equals("")){//csak madosik datum +elso nev
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){
-                    pst.setString(4,"%"+mi+"%");
-                    pst.setString(5, fr2);
-                    pst.setString(6,"%"+ end+"%");
-                }else{
-                pst.setString(4, fr2);
-                pst.setString(5,"%"+ end+"%");}
-            }
-            
-            if(!pa.equals("")&&dr.equals("")&&strt.equals("")&&!end.equals("")&&be.equals("")&&gy.equals("")){//csak masodik datum +masodik nev
-                pst.setString(1,fr);                
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+su2+"%");
-                pst.setString(4,"%"+fi2+"%");
-                if(!mi2.equals("")){
-                    pst.setString(5,"%"+mi2+"%");
-                    pst.setString(6,"%"+ end+"%");
-                }else
-                pst.setString(5,"%"+ end+"%");
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&strt.equals("")&&!end.equals("")){//csak masodik datum
-                pst.setString(1,fr);
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+ end+"%");
-            }
-
-            if (mi.equals("") && !su.equals("") && dr.equals("") && !fi.equals("")&&!be.equals("")&&!gy.equals("")) {//NINCS második név és más. keresztnév
-                if ((!strt.equals("")) && (!end.equals(""))) {
-                    pst.setString(1, fr);
-                    pst.setString(2, "%" + su + "%");
-                    pst.setString(3, "%" + fi + "%");
-                    pst.setString(4, fr2);
-                    pst.setString(5,"%"+be+"%");
-                    pst.setString(6,"%"+gy+"%");
-                    pst.setString(7, "%" + strt + "%");
-                    pst.setString(8, "%" + end + "%");
-                } else if (!strt.equals("")) {
-                    pst.setString(1, fr);
-                    pst.setString(2, "%" + su + "%");
-                    pst.setString(3, "%" + fi + "%");
-                    pst.setString(4, fr2);
-                    pst.setString(5,"%"+be+"%");
-                    pst.setString(6,"%"+gy+"%");
-                    pst.setString(7, "%" + strt + "%");
-                } else if (strt.equals("") && !end.equals("")) {
-                    pst.setString(1, fr);
-                    pst.setString(2, "%" + su + "%");
-                    pst.setString(3, "%" + fi + "%");
-                    pst.setString(4, fr2);
-                    pst.setString(5,"%"+be+"%");
-                    pst.setString(6,"%"+gy+"%");
-                    pst.setString(7, "%" + end + "%");
-                }
-            }
-            
-            if(mi2.equals("")&&pa.equals("")&&!fi2.equals("")&&!su2.equals("")&&!be.equals("")&&!gy.equals("")){//NINCS első név és más. keresztnév
-                 if((!strt.equals(""))&&(!end.equals(""))) {
-                        pst.setString(1,fr);
-                        pst.setString(2, fr2);
-                        pst.setString(3, "%"+su2+"%");
-                        pst.setString(4, "%"+fi2+"%");
-                        pst.setString(5,"%"+be+"%");
-                        pst.setString(6,"%"+gy+"%");
-                        pst.setString(7,"%"+strt+"%");
-                        pst.setString(8,"%"+end+"%");
-                    } else if(!strt.equals("")){
-                        pst.setString(1,fr);
-                        pst.setString(2, fr2);
-                        pst.setString(3, "%"+su2+"%");
-                        pst.setString(4, "%"+fi2+"%");
-                        pst.setString(5,"%"+be+"%");
-                        pst.setString(6,"%"+gy+"%");
-                        pst.setString(7,"%"+strt+"%");
-                    }
-                    else if (strt.equals("")&&!end.equals("")){
-                        pst.setString(1,fr);
-                        pst.setString(2, fr2);
-                        pst.setString(3, "%"+su2+"%");
-                        pst.setString(4, "%"+fi2+"%");
-                        pst.setString(5,"%"+be+"%");
-                        pst.setString(6,"%"+gy+"%");
-                        pst.setString(7,"%"+end+"%");
-                    }
-            }
+              
             
             if(!mi.equals("")&&!mi2.equals("")&&!strt.equals("")&&!end.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")&&!be.equals("")&&!gy.equals("")){ //ÖSSZES TELE
                 pst.setString(1,fr);
@@ -452,183 +344,6 @@ public class cures extends javax.swing.JFrame {
                 pst.setString(12,"%"+end+"%");                
             }
             
-            if(strt.equals("")&&end.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")&&!be.equals("")&&!gy.equals("")){ //NINCS 2 DATUM 
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){
-                    pst.setString(4,"%"+mi+"%");
-                    pst.setString(5,fr2);
-                    pst.setString(6,"%"+su2+"%");
-                    pst.setString(7,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(8,"%"+mi2+"%");
-                        pst.setString(9,"%"+be+"%");
-                        pst.setString(10,"%"+gy+"%");
-                    }else{ pst.setString(8,"%"+be+"%");
-                        pst.setString(9,"%"+gy+"%");}
-                }
-                 else{
-                    pst.setString(4,fr2);
-                    pst.setString(5,"%"+su2+"%");
-                    pst.setString(6,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(7,"%"+mi2+"%");
-                        pst.setString(8,"%"+be+"%");
-                        pst.setString(9,"%"+gy+"%");;
-                    }else{ pst.setString(7,"%"+be+"%");
-                        pst.setString(8,"%"+gy+"%");}
-                }
-            }
-            
-            if(!mi2.equals("")&&strt.equals("")&&!end.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")&&!be.equals("")&&!gy.equals("")){ //NINCS elso DATUM 
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){
-                    pst.setString(4,"%"+mi+"%");
-                    pst.setString(5,fr2);
-                    pst.setString(6,"%"+su2+"%");
-                    pst.setString(7,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(8,"%"+mi2+"%");
-                        pst.setString(9,"%"+ be+"%");
-                        pst.setString(10,"%"+ gy+"%");
-                        pst.setString(11,"%"+end+"%");
-                    }else {
-                        pst.setString(8,"%"+ be+"%");
-                        pst.setString(9,"%"+ gy+"%");
-                        pst.setString(10,"%"+end+"%");
-                    }
-                }
-                else{
-                    pst.setString(4,fr2);
-                    pst.setString(5,"%"+su2+"%");
-                    pst.setString(6,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(7,"%"+mi2+"%");
-                        pst.setString(8,"%"+ be+"%");
-                        pst.setString(9,"%"+ gy+"%");
-                        pst.setString(10,"%"+end+"%");
-                    }else{
-                        pst.setString(7,"%"+ be+"%");
-                        pst.setString(8,"%"+ gy+"%");
-                        pst.setString(9,"%"+end+"%");
-                    }
-                    
-                }
-            }
-            
-            if(!mi.equals("")&&!mi2.equals("")&&!strt.equals("")&&end.equals("")&&!su.equals("")&&!fi.equals("")&&!su2.equals("")&&!fi2.equals("")&&!be.equals("")&&!gy.equals("")){ //NINCS masodik DATUM 
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){
-                    pst.setString(4,"%"+mi+"%");
-                    pst.setString(5,fr2);
-                    pst.setString(6,"%"+su2+"%");
-                    pst.setString(7,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(8,"%"+mi2+"%");
-                        pst.setString(9,"%"+ be+"%");
-                        pst.setString(10,"%"+ gy+"%"); 
-                        pst.setString(11,"%"+strt+"%");
-                    }else{
-                        pst.setString(8,"%"+ be+"%");
-                        pst.setString(9,"%"+ gy+"%"); 
-                        pst.setString(10,"%"+strt+"%");
-                    }
-                }
-                else{
-                    pst.setString(4,fr2);
-                    pst.setString(5,"%"+su2+"%");
-                    pst.setString(6,"%"+fi2+"%");
-                    if(!mi2.equals("")){
-                        pst.setString(7,"%"+mi2+"%");
-                        pst.setString(8,"%"+ be+"%");
-                        pst.setString(9,"%"+ gy+"%"); 
-                        pst.setString(10,"%"+strt+"%");
-                    }else {
-                         pst.setString(7,"%"+ be+"%");
-                        pst.setString(8,"%"+ gy+"%"); 
-                        pst.setString(9,"%"+strt+"%");
-                    }
-                    
-                }
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&strt.equals("")&&end.equals("")&&!be.equals("")&&!gy.equals("")){ //CSAK betegseg és gyogyszer
-                pst.setString(1,fr);
-                pst.setString(2,fr2);
-                pst.setString(3,"%"+ be+"%");
-                pst.setString(4,"%"+ gy+"%");           
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&strt.equals("")&&end.equals("")&&!be.equals("")&&gy.equals("")){ //CSAK betegseg 
-                pst.setString(1,fr);
-                pst.setString(2,fr2);
-                pst.setString(3,"%"+ be+"%");                          
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&strt.equals("")&&end.equals("")&&be.equals("")&&!gy.equals("")){ //CSAK  gyogyszer
-                pst.setString(1,fr);
-                pst.setString(2,fr2);
-                pst.setString(3,"%"+ gy+"%");         
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&!strt.equals("")&&!end.equals("")&&be.equals("")&&gy.equals("")){ //CSAK 2 datum
-                pst.setString(1,fr);
-                pst.setString(2,fr2);
-                pst.setString(3,"%"+ strt+"%");
-                pst.setString(4,"%"+ end+"%");           
-            }
-            
-            
-            if(pa.equals("")&&dr.equals("")&&!strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){//csak elso datum
-                pst.setString(1,fr);
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+ strt+"%");
-            }
-            
-            if(pa.equals("")&&dr.equals("")&&strt.equals("")&&!end.equals("")&&be.equals("")&&gy.equals("")){//csak masodik datum
-                pst.setString(1,fr);
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+ end+"%");
-            }
-            
-            if(!su.equals("")&&!fi.equals("")&&pa.equals("")&&strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){     //CSAK első név          
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,"%"+fi+"%");
-                if(!mi.equals("")){pst.setString(4,"%"+mi+"%");
-                pst.setString(5, fr2);}else pst.setString(4, fr2);
-                
-            }  
-            
-            if(!su2.equals("")&&!fi2.equals("")&&dr.equals("")&&strt.equals("")&&end.equals("")&&be.equals("")&&gy.equals("")){  //CSAK masodik név             
-                pst.setString(1, fr);
-                pst.setString(2, fr2);
-                pst.setString(3,"%"+su2+"%");
-                pst.setString(4,"%"+fi2+"%");
-                if(!mi2.equals(""))pst.setString(5,"%"+mi2+"%");
-            }
-            
-            if(mi.equals("")&&mi2.equals("")&&!strt.equals("")&&!end.equals("")&&!su.equals("")&&fi.equals("")&&!su2.equals("")&&fi2.equals("")&&be.equals("")&&gy.equals("")){//csak vezetéknevek és dátumok
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,fr2);
-                pst.setString(4,"%"+su2+"%");
-                pst.setString(5,"%"+strt+"%");
-                pst.setString(6,"%"+end+"%");
-            }
-            
-            if(mi.equals("")&&mi2.equals("")&&strt.equals("")&&end.equals("")&&!su.equals("")&&fi.equals("")&&!su2.equals("")&&fi2.equals("")&&be.equals("")&&gy.equals("")){//csak vezetéknevek 
-                pst.setString(1,fr);
-                pst.setString(2,"%"+su+"%");
-                pst.setString(3,fr2);
-                pst.setString(4,"%"+su2+"%");
-            }
-           
             DefaultTableModel model = (DefaultTableModel) tablec.getModel();
             Statement stmt2 = con.createStatement();
             Statement stmt3 = con.createStatement();
