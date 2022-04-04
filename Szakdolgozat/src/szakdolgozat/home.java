@@ -15,7 +15,7 @@ public class home extends javax.swing.JFrame {
     public home() {          
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
-        switch(id){
+        switch(id){//a felhasználó beosztás id-je alapján jeleníti meg a gombokat (jogosúltság)
             case 2:
                 workers.setVisible(false);
                 logins.setVisible(false);                
@@ -134,52 +134,52 @@ public class home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
-        login l=new login();
+        login l=new login();//Új bejelentkezés ablakot jelenít meg
         l.setVisible(true);
         l.setLocationRelativeTo(null);
-        dispose();    
+        dispose();//Jelenlegi ablakot bezár    
     }//GEN-LAST:event_logoutActionPerformed
 
     private void workersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workersActionPerformed
-        workers w= new workers();
+        workers w= new workers();//Új dolgozók ablak 
         w.setVisible(true);
         w.setLocationRelativeTo(null);
-        dispose();
+        dispose();//Jelenlegi ablakot bezár
     }//GEN-LAST:event_workersActionPerformed
 
     private void patiensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patiensActionPerformed
-       patiens p=new patiens();
+       patiens p=new patiens();//Új betegek ablak
        p.setVisible(true);
        p.setLocationRelativeTo(null);
-       dispose();
+       dispose();//Jelenlegi ablakot bezár
     }//GEN-LAST:event_patiensActionPerformed
 
     private void drugsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drugsActionPerformed
-       drugs d=new drugs();
+       drugs d=new drugs();//Új gyógyszerek ablak
        d.setVisible(true);
        d.setLocationRelativeTo(null);
-       dispose();
+       dispose();//Jelenlegi ablakot bezár
     }//GEN-LAST:event_drugsActionPerformed
 
     private void curesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_curesActionPerformed
-       cures c=new cures();
+       cures c=new cures();//Új kezelések ablak
        c.setVisible(true);
        c.setLocationRelativeTo(null);
-       dispose();        
+       dispose();//Jelenlegi ablakot bezár 
     }//GEN-LAST:event_curesActionPerformed
 
     private void visitorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visitorsActionPerformed
-       visitors v=new visitors();
+       visitors v=new visitors();//Új látogatás ablak
        v.setVisible(true);
        v.setLocationRelativeTo(null);
-       dispose();
+       dispose();//Jelenlegi ablakot bezár
     }//GEN-LAST:event_visitorsActionPerformed
 
     private void loginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginsActionPerformed
-       logins l=new logins();
+       logins l=new logins();//Új bejelentkezések ablak
        l.setVisible(true);
        l.setLocationRelativeTo(null);
-       dispose();
+       dispose();//Jelenlegi ablakot bezár
     }//GEN-LAST:event_loginsActionPerformed
 
     /**
