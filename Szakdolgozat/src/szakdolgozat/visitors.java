@@ -30,7 +30,7 @@ public class visitors extends javax.swing.JFrame {
      */
     public visitors() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         TablaFeltolt(tablev);
         ElotagBeszur(frontbox);
         ElotagBeszur(frontbox2);

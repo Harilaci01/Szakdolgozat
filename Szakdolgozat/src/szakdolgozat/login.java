@@ -6,8 +6,9 @@ import static szakdolgozat.Szakdolgozat.id;
 public class login extends javax.swing.JFrame {
 
     public login() {
-        initComponents(); 
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        initComponents();
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -103,6 +104,7 @@ public class login extends javax.swing.JFrame {
         catch(Exception e){System.err.println(e);
             info.setForeground(Color.red);
             info.setText("Nem sikerült csatlakozni a szerverhez!");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_buttonActionPerformed
 

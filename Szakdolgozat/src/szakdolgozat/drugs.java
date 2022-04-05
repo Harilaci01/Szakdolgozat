@@ -26,7 +26,7 @@ public class drugs extends javax.swing.JFrame {
      */        
     public drugs() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         TablaFeltolt(tabled);
     }
 

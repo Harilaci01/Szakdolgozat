@@ -27,7 +27,7 @@ public class workers extends javax.swing.JFrame {
 
     public workers() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         ElotagBeszur(front);
         TablaFeltolt(tablew);
         password.setVisible(false);

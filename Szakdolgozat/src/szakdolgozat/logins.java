@@ -26,7 +26,7 @@ public class logins extends javax.swing.JFrame {
      */
     public logins() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         TablaFeltolt(tablel);
         
     }

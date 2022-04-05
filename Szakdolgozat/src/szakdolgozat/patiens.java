@@ -24,7 +24,7 @@ public class patiens extends javax.swing.JFrame {
      */
     public patiens() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         TablaFeltolt(tablep);
         switch (id) {
             case 2:

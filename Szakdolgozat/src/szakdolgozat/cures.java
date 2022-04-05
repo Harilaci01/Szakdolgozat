@@ -30,7 +30,7 @@ public class cures extends javax.swing.JFrame {
      */
     public cures() {        
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         ElotagBeszur(frontbox);
         TablaFeltolt(tablec);
         info.setForeground(Color.white);
