@@ -30,12 +30,18 @@ public class patiens extends javax.swing.JFrame {
         switch (id) { //Jogok szerinti gombok megjelenítése
             case 2:
                 delete.setVisible(false);
+                activate.setVisible(false);
+                nonactive.setVisible(false);
                 break;
             case 3:
+                nonactive.setVisible(false);
+                activate.setVisible(false);
                 upload.setVisible(false);
                 delete.setVisible(false);
                 break;
             case 5:
+                nonactive.setVisible(false);
+                activate.setVisible(false);
                 upload.setVisible(false);
                 delete.setVisible(false);
                 break;
