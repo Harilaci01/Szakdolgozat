@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -77,6 +78,8 @@ public class patiens extends javax.swing.JFrame {
         info = new javax.swing.JLabel();
         frontbox = new javax.swing.JComboBox<>();
         reset = new javax.swing.JButton();
+        nonactive = new javax.swing.JButton();
+        activate = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -176,7 +179,7 @@ public class patiens extends javax.swing.JFrame {
             }
         });
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 305, 71, -1));
-        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 363, -1, -1));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, -1, -1));
 
         getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
@@ -188,6 +191,22 @@ public class patiens extends javax.swing.JFrame {
         });
         getContentPane().add(reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 305, -1, -1));
 
+        nonactive.setText("Nem aktív betegek");
+        nonactive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nonactiveActionPerformed(evt);
+            }
+        });
+        getContentPane().add(nonactive, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        activate.setText("Aktiválás");
+        activate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activateActionPerformed(evt);
+            }
+        });
+        getContentPane().add(activate, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/patiens.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -198,7 +217,7 @@ public class patiens extends javax.swing.JFrame {
         home h = new home();
                    h.setVisible(true);
                    h.setLocationRelativeTo(null);
-                   dispose();            // TODO add your handling code here:
+                   dispose();            // Új főoldal megjelenitése
     }//GEN-LAST:event_BackActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
@@ -300,7 +319,7 @@ public class patiens extends javax.swing.JFrame {
             result.next();
             
             String b_id=result.getString("b_id");
-            stmt.executeUpdate("DELETE FROM betegek WHERE b_id='"+b_id+"'"); 
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=0 WHERE szem_id='"+b_id+"'"); 
             TablaTorol(tablep);
             TablaFeltolt(tablep);
         } catch (Exception e) {
@@ -327,7 +346,7 @@ public class patiens extends javax.swing.JFrame {
         city.setText(ci);
         String ot = other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]", "");
         other.setText(ot);
-        String sqlparancs = "SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? ";
+        String sqlparancs = "SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? AND aktivitas=1";
         if(postcode.getText().length()>4){
             info.setForeground(Color.red);
             info.setText("Az írányítószám 4 számhosszú lehet!");
@@ -412,13 +431,72 @@ public class patiens extends javax.swing.JFrame {
     private void postcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postcodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_postcodeActionPerformed
+
+    private void activateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateActionPerformed
+        StringTokenizer st;       
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
+            Statement stmt=con.createStatement();
+            int sszam=tablep.getSelectedRow();
+            //String sszamS=tablep.getValueAt(sszam, 0).toString();
+            String torles[]={tablep.getValueAt(sszam, 0).toString(),tablep.getValueAt(sszam, 1).toString(),tablep.getValueAt(sszam, 2).toString(),tablep.getValueAt(sszam, 3).toString()};
+            String b_id;           
+            ResultSet result=stmt.executeQuery("Select b_id FROM szemely INNER JOIN betegek ON betegek.b_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            result.next();
+            b_id=result.getString("b_id");            
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='"+b_id+"'");
+            TablaTorol(tablep);            
+            TablaFeltolt(tablep);
+            con.close();        
+            activate.setVisible(false);            
+            info.setForeground(Color.green);
+            info.setText("Az aktíválás sikeres!");
+
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
+            
+        }
+    }//GEN-LAST:event_activateActionPerformed
+
+    private void nonactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nonactiveActionPerformed
+        TablaTorol(tablep);
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+            Statement stmt = con.createStatement();
+            DefaultTableModel model = (DefaultTableModel) tablep.getModel();
+            ResultSet result = stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE aktivitas=0");
+            String[] rekord = new String[8];
+            while (result.next()) {
+                rekord[0] = result.getString("elotag");
+                rekord[1] = result.getString("vezeteknev");
+                rekord[2] = result.getString("keresztnev");
+                rekord[3] = result.getString("masodik_keresztnev");
+                rekord[4] = result.getString("szuletesi_datum");
+                rekord[5] = result.getString("iranyitoszam");
+                rekord[6] = result.getString("telepules");
+                rekord[7] = result.getString("egyeb_cim");
+                model.addRow(rekord);             
+            }
+            con.close();
+        }
+        catch(Exception e){System.err.println("Hiba: "+e);
+        info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
+        }
+       activate.setVisible(true);
+        
+    }//GEN-LAST:event_nonactiveActionPerformed
     public static void TablaFeltolt(JTable JTable) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             Statement stmt = con.createStatement();
             DefaultTableModel model = (DefaultTableModel) JTable.getModel();
-            ResultSet result = stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id");
+            ResultSet result = stmt.executeQuery("SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE aktivitas=1");
             String[] rekord = new String[8];
             while (result.next()) {
                 rekord[0] = result.getString("elotag");
@@ -456,7 +534,7 @@ public class patiens extends javax.swing.JFrame {
             String sqlparancs = "SELECT DISTINCT elotag FROM szemely ORDER BY elotag";
             PreparedStatement pst = con.prepareStatement(sqlparancs);
             ResultSet rs = pst.executeQuery();
-            ArrayList<String> elotagok = new ArrayList<String>();
+            ArrayList<String> elotagok = new ArrayList<>();
             while (rs.next()) {
                 elotagok.add(rs.getString("elotag"));
             }
@@ -506,6 +584,7 @@ public class patiens extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton activate;
     private javax.swing.JTextField birthdate;
     private javax.swing.JLabel birthdatel;
     private javax.swing.JTextField city;
@@ -520,6 +599,7 @@ public class patiens extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField middlename;
     private javax.swing.JLabel middlenamel;
+    private javax.swing.JButton nonactive;
     private javax.swing.JTextField other;
     private javax.swing.JLabel otherl;
     private javax.swing.JLabel patiens;

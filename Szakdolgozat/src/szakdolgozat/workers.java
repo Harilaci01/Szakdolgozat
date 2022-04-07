@@ -489,22 +489,10 @@ public class workers extends javax.swing.JFrame {
             result.next();
             d_id=result.getString("d_id");            
             stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='"+d_id+"'");
-            TablaTorol(tablew);
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Statement stmt2=con.createStatement();
-            ResultSet rs1=stmt.executeQuery("SELECT szemely.szem_id,szemely.elotag,szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev FROM szemely INNER JOIN dolgozok ON szemely.szem_id=dolgozok.d_id WHERE aktivitas=1 ORDER BY d_id");
-            String[] rekord=new String[3];
-            while(rs1.next()){
-                ResultSet rs2=stmt2.executeQuery("SELECT felhasznalo, beosztas.megnevezes FROM dolgozok INNER JOIN beosztas ON dolgozok.beosz_id=beosztas.beosz_id  where d_id="+rs1.getString("szem_id"));
-                rs2.next();
-                rekord[0]=rs1.getString("elotag")+" "+rs1.getString("vezeteknev")+" "+rs1.getString("keresztnev")+" "+rs1.getString("masodik_keresztnev"); 
-                rekord[1]=rs2.getString("megnevezes");
-                if(rs2.getString("felhasznalo").equals(""))rekord[2]="Nincs jogosultság";
-                else rekord[2]=rs2.getString("felhasznalo");
-                if(!rs1.getString("vezeteknev").equals(""))model.addRow(rekord);
-            }
+            TablaTorol(tablew);            
+            TablaFeltolt(tablew);
             con.close();
-        
+
             activate.setVisible(false);            
             info.setForeground(Color.green);
             info.setText("Az aktíválás sikeres!");
