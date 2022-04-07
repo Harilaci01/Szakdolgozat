@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Ápr 05. 09:38
+-- Létrehozás ideje: 2022. Ápr 07. 10:29
 -- Kiszolgáló verziója: 10.4.14-MariaDB
 -- PHP verzió: 7.4.10
 
@@ -32,14 +32,6 @@ CREATE TABLE `bejelentkezes` (
   `belepes_ido` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `f_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `bejelentkezes`
---
-
-INSERT INTO `bejelentkezes` (`bel_id`, `belepes_ido`, `f_id`) VALUES
-(1, '2022-03-24 10:47:46', 2),
-(2, '2022-04-05 06:41:39', 2);
 
 -- --------------------------------------------------------
 
@@ -77,14 +69,6 @@ CREATE TABLE `betegek` (
   `egyeb_cim` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `betegek`
---
-
-INSERT INTO `betegek` (`b_id`, `szuletesi_datum`, `iranyitoszam`, `telepules`, `egyeb_cim`) VALUES
-(3, '2000-10-10', 2800, 'Tta', 'et123'),
-(4, '2004-01-30', 2840, 'Oroszlány', 'teszt 12');
-
 -- --------------------------------------------------------
 
 --
@@ -95,14 +79,6 @@ CREATE TABLE `betegseg` (
   `bet_id` int(11) NOT NULL,
   `megnevezes` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `betegseg`
---
-
-INSERT INTO `betegseg` (`bet_id`, `megnevezes`) VALUES
-(1, 'korona'),
-(2, 'influenza');
 
 -- --------------------------------------------------------
 
@@ -117,16 +93,6 @@ CREATE TABLE `dolgozok` (
   `jelszo` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `dolgozok`
---
-
-INSERT INTO `dolgozok` (`d_id`, `beosz_id`, `felhasznalo`, `jelszo`) VALUES
-(2, 2, 'hferi', 'jelszo'),
-(3, 4, '', ''),
-(4, 5, 'kari', 'kari'),
-(5, 1, 'admin', 'admin');
-
 -- --------------------------------------------------------
 
 --
@@ -140,15 +106,6 @@ CREATE TABLE `gyogyszerek` (
   `tartalma` text COLLATE utf8_hungarian_ci NOT NULL,
   `mennyiseg` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `gyogyszerek`
---
-
-INSERT INTO `gyogyszerek` (`gy_id`, `nev`, `gyarto`, `tartalma`, `mennyiseg`) VALUES
-(1, 'teszt', 'teszt', 'teszt', 40),
-(2, 'teszt2', 'teszt2', 'teszt2', 40),
-(3, 'teszt3', 'teszt3', 'teszt3', 100);
 
 -- --------------------------------------------------------
 
@@ -166,13 +123,6 @@ CREATE TABLE `kezeles` (
   `kezelo_orvos` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `kezeles`
---
-
-INSERT INTO `kezeles` (`kez_id`, `b_id`, `bet_id`, `gy_id`, `befekves`, `gyogyulas`, `kezelo_orvos`) VALUES
-(2, 3, 1, 1, '2022-04-04', '2022-04-04', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -186,13 +136,6 @@ CREATE TABLE `latogatas` (
   `bejelentkezes` datetime NOT NULL,
   `tavozas` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `latogatas`
---
-
-INSERT INTO `latogatas` (`lat_id`, `l_id`, `b_id`, `bejelentkezes`, `tavozas`) VALUES
-(11, 2, 3, '2022-04-04 00:00:00', '2022-04-04 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -208,16 +151,6 @@ CREATE TABLE `szemely` (
   `masodik_keresztnev` text COLLATE utf8_hungarian_ci NOT NULL,
   `aktivitas` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `szemely`
---
-
-INSERT INTO `szemely` (`szem_id`, `elotag`, `vezeteknev`, `keresztnev`, `masodik_keresztnev`, `aktivitas`) VALUES
-(2, 'Dr.', 'Harsányi', 'Ferenc', 'Róbert', 1),
-(3, 'Mr.', 'Sütő', 'Dániel', 'József', 1),
-(4, 'Miss', 'Tóth', 'Karina', '', 1),
-(5, 'Dr', 'Harsányi', 'László', 'Ferenc', 0);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -294,7 +227,7 @@ ALTER TABLE `szemely`
 -- AUTO_INCREMENT a táblához `bejelentkezes`
 --
 ALTER TABLE `bejelentkezes`
-  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bel_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `beosztas`
@@ -306,31 +239,31 @@ ALTER TABLE `beosztas`
 -- AUTO_INCREMENT a táblához `betegseg`
 --
 ALTER TABLE `betegseg`
-  MODIFY `bet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bet_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `gyogyszerek`
 --
 ALTER TABLE `gyogyszerek`
-  MODIFY `gy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `gy_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `kezeles`
 --
 ALTER TABLE `kezeles`
-  MODIFY `kez_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `kez_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `latogatas`
 --
 ALTER TABLE `latogatas`
-  MODIFY `lat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `lat_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `szemely`
 --
 ALTER TABLE `szemely`
-  MODIFY `szem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `szem_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Megkötések a kiírt táblákhoz
