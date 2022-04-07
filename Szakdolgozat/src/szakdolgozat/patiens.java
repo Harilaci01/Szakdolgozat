@@ -27,7 +27,7 @@ public class patiens extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         TablaFeltolt(tablep);
-        switch (id) {
+        switch (id) { //Jogok szerinti gombok megjelenítése
             case 2:
                 delete.setVisible(false);
                 break;
@@ -41,7 +41,7 @@ public class patiens extends javax.swing.JFrame {
                 break;
 
         }
-        ElotagBeszur(frontbox);
+        ElotagBeszur(frontbox);//Csak az adatbázisban szereplő előtagok jelennek meg
     }
 
     /**
@@ -215,9 +215,9 @@ public class patiens extends javax.swing.JFrame {
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
         home h = new home();
-                   h.setVisible(true);
-                   h.setLocationRelativeTo(null);
-                   dispose();            // Új főoldal megjelenitése
+        h.setVisible(true);
+        h.setLocationRelativeTo(null);
+        dispose();            // Új főoldal megjelenitése
     }//GEN-LAST:event_BackActionPerformed
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
@@ -235,14 +235,14 @@ public class patiens extends javax.swing.JFrame {
         birthdate.setText(da);
         postcode.setText(po);
         city.setText(ci);
-        other.setText(ot);
+        other.setText(ot);// Bekérjük az adatokat és átírjuk az elírt adatokat helyesre
         if (su.equals("") || fi.equals("") || da.equals("") || po.equals("") || ci.equals("") || ot.equals("")) {
             info.setForeground(Color.red);
             info.setText("Valamelyik mező üres.(A második keresztneven kívül)");
-        } else if(postcode.getText().length()>4){
+        } else if (postcode.getText().length() > 4) {
             info.setForeground(Color.red);
             info.setText("Az írányítószám 4 számhosszú lehet!");
-        }else {
+        } else {
             try {
                 info.setForeground(Color.white);
                 info.setText("A helytelen karaktereket eltávolítottuk.");
@@ -255,17 +255,17 @@ public class patiens extends javax.swing.JFrame {
                 pst.setString(2, "%" + su + "%");
                 pst.setString(3, "%" + fi + "%");
                 pst.setString(4, "%" + mi + "%");
-                ResultSet result = pst.executeQuery();                
+                ResultSet result = pst.executeQuery();
                 String insTestP = "INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES (?,?,?,?)";
                 PreparedStatement insTest = con.prepareStatement(insTestP);
                 insTest.setString(1, fr);
                 insTest.setString(2, su);
                 insTest.setString(3, fi);
                 insTest.setString(4, mi);
-                if (result.next()) {
-                   ResultSet result2 = stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
+                if (result.next()) {//Ha a beteg létezik az adatbázisban de nem betegként
+                    ResultSet result2 = stmt.executeQuery("SELECT b_id FROM betegek INNER JOIN szemely ON szemely.szem_id=betegek.b_id WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'");
                     if (!result2.next()) {
-                        String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely WHERE elotag='"+result.getString("elotag")+"' AND vezeteknev='"+result.getString("vezeteknev")+"' AND keresztnev='"+result.getString("keresztnev")+"' AND masodik_keresztnev='"+result.getString("masodik_keresztnev")+"'),?,?,?,?)";
+                        String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely WHERE elotag='" + result.getString("elotag") + "' AND vezeteknev='" + result.getString("vezeteknev") + "' AND keresztnev='" + result.getString("keresztnev") + "' AND masodik_keresztnev='" + result.getString("masodik_keresztnev") + "'),?,?,?,?)";
                         PreparedStatement insB = con.prepareStatement(ins);
                         insB.setString(1, da);
                         insB.setString(2, po);
@@ -273,12 +273,12 @@ public class patiens extends javax.swing.JFrame {
                         insB.setString(4, ot);
                         insB.executeUpdate();
                         info.setForeground(Color.white);
-                    info.setText("Sikeres feltöltés!");
+                        info.setText("Sikeres feltöltés!");
                     } else {
                         info.setForeground(Color.red);
                         info.setText("A személy már szerepel a listában!");
                     }
-                } else if (insTest.executeUpdate() > 0) {
+                } else if (insTest.executeUpdate() > 0) {//Ha a beteg nincs az adatbázisban
                     String ins = "INSERT INTO betegek (b_id, szuletesi_datum, iranyitoszam, telepules, egyeb_cim) VALUES ((SELECT szem_id FROM szemely ORDER BY szem_id DESC LIMIT 1),?,?,?,?)";
                     PreparedStatement insB = con.prepareStatement(ins);
                     insB.setString(1, da);
@@ -310,16 +310,16 @@ public class patiens extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             Statement stmt = con.createStatement();
             DefaultTableModel model = (DefaultTableModel) tablep.getModel();
-            int sszam = tablep.getSelectedRow();
-            String torles[] = new String[8];
-            for (int i = 0; i < 8; i++) {
-                torles[i] = tablep.getValueAt(sszam, i).toString();
+            int sszam = tablep.getSelectedRow();//Törölendő sor sorszámának elmentése
+            String torles[] = new String[4];
+            for (int i = 0; i < 4; i++) {
+                torles[i] = tablep.getValueAt(sszam, i).toString();//A törölendő sor adatainak elmentése egy tömbbe
             }
-            ResultSet result=stmt.executeQuery("Select b_id FROM betegek INNER JOIN szemely ON betegek.b_id=szemely.szem_id WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
+            ResultSet result = stmt.executeQuery("Select b_id FROM betegek INNER JOIN szemely ON betegek.b_id=szemely.szem_id WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
             result.next();
-            
-            String b_id=result.getString("b_id");
-            stmt.executeUpdate("UPDATE szemely SET aktivitas=0 WHERE szem_id='"+b_id+"'"); 
+
+            String b_id = result.getString("b_id");
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=0 WHERE szem_id='" + b_id + "'");//A személy deaktiválása
             TablaTorol(tablep);
             TablaFeltolt(tablep);
         } catch (Exception e) {
@@ -345,74 +345,77 @@ public class patiens extends javax.swing.JFrame {
         String ci = city.getText().replaceAll("[^A-Za-záéőúűóüöí /%/-]", "");
         city.setText(ci);
         String ot = other.getText().replaceAll("[^A-Za-záéőúűóüöí0-9 /%/./-]", "");
-        other.setText(ot);
+        other.setText(ot);//Adatok bekérése és modosítása
         String sqlparancs = "SELECT szemely.elotag, szemely.vezeteknev, szemely.keresztnev, szemely.masodik_keresztnev, betegek.szuletesi_datum,betegek.iranyitoszam,betegek.telepules,betegek.egyeb_cim FROM szemely INNER JOIN betegek ON szemely.szem_id=betegek.b_id WHERE elotag LIKE ? AND vezeteknev LIKE ? AND keresztnev LIKE ? AND masodik_keresztnev LIKE ? AND szuletesi_datum LIKE ? AND iranyitoszam LIKE ? AND telepules LIKE ? AND egyeb_cim LIKE ? AND aktivitas=1";
-        if(postcode.getText().length()>4){
+        if (postcode.getText().length() > 4) {
             info.setForeground(Color.red);
             info.setText("Az írányítószám 4 számhosszú lehet!");
-        }
-        else try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
-            TablaTorol(tablep);
-            DefaultTableModel model = (DefaultTableModel) tablep.getModel();
-            if (fr.equals("")) {
-                fr = "%";
-            }
-            if (su.equals("")) {
-                su = "%";
-            }
-            if (fi.equals("")) {
-                fi = "%";
-            }
-            if (mi.equals("")) {
-                mi = "%";
-            }
-            if (da.equals("")) {
-                da = "%";
-            }
-            if (po.equals("")) {
-                po = "%";
-            }
-            if (ci.equals("")) {
-                ci = "%";
-            }
-            if (ot.equals("")) {
-                ot = "%";
-            }
+        } else {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+                TablaTorol(tablep);
+                DefaultTableModel model = (DefaultTableModel) tablep.getModel();
+                if (fr.equals("")) {
+                    fr = "%";
+                }
+                if (su.equals("")) {
+                    su = "%";
+                }
+                if (fi.equals("")) {
+                    fi = "%";
+                }
+                if (mi.equals("")) {
+                    mi = "%";
+                }
+                if (da.equals("")) {
+                    da = "%";
+                }
+                if (po.equals("")) {
+                    po = "%";
+                }
+                if (ci.equals("")) {
+                    ci = "%";
+                }
+                if (ot.equals("")) {
+                    ot = "%";
+                }
 
-            PreparedStatement pst = con.prepareStatement(sqlparancs);
-            pst.setString(1, "%" + fr + "%");
-            pst.setString(2, "%" + su + "%");
-            pst.setString(3, "%" + fi + "%");
-            pst.setString(4, "%" + mi + "%");
-            pst.setString(5, "%" + da + "%");
-            pst.setString(6, "%" + po + "%");
-            pst.setString(7, "%" + ci + "%");
-            pst.setString(8, "%" + ot + "%");
-            ResultSet result = pst.executeQuery();
-            String[] rekord = new String[8];
-            while (result.next()) {
+                PreparedStatement pst = con.prepareStatement(sqlparancs);
+                pst.setString(1, "%" + fr + "%");
+                pst.setString(2, "%" + su + "%");
+                pst.setString(3, "%" + fi + "%");
+                pst.setString(4, "%" + mi + "%");
+                pst.setString(5, "%" + da + "%");
+                pst.setString(6, "%" + po + "%");
+                pst.setString(7, "%" + ci + "%");
+                pst.setString(8, "%" + ot + "%");
+                ResultSet result = pst.executeQuery();
+                String[] rekord = new String[8];
+                while (result.next()) {
 
-                rekord[0] = result.getString("elotag");
-                rekord[1] = result.getString("vezeteknev");
-                rekord[2] = result.getString("keresztnev");
-                rekord[3] = result.getString("masodik_keresztnev");
-                rekord[4] = result.getString("szuletesi_datum");
-                rekord[5] = result.getString("iranyitoszam");
-                rekord[6] = result.getString("telepules");
-                rekord[7] = result.getString("egyeb_cim");
-                model.addRow(rekord);
+                    rekord[0] = result.getString("elotag");
+                    rekord[1] = result.getString("vezeteknev");
+                    rekord[2] = result.getString("keresztnev");
+                    rekord[3] = result.getString("masodik_keresztnev");
+                    rekord[4] = result.getString("szuletesi_datum");
+                    rekord[5] = result.getString("iranyitoszam");
+                    rekord[6] = result.getString("telepules");
+                    rekord[7] = result.getString("egyeb_cim");
+                    model.addRow(rekord);
+                }
+                con.close();
+                if (model.getRowCount() == 0) {
+                    info.setForeground(Color.red);
+                    info.setText("A beteg nincs az adatbázisban!");
+                } else {
+                    info.setForeground(Color.white);
+                    info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");
+                }
+
+            } catch (Exception e) {
+                System.err.println("Hiba: " + e);
             }
-            con.close();
-            if(model.getRowCount()==0){
-                info.setForeground(Color.red);
-                info.setText("A beteg nincs az adatbázisban!");}else{            
-            info.setForeground(Color.white);
-            info.setText("A helytelen karaktereket eltávolítottuk a sikeres keresés érdekében.");}
-
-        } catch (Exception e) {
-            System.err.println("Hiba: " + e);
         }
     }//GEN-LAST:event_searchActionPerformed
 
@@ -433,37 +436,35 @@ public class patiens extends javax.swing.JFrame {
     }//GEN-LAST:event_postcodeActionPerformed
 
     private void activateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateActionPerformed
-        StringTokenizer st;       
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
-            Statement stmt=con.createStatement();
-            int sszam=tablep.getSelectedRow();
-            //String sszamS=tablep.getValueAt(sszam, 0).toString();
-            String torles[]={tablep.getValueAt(sszam, 0).toString(),tablep.getValueAt(sszam, 1).toString(),tablep.getValueAt(sszam, 2).toString(),tablep.getValueAt(sszam, 3).toString()};
-            String b_id;           
-            ResultSet result=stmt.executeQuery("Select b_id FROM szemely INNER JOIN betegek ON betegek.b_id=szemely.szem_id WHERE elotag='"+torles[0]+"' AND vezeteknev='"+torles[1]+"' AND keresztnev='"+torles[2]+"' AND masodik_keresztnev='"+torles[3]+"'");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
+            Statement stmt = con.createStatement();
+            int sszam = tablep.getSelectedRow();//Aktiválásra váró sorszámának elmentése
+            String torles[] = {tablep.getValueAt(sszam, 0).toString(), tablep.getValueAt(sszam, 1).toString(), tablep.getValueAt(sszam, 2).toString(), tablep.getValueAt(sszam, 3).toString()};//Az adott sor adatainak elmentése egy tömbbe
+            String b_id;
+            ResultSet result = stmt.executeQuery("Select b_id FROM szemely INNER JOIN betegek ON betegek.b_id=szemely.szem_id WHERE elotag='" + torles[0] + "' AND vezeteknev='" + torles[1] + "' AND keresztnev='" + torles[2] + "' AND masodik_keresztnev='" + torles[3] + "'");
             result.next();
-            b_id=result.getString("b_id");            
-            stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='"+b_id+"'");
-            TablaTorol(tablep);            
+            b_id = result.getString("b_id");
+            stmt.executeUpdate("UPDATE szemely SET aktivitas=1 WHERE szem_id='" + b_id + "'");
+            TablaTorol(tablep);
             TablaFeltolt(tablep);
-            con.close();        
-            activate.setVisible(false);            
+            con.close();
+            activate.setVisible(false);
             info.setForeground(Color.green);
             info.setText("Az aktíválás sikeres!");
 
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
-        info.setForeground(Color.red);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
+            info.setForeground(Color.red);
             info.setText("Kérem jelöljön ki sort.");
-            
+
         }
     }//GEN-LAST:event_activateActionPerformed
 
     private void nonactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nonactiveActionPerformed
         TablaTorol(tablep);
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga", "root", "");
             Statement stmt = con.createStatement();
@@ -479,16 +480,16 @@ public class patiens extends javax.swing.JFrame {
                 rekord[5] = result.getString("iranyitoszam");
                 rekord[6] = result.getString("telepules");
                 rekord[7] = result.getString("egyeb_cim");
-                model.addRow(rekord);             
+                model.addRow(rekord);
             }
             con.close();
-        }
-        catch(Exception e){System.err.println("Hiba: "+e);
-        info.setForeground(Color.red);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e);
+            info.setForeground(Color.red);
             info.setText("Kérem jelöljön ki sort.");
         }
-       activate.setVisible(true);
-        
+        activate.setVisible(true);
+
     }//GEN-LAST:event_nonactiveActionPerformed
     public static void TablaFeltolt(JTable JTable) {
         try {

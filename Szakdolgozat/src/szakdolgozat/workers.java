@@ -193,7 +193,7 @@ public class workers extends javax.swing.JFrame {
         home h = new home();
                    h.setVisible(true);
                    h.setLocationRelativeTo(null);
-                   dispose();            // TODO add your handling code here:
+                   dispose();            // Új főoldal megjelenitése
     }//GEN-LAST:event_BackActionPerformed
 
     private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
@@ -250,7 +250,7 @@ public class workers extends javax.swing.JFrame {
             condition1+=" felhasznalo LIKE ? AND";
         }
         
-        
+        //^ Az adatok bekérése és átírása, a feltételek megadása a bevitt adatok alapján 
         if(condition1.equals("WHERE"))condition1="";
             else condition1=condition1.substring(0,condition1.length()-4); 
         sqlparancs = sqlparancs.replace("co1", condition1);          
@@ -320,11 +320,11 @@ public class workers extends javax.swing.JFrame {
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/szakdoga","root","");
             Statement stmt=con.createStatement();
             DefaultTableModel model=(DefaultTableModel) tablew.getModel();
-            int sszam=tablew.getSelectedRow();
+            int sszam=tablew.getSelectedRow();//Kijelölt sor elmentése
             String sszamS=tablew.getValueAt(sszam, 0).toString();
             String torles[]={"","","",""};
             String d_id;
-            st = new StringTokenizer(sszamS," ");
+            st = new StringTokenizer(sszamS," ");//A kijelölt sor adatainak elmentése egy tömbbe
             for (int i = 0; i < 4; i++) {                
                 if (st.hasMoreTokens()) torles[i]=st.nextToken();
             }            
