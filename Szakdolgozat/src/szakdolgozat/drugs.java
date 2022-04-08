@@ -400,7 +400,8 @@ public class drugs extends javax.swing.JFrame {
             }
         }
         catch(Exception e){System.out.println("Hiba:"+e);
-            
+            info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
         }
     }//GEN-LAST:event_noStockActionPerformed
 
@@ -432,7 +433,8 @@ public class drugs extends javax.swing.JFrame {
             
         }
         catch(Exception e){System.out.println("Hiba:"+e);
-            
+            info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
         }
     }//GEN-LAST:event_getStockActionPerformed
 
@@ -469,7 +471,8 @@ public class drugs extends javax.swing.JFrame {
             
         }
         catch(Exception e){System.out.println("Hiba:"+e);
-            
+            info.setForeground(Color.red);
+            info.setText("Kérem jelöljön ki sort.");
         }
     }//GEN-LAST:event_sellStockActionPerformed
 

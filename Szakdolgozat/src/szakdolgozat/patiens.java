@@ -262,7 +262,7 @@ public class patiens extends javax.swing.JFrame {
                 pst.setString(3, "%" + fi + "%");
                 pst.setString(4, "%" + mi + "%");
                 ResultSet result = pst.executeQuery();
-                String insTestP = "INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev) VALUES (?,?,?,?)";
+                String insTestP = "INSERT INTO szemely (elotag, vezeteknev, keresztnev, masodik_keresztnev,aktivitas) VALUES (?,?,?,?,1)";
                 PreparedStatement insTest = con.prepareStatement(insTestP);
                 insTest.setString(1, fr);
                 insTest.setString(2, su);
