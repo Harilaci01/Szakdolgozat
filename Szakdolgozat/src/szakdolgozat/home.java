@@ -14,7 +14,7 @@ public class home extends javax.swing.JFrame {
     
     public home() {          
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("../pictures/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/pictures/icon.png")).getImage());
         switch(id){//a felhasználó beosztás id-je alapján jeleníti meg a gombokat (jogosúltság)
             case 2:
                 workers.setVisible(false);
