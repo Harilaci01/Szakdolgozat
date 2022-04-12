@@ -143,7 +143,7 @@ public class workers extends javax.swing.JFrame {
                 frontActionPerformed(evt);
             }
         });
-        getContentPane().add(front, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, -1, -1));
+        getContentPane().add(front, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 40, -1, -1));
 
         reset.setText("Összes dolgozó");
         reset.addActionListener(new java.awt.event.ActionListener() {
