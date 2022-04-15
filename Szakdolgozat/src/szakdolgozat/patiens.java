@@ -185,7 +185,7 @@ public class patiens extends javax.swing.JFrame {
             }
         });
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 305, 71, -1));
-        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, -1, -1));
+        getContentPane().add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, -1, -1));
 
         getContentPane().add(frontbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
